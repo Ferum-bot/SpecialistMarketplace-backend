@@ -1,5 +1,6 @@
 import extensions.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
 	id("org.springframework.boot") version "2.5.6"
@@ -26,6 +27,14 @@ dependencies {
 	addStateMachine()
 
 	addPostgres()
+
+	addBotsApi()
+
+	addJavaEmoji()
+}
+
+springBoot {
+	mainClass.set(Config.MAIN_CLASS_PATH)
 }
 
 tasks.withType<KotlinCompile> {
@@ -37,4 +46,16 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks.withType<Jar> {
+	manifest {
+		attributes["Start-Class"] = Config.MAIN_CLASS_PATH
+	}
+}
+
+tasks.withType<BootJar> {
+	manifest {
+		attributes["Start-Class"] = Config.MAIN_CLASS_PATH
+	}
 }
