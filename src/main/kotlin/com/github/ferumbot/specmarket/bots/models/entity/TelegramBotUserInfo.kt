@@ -1,4 +1,4 @@
-package com.github.ferumbot.specmarket.bots.models
+package com.github.ferumbot.specmarket.bots.models.entity
 
 import com.github.ferumbot.specmarket.bots.state_machine.state.StartScreenState
 import java.time.LocalDateTime

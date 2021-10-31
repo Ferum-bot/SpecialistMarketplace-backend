@@ -2,7 +2,9 @@ package com.github.ferumbot.specmarket.bots.configs
 
 import com.github.ferumbot.specmarket.bots.TelegramBot
 import com.github.ferumbot.specmarket.bots.controllers.TelegramController
-import com.github.ferumbot.specmarket.bots.models.TelegramBotUserInfo
+import com.github.ferumbot.specmarket.bots.interactors.BotInteractor
+import com.github.ferumbot.specmarket.bots.models.entity.TelegramBotUserInfo
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
@@ -11,7 +13,8 @@ import org.springframework.context.annotation.Scope
 import org.springframework.context.event.ContextStartedEvent
 import org.springframework.context.event.EventListener
 import org.telegram.telegrambots.bots.DefaultBotOptions
-import org.telegram.telegrambots.meta.TelegramBotsApi
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod
+import org.telegram.telegrambots.meta.api.objects.Update
 
 @Configuration
 @ComponentScan(basePackageClasses = [
@@ -22,6 +25,9 @@ import org.telegram.telegrambots.meta.TelegramBotsApi
 ])
 class OnTelegramInitConfig {
 
+    @Autowired
+    private lateinit var interactor: BotInteractor<Update, BotApiMethod<*>>
+
     @EventListener
     fun onContextStarted(event: ContextStartedEvent) {
         println(event)
@@ -31,7 +37,7 @@ class OnTelegramInitConfig {
     @Scope("singleton")
     fun provideTelegramBot(): TelegramBot {
         val options = DefaultBotOptions()
-        return TelegramBot(options)
+        return TelegramBot(options, interactor)
     }
 
 }
