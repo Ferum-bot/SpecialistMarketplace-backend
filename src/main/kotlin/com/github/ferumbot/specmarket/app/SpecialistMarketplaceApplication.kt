@@ -1,11 +1,19 @@
 package com.github.ferumbot.specmarket.app
 
+import com.github.ferumbot.specmarket.bots.TelegramBot
+import com.github.ferumbot.specmarket.bots.configs.OnTelegramInitConfig
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.telegram.telegrambots.meta.generics.TelegramBot
+import org.springframework.context.ApplicationContext
+import org.springframework.context.annotation.ComponentScan
+import org.telegram.telegrambots.meta.TelegramBotsApi
+import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession
 
 @SpringBootApplication
+@ComponentScan(basePackageClasses = [
+	OnTelegramInitConfig::class,
+])
 class SpecialistMarketplaceApplication
 
 /**
@@ -14,11 +22,19 @@ class SpecialistMarketplaceApplication
  * @see buildSrc/src/main/kotlin/Config.kt
  */
 fun main(args: Array<String>) {
-	initTelegramApi()
+	val context = runApplication<SpecialistMarketplaceApplication>(*args)
 
-	runApplication<SpecialistMarketplaceApplication>(*args)
+	try {
+		initTelegramApi(context)
+	} catch (ex: Exception) {
+		ex.printStackTrace()
+	}
 }
 
-private fun initTelegramApi() {
+private fun initTelegramApi(context: ApplicationContext) {
+	val bot = context.getBean(TelegramBot::class.java)
+	val webhook = SetWebhook.builder().url("https://0490-91-219-188-77.ngrok.io").build()
 
+	val telegramBotApi = TelegramBotsApi(DefaultBotSession::class.java)
+	telegramBotApi.registerBot(bot, webhook)
 }
