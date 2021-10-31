@@ -33,7 +33,7 @@ fun main(args: Array<String>) {
 
 private fun initTelegramApi(context: ApplicationContext) {
 	val bot = context.getBean(TelegramBot::class.java)
-	val webhook = SetWebhook.builder().url("https://0490-91-219-188-77.ngrok.io").build()
+	val webhook = SetWebhook.builder().url("https://ce4c-91-219-188-77.ngrok.io").build()
 
 	val telegramBotApi = TelegramBotsApi(DefaultBotSession::class.java)
 	telegramBotApi.registerBot(bot, webhook)
