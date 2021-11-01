@@ -13,3 +13,7 @@ object OpenStartScreenEvent: CommonEvent {
 object OpenLeaveBidScreenEvent: CommonEvent {
     override val eventName: String = "Open leave bid screen event"
 }
+
+object CreateNewUserEvent: CommonEvent {
+    override val eventName: String = "Register new user event"
+}

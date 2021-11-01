@@ -3,7 +3,7 @@ package com.github.ferumbot.specmarket.bots.configs
 import com.github.ferumbot.specmarket.bots.TelegramBot
 import com.github.ferumbot.specmarket.bots.controllers.TelegramController
 import com.github.ferumbot.specmarket.bots.interactors.BotInteractor
-import com.github.ferumbot.specmarket.bots.models.entity.TelegramBotUserInfo
+import com.github.ferumbot.specmarket.bots.models.entity.TelegramChat
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.context.annotation.Bean
@@ -21,7 +21,7 @@ import org.telegram.telegrambots.meta.api.objects.Update
     TelegramController::class
 ])
 @EntityScan(basePackageClasses = [
-    TelegramBotUserInfo::class,
+    TelegramChat::class,
 ])
 class OnTelegramInitConfig {
 
