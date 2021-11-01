@@ -24,8 +24,8 @@ data class TelegramUser(
     @Column(name = "FIRST_NAME", length = 1000)
     var firstName: String? = null,
 
-    @Column(name = "SECOND_NAME", length = 1000)
-    var secondName: String? = null,
+    @Column(name = "LAST_NAME", length = 1000)
+    var lastName: String? = null,
 
     @Column(name = "USER_NAME", length = 1000)
     var userName: String? = null,

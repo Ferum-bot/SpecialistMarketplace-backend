@@ -12,3 +12,7 @@ interface BotState {
 object NotImplementedScreenState: BotState {
     override val screenName: String = "Not implemented screen"
 }
+
+object UnSupportedScreenState: BotState {
+    override val screenName: String = "Not supported screen"
+}

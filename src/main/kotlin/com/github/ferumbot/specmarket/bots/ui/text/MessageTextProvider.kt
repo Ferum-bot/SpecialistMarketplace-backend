@@ -1,4 +1,4 @@
-package com.github.ferumbot.specmarket.bots.ui
+package com.github.ferumbot.specmarket.bots.ui.text
 
 interface MessageTextProvider {
 

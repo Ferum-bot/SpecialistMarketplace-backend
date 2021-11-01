@@ -2,8 +2,8 @@ package com.github.ferumbot.specmarket.bots.adapters.update
 
 import com.github.ferumbot.specmarket.bots.adapters.update.local.LocalUpdateAdapter
 import com.github.ferumbot.specmarket.bots.interactors.BotInteractor
-import com.github.ferumbot.specmarket.bots.models.dto.MessageUpdateBunch
-import com.github.ferumbot.specmarket.bots.models.dto.MessageUpdateResultBunch
+import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
+import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
 import org.springframework.beans.factory.annotation.Autowired
 import org.telegram.telegrambots.meta.api.objects.Update
 

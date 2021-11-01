@@ -32,7 +32,6 @@ class TelegramBot(
     override fun getBotPath() = path
 
     override fun onWebhookUpdateReceived(update: Update): BotApiMethod<*> {
-        update.message.chat
         return interactor.handleTransfer(update)
     }
 }

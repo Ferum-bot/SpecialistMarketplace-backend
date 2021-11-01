@@ -9,3 +9,7 @@ object StartScreenState: GeneralState {
 object ContactWithUsScreenState: GeneralState {
     override val screenName: String = "Contact with us screen"
 }
+
+object UnRegisteredState: GeneralState {
+    override val screenName: String = "Un register user state"
+}

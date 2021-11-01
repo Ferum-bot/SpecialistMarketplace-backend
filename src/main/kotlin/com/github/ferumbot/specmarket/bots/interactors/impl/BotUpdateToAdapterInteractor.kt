@@ -14,7 +14,6 @@ class BotUpdateToAdapterInteractor @Autowired constructor(
 
     override fun handleTransfer(input: Update): BotApiMethod<*> {
         val result = inputAdapter.adaptBotUpdate(input)
-        outputAdapter.adaptResult(result)
-        TODO("Not yet implemented")
+        return outputAdapter.adaptResult(result)
     }
 }

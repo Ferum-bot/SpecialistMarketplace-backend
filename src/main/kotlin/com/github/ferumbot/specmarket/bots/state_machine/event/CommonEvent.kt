@@ -14,6 +14,10 @@ object OpenLeaveBidScreenEvent: CommonEvent {
     override val eventName: String = "Open leave bid screen event"
 }
 
-object CreateNewUserEvent: CommonEvent {
+object RegisterNewUserEvent: CommonEvent {
     override val eventName: String = "Register new user event"
+}
+
+object UnSupportedEvent: CommonEvent {
+    override val eventName: String = "Un supported event"
 }

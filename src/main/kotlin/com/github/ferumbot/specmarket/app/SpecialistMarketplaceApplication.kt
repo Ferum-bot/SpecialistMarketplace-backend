@@ -12,11 +12,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession
 
 @SpringBootApplication
 @ComponentScan(basePackageClasses = [
-	OnTelegramInitConfig::class,
-	AdaptersConfig::class,
-	InteractorsConfig::class,
-	ProcessorsConfig::class,
-	UIConfig::class,
+	OnTelegramConfig::class,
 ])
 class SpecialistMarketplaceApplication
 

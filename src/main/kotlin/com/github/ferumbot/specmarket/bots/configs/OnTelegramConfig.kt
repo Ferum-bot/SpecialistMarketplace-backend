@@ -18,12 +18,14 @@ import org.telegram.telegrambots.meta.api.objects.Update
 
 @Configuration
 @ComponentScan(basePackageClasses = [
-    TelegramController::class
+    TelegramController::class,
+    AdaptersConfig::class,
+    InteractorsConfig::class,
+    ProcessorsConfig::class,
+    UIConfig::class,
+    RepositoriesConfig::class,
 ])
-@EntityScan(basePackageClasses = [
-    TelegramChat::class,
-])
-class OnTelegramInitConfig {
+class OnTelegramConfig {
 
     @Autowired
     private lateinit var interactor: BotInteractor<Update, BotApiMethod<*>>

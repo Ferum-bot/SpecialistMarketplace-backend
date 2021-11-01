@@ -1,4 +1,6 @@
-package com.github.ferumbot.specmarket.bots.ui
+package com.github.ferumbot.specmarket.bots.ui.text
+
+import com.github.ferumbot.specmarket.bots.ui.text.MessageTextProvider
 
 class DefaultMessageTextProvider: MessageTextProvider {
 

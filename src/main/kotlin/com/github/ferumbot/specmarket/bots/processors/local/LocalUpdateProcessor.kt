@@ -1,7 +1,7 @@
 package com.github.ferumbot.specmarket.bots.processors.local
 
-import com.github.ferumbot.specmarket.bots.models.dto.MessageUpdateBunch
-import com.github.ferumbot.specmarket.bots.models.dto.MessageUpdateResultBunch
+import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
+import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
 
 interface LocalUpdateProcessor {
 
