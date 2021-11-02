@@ -76,6 +76,20 @@ class DefaultMessageTextProvider: MessageTextProvider {
 
     }
 
+    override fun provideIDoNotKnowWhoISearchMessage(): String {
+        return StringBuilder()
+            .append("I don't know who I search screen title\n")
+            .append("I don't know who I search screen subtitle\n")
+            .append("Multiline long long long long long long long long long long long text ")
+            .append("Multiline long long long long long long long long long long long text ")
+            .append("Multiline long long long long long long long long long long long text ")
+            .append("Multiline long long long long long long long long long long long text ")
+            .append("Multiline long long long long long long long long long long long text ")
+            .append("\n\n")
+            .append(EmojiWrapper.getRandomEmojies(3))
+            .toString()
+    }
+
     override fun provideAboutEachSpecialistMessage(): String {
         return StringBuilder()
             .append("About each specialist screen title\n")

@@ -15,24 +15,14 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.objects.Update
 
 @Configuration
-class InteractorsConfig {
-
-    @Autowired
-    private lateinit var updateAdapter: BotUpdateAdapter
-
-    @Autowired
-    private lateinit var resultAdapter: BotUpdateResultAdapter
-
-    @Autowired
-    private lateinit var processor: BotUpdateProcessor
+class InteractorsConfig @Autowired constructor(
+    private val updateAdapter: BotUpdateAdapter,
+    private val resultAdapter: BotUpdateResultAdapter,
+    private val processor: BotUpdateProcessor
+) {
 
     @Bean
-    fun provideUpdateToAdapterInteractor(): BotInteractor<Update, BotApiMethod<*>> {
+    fun provideUpdateToAdapterInteractor(): BotUpdateToAdapterInteractor {
         return BotUpdateToAdapterInteractor(updateAdapter, resultAdapter)
-    }
-
-    @Bean
-    fun provideAdapterToProcessorInteractor(): BotInteractor<MessageUpdateBunch<*>, MessageUpdateResultBunch<*>> {
-        return BotAdapterToProcessorInteractor(processor)
     }
 }

@@ -3,7 +3,9 @@ package com.github.ferumbot.specmarket.bots.configs
 import com.github.ferumbot.specmarket.bots.TelegramBot
 import com.github.ferumbot.specmarket.bots.controllers.TelegramController
 import com.github.ferumbot.specmarket.bots.interactors.BotInteractor
+import com.github.ferumbot.specmarket.bots.interactors.impl.BotUpdateToAdapterInteractor
 import com.github.ferumbot.specmarket.bots.models.entity.TelegramChat
+import com.github.ferumbot.specmarket.bots.services.impl.TelegramUserServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.context.annotation.Bean
@@ -24,11 +26,12 @@ import org.telegram.telegrambots.meta.api.objects.Update
     ProcessorsConfig::class,
     UIConfig::class,
     RepositoriesConfig::class,
+    TelegramUserServiceImpl::class,
 ])
 class OnTelegramConfig {
 
     @Autowired
-    private lateinit var interactor: BotInteractor<Update, BotApiMethod<*>>
+    private lateinit var interactor: BotUpdateToAdapterInteractor
 
     @EventListener
     fun onContextStarted(event: ContextStartedEvent) {

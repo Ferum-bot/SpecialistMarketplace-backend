@@ -6,7 +6,7 @@ import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultB
 import com.github.ferumbot.specmarket.bots.processors.BotUpdateProcessor
 import org.springframework.beans.factory.annotation.Autowired
 
-class BotAdapterToProcessorInteractor @Autowired constructor(
+class BotAdapterToProcessorInteractor(
     private val updateProcessor: BotUpdateProcessor
 ): BotInteractor<MessageUpdateBunch<*>, MessageUpdateResultBunch<*>> {
 

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.objects.Update
 
-class BotUpdateToAdapterInteractor @Autowired constructor(
+class BotUpdateToAdapterInteractor(
     private val inputAdapter: BotUpdateAdapter,
     private val outputAdapter: BotUpdateResultAdapter,
 ): BotInteractor<Update, BotApiMethod<*>> {

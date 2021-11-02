@@ -4,6 +4,7 @@ import com.github.ferumbot.specmarket.bots.adapters.result.local.LocalUpdateResu
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.state_machine.state.ContactWithUsScreenState
+import com.github.ferumbot.specmarket.bots.state_machine.state.GeneralState
 import com.github.ferumbot.specmarket.bots.state_machine.state.StartScreenState
 import com.github.ferumbot.specmarket.bots.ui.inline_buttons.InlineMessageButtonsProvider
 import com.github.ferumbot.specmarket.bots.ui.text.MessageTextProvider
@@ -16,11 +17,7 @@ class GeneralStateAdapter(
 ): LocalUpdateResultAdapter {
 
     override fun isFor(bunch: MessageUpdateResultBunch<*>): Boolean {
-        return when(bunch.newState) {
-            ContactWithUsScreenState -> true
-            StartScreenState -> true
-            else -> false
-        }
+        return bunch.newState is GeneralState
     }
 
     override fun adapt(bunch: MessageUpdateResultBunch<*>): BotApiMethod<*> {
@@ -36,9 +33,10 @@ class GeneralStateAdapter(
         val text = textProvider.provideStartScreenMessage()
         val inlineButtons = inlineButtonsProvider.provideStartScreenButtons()
         val chatId = info.chatId.toString()
-        val sendMessage = SendMessage(chatId, text)
+        val sendMessage = SendMessage(chatId, text).apply {
+            replyMarkup = inlineButtons
+        }
 
-        sendMessage.replyMarkup = inlineButtons
         return sendMessage
     }
 

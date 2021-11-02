@@ -14,4 +14,11 @@ interface BotEvent {
      * @important Must be unique
      */
     val commandAlias: String
+
+    /**
+     * Unique command friendly name needed to identify
+     * what button user pressed
+     * @important Must be unique
+     */
+    val friendlyName: String
 }

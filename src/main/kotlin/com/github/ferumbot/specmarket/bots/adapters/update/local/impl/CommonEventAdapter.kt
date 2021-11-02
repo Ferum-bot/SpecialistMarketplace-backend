@@ -17,13 +17,13 @@ class CommonEventAdapter: LocalUpdateAdapter {
 
     companion object {
 
-        private const val START_COMMAND = "/start"
-        private const val BACK_COMMAND = "/back"
-        private const val MAIN_PAGE_COMMAND = "/main_page"
-        private const val CONTACT_WITH_US_COMMAND = "/contact_with_us"
+        private val START_COMMAND = RegisterNewUserEvent.commandAlias
+        private val BACK_COMMAND = GoBackEvent.commandAlias
+        private val MAIN_PAGE_COMMAND = OpenStartScreenEvent.commandAlias
+        private val CONTACT_WITH_US_COMMAND = OpenContactWithUsScreenEvent.commandAlias
 
         private val handlingCommands = listOf(
-            "/start", "/back", "/main_page", "/contact_with_us"
+            START_COMMAND, BACK_COMMAND, MAIN_PAGE_COMMAND, CONTACT_WITH_US_COMMAND
         )
     }
 
