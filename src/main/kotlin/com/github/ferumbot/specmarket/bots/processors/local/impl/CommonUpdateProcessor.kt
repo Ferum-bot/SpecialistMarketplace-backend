@@ -23,10 +23,10 @@ class CommonUpdateProcessor(
         val info = bunch.extraInformation
 
         return when(causedEvent) {
-            GoBackEvent -> processGoBackEvent(info)
-            OpenStartScreenEvent -> processOpenStartScreenEvent(info)
-            RegisterNewUserEvent -> processRegisterNewUserEvent(info as RegisterNewUserUpdateInfo)
-            UnSupportedEvent -> processUnSupportedEvent(info)
+            is GoBackEvent -> processGoBackEvent(info)
+            is OpenStartScreenEvent -> processOpenStartScreenEvent(info)
+            is RegisterNewUserEvent -> processRegisterNewUserEvent(info as RegisterNewUserUpdateInfo)
+            is UnSupportedEvent -> processUnSupportedEvent(info)
             else -> LocalUpdateProcessor.unSupportedEvent(info)
         }
     }

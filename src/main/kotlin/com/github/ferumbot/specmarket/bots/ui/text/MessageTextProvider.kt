@@ -12,7 +12,10 @@ interface MessageTextProvider {
 
     fun provideIDoNotKnowWhatIWantMessage(): String
 
+    fun provideIDoNotKnowWhoISearchMessage(): String
+
     fun provideAboutEachSpecialistMessage(): String
 
     fun provideIAmSpecialistInfoMessage(): String
+
 }

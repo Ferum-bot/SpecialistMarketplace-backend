@@ -7,4 +7,11 @@ interface BotEvent {
      * @important Must be unique.
      */
     val eventName: String
+
+    /**
+     * Unique command alias needed to identify
+     * user input command event
+     * @important Must be unique
+     */
+    val commandAlias: String
 }
