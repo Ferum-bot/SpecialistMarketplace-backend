@@ -2,6 +2,7 @@ package com.github.ferumbot.specmarket.bots.models.entity
 
 import com.github.ferumbot.specmarket.bots.state_machine.state.BotState
 import com.github.ferumbot.specmarket.bots.state_machine.state.StartScreenState
+import com.github.ferumbot.specmarket.bots.state_machine.state.UnRegisteredState
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -19,7 +20,7 @@ data class TelegramUser(
     var personalTelegramChatId: Long,
 
     @Column(name = "CURRENT_BOT_STATE")
-    var currentBotState: String,
+    var currentBotState: String = UnRegisteredState.screenName,
 
     @Column(name = "FIRST_NAME", length = 1000)
     var firstName: String? = null,

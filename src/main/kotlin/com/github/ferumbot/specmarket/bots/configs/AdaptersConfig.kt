@@ -1,6 +1,7 @@
 package com.github.ferumbot.specmarket.bots.configs
 
 import com.github.ferumbot.specmarket.bots.adapters.annotations.CommonAdapterQualifier
+import com.github.ferumbot.specmarket.bots.adapters.annotations.GeneralAdapterQualifier
 import com.github.ferumbot.specmarket.bots.adapters.result.BotUpdateResultAdapter
 import com.github.ferumbot.specmarket.bots.adapters.result.local.LocalUpdateResultAdapter
 import com.github.ferumbot.specmarket.bots.adapters.result.local.impl.GeneralStateAdapter
@@ -65,6 +66,7 @@ class AdaptersConfig {
     }
 
     @Bean
+    @GeneralAdapterQualifier
     fun provideGeneralStateAdapter(): LocalUpdateResultAdapter {
         return GeneralStateAdapter(messageTextProvider, messageInlineButtonsProvider)
     }
