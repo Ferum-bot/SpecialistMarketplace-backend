@@ -17,10 +17,6 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession
 @ComponentScan(basePackageClasses = [
 	OnTelegramConfig::class,
 ])
-@EnableJpaRepositories(basePackageClasses = [
-	TelegramChatRepository::class,
-	TelegramUserRepository::class,
-])
 class SpecialistMarketplaceApplication
 
 /**
@@ -29,19 +25,5 @@ class SpecialistMarketplaceApplication
  * @see buildSrc/src/main/kotlin/Config.kt
  */
 fun main(args: Array<String>) {
-	val context = runApplication<SpecialistMarketplaceApplication>(*args)
-
-	try {
-		initTelegramApi(context)
-	} catch (ex: Exception) {
-		ex.printStackTrace()
-	}
-}
-
-private fun initTelegramApi(context: ApplicationContext) {
-	val bot = context.getBean(TelegramBot::class.java)
-	val webhook = SetWebhook.builder().url("https://ce4c-91-219-188-77.ngrok.io").build()
-
-	val telegramBotApi = TelegramBotsApi(DefaultBotSession::class.java)
-	telegramBotApi.registerBot(bot, webhook)
+	runApplication<SpecialistMarketplaceApplication>(*args)
 }

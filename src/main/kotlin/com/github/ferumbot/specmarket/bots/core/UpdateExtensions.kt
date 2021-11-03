@@ -9,6 +9,13 @@ fun Update.isCommand(): Boolean {
     return message.isCommand
 }
 
+fun Update.isText(): Boolean {
+    if (!hasMessage()) {
+        return false
+    }
+    return true
+}
+
 fun Update.getUserId(): Long {
     if (hasMessage()) {
         return message.from.id

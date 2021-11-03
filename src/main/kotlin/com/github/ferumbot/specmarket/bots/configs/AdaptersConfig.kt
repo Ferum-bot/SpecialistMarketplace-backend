@@ -7,7 +7,7 @@ import com.github.ferumbot.specmarket.bots.adapters.result.local.impl.GeneralSta
 import com.github.ferumbot.specmarket.bots.adapters.update.BotUpdateAdapter
 import com.github.ferumbot.specmarket.bots.adapters.update.FacadeBotUpdateAdapter
 import com.github.ferumbot.specmarket.bots.adapters.update.local.LocalUpdateAdapter
-import com.github.ferumbot.specmarket.bots.adapters.update.local.impl.CommonEventAdapter
+import com.github.ferumbot.specmarket.bots.adapters.update.local.impl.*
 import com.github.ferumbot.specmarket.bots.interactors.BotInteractor
 import com.github.ferumbot.specmarket.bots.interactors.impl.BotAdapterToProcessorInteractor
 import com.github.ferumbot.specmarket.bots.interactors.impl.BotUpdateToAdapterInteractor
@@ -30,9 +30,21 @@ class AdaptersConfig @Autowired constructor(
 
     @Bean
     fun provideFacadeUpdateAdapter(): BotUpdateAdapter {
-        val adapters = listOf(
-            provideCommonEventAdapter()
+        val adapters = mutableListOf(
+            provideCommonEventAdapter(),
+            provideStartEventAdapter(),
+            provideAllSpecialistsEventAdapter(),
+            provideIAmCustomerEventAdapter(),
+            provideIAmSpecialistEventAdapter()
         )
+
+        /**
+         * Always must be in the end
+         */
+        adapters.add(
+            provideUnSupportedEventAdapter()
+        )
+
         return FacadeBotUpdateAdapter(provideAdapterToProcessorInteractor(), adapters)
     }
 
@@ -49,24 +61,29 @@ class AdaptersConfig @Autowired constructor(
         return CommonEventAdapter()
     }
 
-    //@Bean
+    @Bean
     fun provideAllSpecialistsEventAdapter(): LocalUpdateAdapter {
-        TODO()
+        return AllSpecialistEventAdapter()
     }
 
-    //@Bean
+    @Bean
     fun provideIAmCustomerEventAdapter(): LocalUpdateAdapter {
-        TODO()
+        return IAmCustomerEventAdapter()
     }
 
-    //@Bean
+    @Bean
     fun provideIAmSpecialistEventAdapter(): LocalUpdateAdapter {
-        TODO()
+        return IAmSpecialistEventAdapter()
     }
 
-    //@Bean
+    @Bean
     fun provideStartEventAdapter(): LocalUpdateAdapter {
-        TODO()
+        return StartEventAdapter()
+    }
+
+    @Bean
+    fun provideUnSupportedEventAdapter(): LocalUpdateAdapter {
+        return UnSupportedEventAdapter()
     }
 
     @Bean
@@ -74,6 +91,30 @@ class AdaptersConfig @Autowired constructor(
         return GeneralStateAdapter(messageTextProvider, messageInlineButtonsProvider)
     }
 
+    @Bean
+    fun provideCommonStateAdapter(): LocalUpdateResultAdapter {
+        TODO()
+    }
+
+    @Bean
+    fun provideAllSpecialistStateAdapter(): LocalUpdateResultAdapter {
+        TODO()
+    }
+
+    @Bean
+    fun provideIAmCustomerStateAdapter(): LocalUpdateResultAdapter {
+        TODO()
+    }
+
+    @Bean
+    fun provideIAmSpecialistStateAdapter(): LocalUpdateResultAdapter {
+        TODO()
+    }
+
+    /**
+     * Clearly not the right place for this bean.
+     * TODO() Move lately
+     */
     @Bean
     fun provideAdapterToProcessorInteractor(): BotAdapterToProcessorInteractor {
         return BotAdapterToProcessorInteractor(processor)
