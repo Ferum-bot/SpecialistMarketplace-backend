@@ -46,6 +46,15 @@ class DefaultMessageTextProvider: MessageTextProvider {
             .toString()
     }
 
+    override fun provideUnSupportedMessage(): String {
+        return StringBuilder()
+            .append("Un supported command!\n")
+            .append("Please use only commands from buttons!\n")
+            .append("\n\n")
+            .append(EmojiWrapper.getRandomEmojies(4))
+            .toString()
+    }
+
     override fun provideIAmCustomerInfoMessage(): String {
         return StringBuilder()
             .append("I am Customer information screen title\n")
@@ -106,8 +115,8 @@ class DefaultMessageTextProvider: MessageTextProvider {
 
     override fun provideIAmSpecialistInfoMessage(): String {
         return StringBuilder()
-            .append("I am specialist information screen title")
-            .append("I am specialist information screen subtitle")
+            .append("I am specialist information screen title\n")
+            .append("I am specialist information screen subtitle\n")
             .append("Multiline long long long long long long long long long long long text ")
             .append("Multiline long long long long long long long long long long long text ")
             .append("Multiline long long long long long long long long long long long text ")
@@ -115,6 +124,22 @@ class DefaultMessageTextProvider: MessageTextProvider {
             .append("Multiline long long long long long long long long long long long text ")
             .append("\n\n")
             .append(EmojiWrapper.getRandomEmojies(2))
+            .toString()
+    }
+
+    override fun provideAllSpecialistInfoMessage(): String {
+        return StringBuilder()
+            .append("This is all available specialists title!\n")
+            .append("This is all available specialists subtitle!\n")
+            .append("\n")
+            .append("Specialist1 -> some information 1\n")
+            .append("Specialist2 -> some information 2\n")
+            .append("Specialist3 -> some information 3\n")
+            .append("Specialist4 -> some information 4\n")
+            .append("Specialist5 -> some information 5\n")
+            .append("Specialist6 -> some information 6\n")
+            .append("\n\n")
+            .append(EmojiWrapper.getRandomEmojies(10))
             .toString()
     }
 }
