@@ -6,14 +6,14 @@ import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.state_machine.state.ContactWithUsScreenState
 import com.github.ferumbot.specmarket.bots.state_machine.state.GeneralState
 import com.github.ferumbot.specmarket.bots.state_machine.state.StartScreenState
-import com.github.ferumbot.specmarket.bots.ui.inline_buttons.InlineMessageButtonsProvider
+import com.github.ferumbot.specmarket.bots.ui.keyboard_buttons.KeyboardMessageButtonsProvider
 import com.github.ferumbot.specmarket.bots.ui.text.MessageTextProvider
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 
 class GeneralStateAdapter(
     private val textProvider: MessageTextProvider,
-    private val inlineButtonsProvider: InlineMessageButtonsProvider,
+    private val keyboardButtonsProvider: KeyboardMessageButtonsProvider,
 ): LocalUpdateResultAdapter {
 
     override fun isFor(bunch: MessageUpdateResultBunch<*>): Boolean {
@@ -21,20 +21,22 @@ class GeneralStateAdapter(
     }
 
     override fun adapt(bunch: MessageUpdateResultBunch<*>): BotApiMethod<*> {
+        val state = bunch.newState
         val info = bunch.resultData
-        return when(bunch.newState) {
-            StartScreenState -> getStartScreenApiMethod(info)
-            ContactWithUsScreenState -> getContactWithUsScreenApiMethod(info)
+
+        return when(state) {
+            is StartScreenState -> getStartScreenApiMethod(info)
+            is ContactWithUsScreenState -> getContactWithUsScreenApiMethod(info)
             else -> LocalUpdateResultAdapter.unSupportedState(info)
         }
     }
 
     private fun getStartScreenApiMethod(info: BaseUpdateInfo): BotApiMethod<*> {
         val text = textProvider.provideStartScreenMessage()
-        val inlineButtons = inlineButtonsProvider.provideStartScreenButtons()
+        val keyboardButtons = keyboardButtonsProvider.provideStartScreenButtons()
         val chatId = info.chatId.toString()
         val sendMessage = SendMessage(chatId, text).apply {
-            replyMarkup = inlineButtons
+            replyMarkup = keyboardButtons
         }
 
         return sendMessage

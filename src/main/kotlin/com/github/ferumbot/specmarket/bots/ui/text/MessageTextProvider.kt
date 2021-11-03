@@ -8,6 +8,8 @@ interface MessageTextProvider {
 
     fun provideNotImplementedMessage(): String
 
+    fun provideUnSupportedMessage(): String
+
     fun provideIAmCustomerInfoMessage(): String
 
     fun provideIDoNotKnowWhatIWantMessage(): String
@@ -18,4 +20,5 @@ interface MessageTextProvider {
 
     fun provideIAmSpecialistInfoMessage(): String
 
+    fun provideAllSpecialistInfoMessage(): String
 }

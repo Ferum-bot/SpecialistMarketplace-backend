@@ -3,27 +3,24 @@ package com.github.ferumbot.specmarket.bots.configs
 import com.github.ferumbot.specmarket.bots.adapters.result.BotUpdateResultAdapter
 import com.github.ferumbot.specmarket.bots.adapters.result.FacadeResultUpdateAdapter
 import com.github.ferumbot.specmarket.bots.adapters.result.local.LocalUpdateResultAdapter
-import com.github.ferumbot.specmarket.bots.adapters.result.local.impl.GeneralStateAdapter
+import com.github.ferumbot.specmarket.bots.adapters.result.local.impl.*
 import com.github.ferumbot.specmarket.bots.adapters.update.BotUpdateAdapter
 import com.github.ferumbot.specmarket.bots.adapters.update.FacadeBotUpdateAdapter
 import com.github.ferumbot.specmarket.bots.adapters.update.local.LocalUpdateAdapter
 import com.github.ferumbot.specmarket.bots.adapters.update.local.impl.*
-import com.github.ferumbot.specmarket.bots.interactors.BotInteractor
 import com.github.ferumbot.specmarket.bots.interactors.impl.BotAdapterToProcessorInteractor
-import com.github.ferumbot.specmarket.bots.interactors.impl.BotUpdateToAdapterInteractor
-import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
-import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
 import com.github.ferumbot.specmarket.bots.processors.BotUpdateProcessor
 import com.github.ferumbot.specmarket.bots.ui.inline_buttons.InlineMessageButtonsProvider
+import com.github.ferumbot.specmarket.bots.ui.keyboard_buttons.KeyboardMessageButtonsProvider
 import com.github.ferumbot.specmarket.bots.ui.text.MessageTextProvider
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Import
 
 @Configuration
 class AdaptersConfig @Autowired constructor(
     private val messageTextProvider: MessageTextProvider,
+    private val messageKeyboardButtonsProvider: KeyboardMessageButtonsProvider,
     private val messageInlineButtonsProvider: InlineMessageButtonsProvider,
     private val processor: BotUpdateProcessor,
 ) {
@@ -51,8 +48,13 @@ class AdaptersConfig @Autowired constructor(
     @Bean
     fun provideFacadeResultUpdateAdapter(): BotUpdateResultAdapter {
         val adapters = listOf(
-            provideGeneralStateAdapter()
+            provideGeneralStateAdapter(),
+            provideAllSpecialistStateAdapter(),
+            provideIAmCustomerStateAdapter(),
+            provideIAmSpecialistStateAdapter(),
+            provideNotAvailableStateAdapter()
         )
+
         return FacadeResultUpdateAdapter(adapters)
     }
 
@@ -88,27 +90,27 @@ class AdaptersConfig @Autowired constructor(
 
     @Bean
     fun provideGeneralStateAdapter(): LocalUpdateResultAdapter {
-        return GeneralStateAdapter(messageTextProvider, messageInlineButtonsProvider)
-    }
-
-    @Bean
-    fun provideCommonStateAdapter(): LocalUpdateResultAdapter {
-        TODO()
+        return GeneralStateAdapter(messageTextProvider, messageKeyboardButtonsProvider)
     }
 
     @Bean
     fun provideAllSpecialistStateAdapter(): LocalUpdateResultAdapter {
-        TODO()
+        return AllSpecialistStateAdapter(messageTextProvider, messageKeyboardButtonsProvider, messageInlineButtonsProvider)
     }
 
     @Bean
     fun provideIAmCustomerStateAdapter(): LocalUpdateResultAdapter {
-        TODO()
+        return IAmCustomerStateAdapter()
     }
 
     @Bean
     fun provideIAmSpecialistStateAdapter(): LocalUpdateResultAdapter {
-        TODO()
+        return IAmSpecialistStateAdapter()
+    }
+
+    @Bean
+    fun provideNotAvailableStateAdapter(): LocalUpdateResultAdapter {
+        return NotAvailableStateAdapter(messageTextProvider, messageInlineButtonsProvider)
     }
 
     /**

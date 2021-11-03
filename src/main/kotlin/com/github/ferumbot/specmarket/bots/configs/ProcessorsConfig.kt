@@ -18,13 +18,21 @@ class ProcessorsConfig {
 
     @Bean
     fun provideFacadeProcessor(): BotUpdateProcessor {
-        val processors = listOf(
+        val processors = mutableListOf(
             provideCommonProcessor(),
             provideAllSpecialistsProcessor(),
             provideIAmCustomerProcessor(),
             provideIAmSpecialistProcessor(),
             provideStartProcessor()
         )
+
+        /**
+         * Always must be in the end.
+         */
+        processors.add(
+            provideUnsupportedProcessor()
+        )
+
         return FacadeBotUpdateProcessor(processors)
     }
 
@@ -51,5 +59,10 @@ class ProcessorsConfig {
     @Bean
     fun provideStartProcessor(): LocalUpdateProcessor {
         return StartUpdateProcessor(userService)
+    }
+
+    @Bean
+    fun provideUnsupportedProcessor(): LocalUpdateProcessor {
+        return UnSupportedUpdateProcessor()
     }
 }

@@ -1,9 +1,14 @@
 package com.github.ferumbot.specmarket.bots.ui.inline_buttons
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup
 
 interface InlineMessageButtonsProvider {
 
-    fun provideStartScreenButtons(): ReplyKeyboardMarkup
+    fun provideUnSupportedScreenButtons(): InlineKeyboardMarkup
+
+    fun provideNotImplementedScreenButtons(): InlineKeyboardMarkup
+
+    fun provideBackButton(): InlineKeyboardMarkup
+
+    fun provideIDoNotKnowWhatIWantScreenButtons(): InlineKeyboardMarkup
 }

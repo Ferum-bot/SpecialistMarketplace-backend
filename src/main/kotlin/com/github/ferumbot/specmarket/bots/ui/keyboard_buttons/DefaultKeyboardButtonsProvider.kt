@@ -1,12 +1,11 @@
-package com.github.ferumbot.specmarket.bots.ui.inline_buttons
+package com.github.ferumbot.specmarket.bots.ui.keyboard_buttons
 
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow
 
-class DefaultMessageButtonsProvider: InlineMessageButtonsProvider {
+class DefaultKeyboardButtonsProvider: KeyboardMessageButtonsProvider {
 
     companion object {
 
@@ -18,11 +17,7 @@ class DefaultMessageButtonsProvider: InlineMessageButtonsProvider {
     }
 
     override fun provideStartScreenButtons(): ReplyKeyboardMarkup {
-        val keyboardMarkup = ReplyKeyboardMarkup().apply {
-            selective = true
-            resizeKeyboard = true
-            oneTimeKeyboard = true
-        }
+        val keyboardMarkup = getDefaultKeyboardMarkup()
         val keyboard = mutableListOf<KeyboardRow>()
 
         val firstRow = KeyboardRow()
@@ -47,5 +42,12 @@ class DefaultMessageButtonsProvider: InlineMessageButtonsProvider {
         }
         keyboardMarkup.keyboard = keyboard
         return keyboardMarkup
+    }
+
+    private fun getDefaultKeyboardMarkup() = ReplyKeyboardMarkup()
+    .apply {
+        selective = true
+        resizeKeyboard = true
+        oneTimeKeyboard = true
     }
 }
