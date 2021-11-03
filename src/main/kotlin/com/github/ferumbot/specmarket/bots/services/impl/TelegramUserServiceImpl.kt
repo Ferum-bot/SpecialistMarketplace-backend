@@ -8,12 +8,13 @@ import com.github.ferumbot.specmarket.bots.services.TelegramUserService
 import com.github.ferumbot.specmarket.bots.state_machine.machine.StateMachine
 import com.github.ferumbot.specmarket.bots.state_machine.state.BotState
 import com.github.ferumbot.specmarket.bots.state_machine.state.UnSupportedScreenState
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class TelegramUserServiceImpl(
+class TelegramUserServiceImpl @Autowired constructor(
     private val repository: TelegramUserRepository
 ): TelegramUserService {
 
