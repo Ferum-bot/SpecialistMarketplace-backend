@@ -10,9 +10,9 @@ import org.telegram.telegrambots.meta.api.objects.Update
 class BotUpdateToAdapterInteractor(
     private val inputAdapter: BotUpdateAdapter,
     private val outputAdapter: BotUpdateResultAdapter,
-): BotInteractor<Update, BotApiMethod<*>> {
+): BotInteractor<Update, BotApiMethod<*>?> {
 
-    override fun handleTransfer(input: Update): BotApiMethod<*> {
+    override fun handleTransfer(input: Update): BotApiMethod<*>? {
         val result = inputAdapter.adaptBotUpdate(input)
         return outputAdapter.adaptResult(result)
     }

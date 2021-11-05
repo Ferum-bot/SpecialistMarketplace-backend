@@ -16,5 +16,5 @@ data class RegisterNewUserUpdateInfo(
 
     val isBot: Boolean = false,
 
-    val languageCode: String
+    val languageCode: String? = null
 ): BaseUpdateInfo

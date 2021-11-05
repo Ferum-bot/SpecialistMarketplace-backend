@@ -19,6 +19,7 @@ class ProcessorsConfig {
     @Bean
     fun provideFacadeProcessor(): BotUpdateProcessor {
         val processors = mutableListOf(
+            provideChatMemberProcessor(),
             provideCommonProcessor(),
             provideAllSpecialistsProcessor(),
             provideIAmCustomerProcessor(),
@@ -64,5 +65,10 @@ class ProcessorsConfig {
     @Bean
     fun provideUnsupportedProcessor(): LocalUpdateProcessor {
         return UnSupportedUpdateProcessor()
+    }
+
+    @Bean
+    fun provideChatMemberProcessor(): LocalUpdateProcessor {
+        return ChatMemberUpdateProcessor()
     }
 }

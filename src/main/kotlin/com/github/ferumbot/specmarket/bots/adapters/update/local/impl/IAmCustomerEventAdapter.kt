@@ -1,9 +1,7 @@
 package com.github.ferumbot.specmarket.bots.adapters.update.local.impl
 
 import com.github.ferumbot.specmarket.bots.adapters.update.local.LocalUpdateAdapter
-import com.github.ferumbot.specmarket.bots.core.getChatId
-import com.github.ferumbot.specmarket.bots.core.getUserId
-import com.github.ferumbot.specmarket.bots.core.isText
+import com.github.ferumbot.specmarket.bots.core.*
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.state_machine.event.OpenAboutEachSpecialistScreenEvent
@@ -23,14 +21,14 @@ class IAmCustomerEventAdapter: LocalUpdateAdapter {
     }
 
     override fun isFor(update: Update): Boolean {
-       if (!update.isText()) {
+       if (!update.isCommand()) {
            return false
        }
-        return handlingEvents.contains(update.message.text)
+        return handlingEvents.contains(update.getCommandAlias())
     }
 
     override fun adapt(update: Update): MessageUpdateBunch<*> {
-        val commandName = update.message.text
+        val commandName = update.getCommandAlias()
 
         return when(commandName) {
             OPEN_I_DO_NOT_KNOW_WHAT_I_WANT_NAME -> openIDoNotKnowWhatIWant(update)

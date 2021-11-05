@@ -9,8 +9,8 @@ class FacadeResultUpdateAdapter @Autowired constructor(
     private val localAdapters: Collection<LocalUpdateResultAdapter>
 ): BotUpdateResultAdapter {
 
-    override fun adaptResult(result: MessageUpdateResultBunch<*>): BotApiMethod<*> {
-        lateinit var method: BotApiMethod<*>
+    override fun adaptResult(result: MessageUpdateResultBunch<*>): BotApiMethod<*>? {
+        var method: BotApiMethod<*>? = null
         for (adapter in localAdapters) {
             if (adapter.isFor(result)) {
                 method = adapter.adapt(result)

@@ -5,5 +5,5 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 
 interface BotUpdateResultAdapter {
 
-    fun adaptResult(result: MessageUpdateResultBunch<*>): BotApiMethod<*>
+    fun adaptResult(result: MessageUpdateResultBunch<*>): BotApiMethod<*>?
 }

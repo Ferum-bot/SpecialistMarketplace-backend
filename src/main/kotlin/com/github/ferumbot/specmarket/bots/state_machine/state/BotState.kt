@@ -28,3 +28,10 @@ object UnSupportedScreenState: BotState {
 
     override val previousState: BotState = StartScreenState
 }
+
+object EmptyScreenState: BotState {
+
+    override val screenName: String = "Empty screen"
+
+    override val previousState: BotState = StartScreenState
+}

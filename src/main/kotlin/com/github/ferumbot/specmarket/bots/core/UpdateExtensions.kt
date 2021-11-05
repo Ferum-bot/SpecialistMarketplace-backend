@@ -3,10 +3,23 @@ package com.github.ferumbot.specmarket.bots.core
 import org.telegram.telegrambots.meta.api.objects.Update
 
 fun Update.isCommand(): Boolean {
-    if (!hasMessage()) {
-        return false
+    if (hasCallbackQuery()) {
+        return true
     }
-    return message.isCommand
+    if (hasMessage()) {
+        return true
+    }
+    return false
+}
+
+fun Update.getCommandAlias(): String {
+    if (hasCallbackQuery()) {
+        return callbackQuery.data
+    }
+    if (hasMessage()) {
+        return message.text
+    }
+    return ""
 }
 
 fun Update.isText(): Boolean {

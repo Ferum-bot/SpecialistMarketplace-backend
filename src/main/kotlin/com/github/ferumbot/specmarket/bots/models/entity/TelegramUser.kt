@@ -35,7 +35,7 @@ data class TelegramUser(
     var isBot: Boolean,
 
     @Column(name = "LANGUAGE_CODE")
-    var languageCode: String,
+    var languageCode: String? = null,
 
     @Column(name = "CREATED_DATE", updatable = false)
     var createdDate: LocalDateTime = LocalDateTime.now(),

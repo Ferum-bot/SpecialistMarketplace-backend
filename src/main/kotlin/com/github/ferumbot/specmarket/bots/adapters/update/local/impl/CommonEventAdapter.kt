@@ -2,6 +2,7 @@ package com.github.ferumbot.specmarket.bots.adapters.update.local.impl
 
 import com.github.ferumbot.specmarket.bots.adapters.update.local.LocalUpdateAdapter
 import com.github.ferumbot.specmarket.bots.core.getChatId
+import com.github.ferumbot.specmarket.bots.core.getCommandAlias
 import com.github.ferumbot.specmarket.bots.core.getUserId
 import com.github.ferumbot.specmarket.bots.core.isCommand
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
@@ -31,11 +32,11 @@ class CommonEventAdapter: LocalUpdateAdapter {
         if (!update.isCommand()) {
             return false
         }
-        return handlingCommands.contains(update.message.text)
+        return handlingCommands.contains(update.getCommandAlias())
     }
 
     override fun adapt(update: Update): MessageUpdateBunch<*> {
-        val command = update.message.text
+        val command = update.getCommandAlias()
 
         return when(command) {
             START_COMMAND -> registerNewUser(update)

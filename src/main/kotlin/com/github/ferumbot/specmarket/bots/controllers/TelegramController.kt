@@ -17,7 +17,7 @@ class TelegramController @Autowired constructor(
     fun onUpdateReceived(
         @RequestBody
         update: Update
-    ): BotApiMethod<*> {
+    ): BotApiMethod<*>? {
         return telegramBot.onWebhookUpdateReceived(update)
     }
 

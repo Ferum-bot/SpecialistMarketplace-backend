@@ -3,6 +3,7 @@ package com.github.ferumbot.specmarket.bots.adapters.result.local.impl
 import com.github.ferumbot.specmarket.bots.adapters.result.local.LocalUpdateResultAdapter
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
+import com.github.ferumbot.specmarket.bots.state_machine.state.EmptyScreenState
 import com.github.ferumbot.specmarket.bots.state_machine.state.NotImplementedScreenState
 import com.github.ferumbot.specmarket.bots.state_machine.state.UnSupportedScreenState
 import com.github.ferumbot.specmarket.bots.ui.inline_buttons.InlineMessageButtonsProvider
@@ -17,16 +18,20 @@ class NotAvailableStateAdapter(
 
     override fun isFor(bunch: MessageUpdateResultBunch<*>): Boolean {
         val state = bunch.newState
-        return (state is NotImplementedScreenState) || (state is UnSupportedScreenState)
+        val availableStates = listOf(
+            NotImplementedScreenState, UnSupportedScreenState, EmptyScreenState,
+        )
+        return state in availableStates
     }
 
-    override fun adapt(bunch: MessageUpdateResultBunch<*>): BotApiMethod<*> {
+    override fun adapt(bunch: MessageUpdateResultBunch<*>): BotApiMethod<*>? {
         val state = bunch.newState
         val info = bunch.resultData
 
         return when(state) {
             is NotImplementedScreenState -> getNotImplementedScreen(info)
             is UnSupportedScreenState -> getUnSupportedScreen(info)
+            is EmptyScreenState -> null
             else -> LocalUpdateResultAdapter.unSupportedState(info)
         }
     }

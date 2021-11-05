@@ -13,7 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 
 class TelegramBot(
     options: DefaultBotOptions,
-    private val interactor: BotInteractor<Update, BotApiMethod<*>>
+    private val interactor: BotInteractor<Update, BotApiMethod<*>?>
 ): TelegramWebhookBot(options) {
 
     @Value("\${bots.telegram.api.token}")
@@ -31,7 +31,7 @@ class TelegramBot(
 
     override fun getBotPath() = path
 
-    override fun onWebhookUpdateReceived(update: Update): BotApiMethod<*> {
+    override fun onWebhookUpdateReceived(update: Update): BotApiMethod<*>? {
         return interactor.handleTransfer(update)
     }
 }

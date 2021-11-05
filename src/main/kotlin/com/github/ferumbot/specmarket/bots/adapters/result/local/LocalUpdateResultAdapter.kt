@@ -17,5 +17,5 @@ interface LocalUpdateResultAdapter {
 
     fun isFor(bunch: MessageUpdateResultBunch<*>): Boolean
 
-    fun adapt(bunch: MessageUpdateResultBunch<*>): BotApiMethod<*>
+    fun adapt(bunch: MessageUpdateResultBunch<*>): BotApiMethod<*>?
 }

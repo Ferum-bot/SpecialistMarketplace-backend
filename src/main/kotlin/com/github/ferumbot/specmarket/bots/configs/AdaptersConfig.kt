@@ -28,6 +28,7 @@ class AdaptersConfig @Autowired constructor(
     @Bean
     fun provideFacadeUpdateAdapter(): BotUpdateAdapter {
         val adapters = mutableListOf(
+            provideChatMemberEventAdapter(),
             provideCommonEventAdapter(),
             provideStartEventAdapter(),
             provideAllSpecialistsEventAdapter(),
@@ -52,7 +53,7 @@ class AdaptersConfig @Autowired constructor(
             provideAllSpecialistStateAdapter(),
             provideIAmCustomerStateAdapter(),
             provideIAmSpecialistStateAdapter(),
-            provideNotAvailableStateAdapter()
+            provideNotAvailableStateAdapter(),
         )
 
         return FacadeResultUpdateAdapter(adapters)
@@ -81,6 +82,11 @@ class AdaptersConfig @Autowired constructor(
     @Bean
     fun provideStartEventAdapter(): LocalUpdateAdapter {
         return StartEventAdapter()
+    }
+
+    @Bean
+    fun provideChatMemberEventAdapter(): LocalUpdateAdapter {
+        return ChatMemberEventAdapter()
     }
 
     @Bean
