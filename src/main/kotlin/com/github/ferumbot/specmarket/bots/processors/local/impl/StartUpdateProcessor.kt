@@ -6,10 +6,7 @@ import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
 import com.github.ferumbot.specmarket.bots.services.TelegramUserService
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
-import com.github.ferumbot.specmarket.bots.state_machine.state.ContactWithUsScreenState
-import com.github.ferumbot.specmarket.bots.state_machine.state.IAmCustomerInfoScreenState
-import com.github.ferumbot.specmarket.bots.state_machine.state.IAmSpecialistInfoScreenState
-import com.github.ferumbot.specmarket.bots.state_machine.state.NotImplementedScreenState
+import com.github.ferumbot.specmarket.bots.state_machine.state.*
 
 class StartUpdateProcessor(
     private val userService: TelegramUserService
@@ -24,12 +21,19 @@ class StartUpdateProcessor(
         val info = bunch.extraInformation
 
         return when(event) {
+            is OpenAllSpecialistsScreenEvent -> processAllSpecialistsScreen(info)
             is OpenContactWithUsScreenEvent -> processOpenContactWithUsScreen(info)
             is OpenIAmCustomerScreenEvent -> processOpenIAmCustomerScreen(info)
             is OpenIAmSpecialistScreenEvent -> processOpenIAmSpecialistScreen(info)
             is OpenMyProfileScreenEvent -> processOpenMyProfileScreen(info)
             else -> LocalUpdateProcessor.unSupportedEvent(info)
         }
+    }
+
+    private fun processAllSpecialistsScreen(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
+        val newState = AllSpecialistInfoScreenState
+        userService.setNewUserState(newState, info)
+        return MessageUpdateResultBunch(newState, info)
     }
 
     private fun processOpenContactWithUsScreen(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {

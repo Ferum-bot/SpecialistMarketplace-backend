@@ -6,5 +6,5 @@ object IAmSpecialistInfoScreenState: IAmSpecialistState {
 
     override val screenName: String = "I am specialist information screen"
 
-    override val previousState: BotState = IAmSpecialistInfoScreenState
+    override val previousState: BotState = StartScreenState
 }

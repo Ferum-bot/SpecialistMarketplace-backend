@@ -14,9 +14,11 @@ class IAmCustomerEventAdapter: LocalUpdateAdapter {
 
         private val OPEN_I_DO_NOT_KNOW_WHAT_I_WANT_NAME = OpenIDoNotKnowWhatIWantScreenEvent.friendlyName
         private val OPEN_ABOUT_EACH_SPECIALIST_NAME = OpenAboutEachSpecialistScreenEvent.friendlyName
+        private val OPEN_ABOUT_EACH_SPECIALIST_COMMAND = OpenAboutEachSpecialistScreenEvent.commandAlias
 
         private val handlingEvents = listOf(
-            OPEN_I_DO_NOT_KNOW_WHAT_I_WANT_NAME, OPEN_ABOUT_EACH_SPECIALIST_NAME
+            OPEN_I_DO_NOT_KNOW_WHAT_I_WANT_NAME, OPEN_ABOUT_EACH_SPECIALIST_NAME,
+            OPEN_ABOUT_EACH_SPECIALIST_COMMAND
         )
     }
 
@@ -32,7 +34,7 @@ class IAmCustomerEventAdapter: LocalUpdateAdapter {
 
         return when(commandName) {
             OPEN_I_DO_NOT_KNOW_WHAT_I_WANT_NAME -> openIDoNotKnowWhatIWant(update)
-            OPEN_ABOUT_EACH_SPECIALIST_NAME -> openAboutEachSpecialist(update)
+            OPEN_ABOUT_EACH_SPECIALIST_NAME, OPEN_ABOUT_EACH_SPECIALIST_COMMAND -> openAboutEachSpecialist(update)
             else -> LocalUpdateAdapter.unSupportedUpdate(update)
         }
     }
