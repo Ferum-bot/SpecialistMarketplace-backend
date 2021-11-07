@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-configuration-processor/2.5.6/7f643c0b70ca7db84da10c654b3ba54d71cf88e3/spring-boot-configuration-processor-2.5.6.jar" />
+        </processorPath>
+        <module name="spec-market.main" />
+      </profile>
+    </annotationProcessing>
     <bytecodeTargetLevel target="11" />
   </component>
 </project>

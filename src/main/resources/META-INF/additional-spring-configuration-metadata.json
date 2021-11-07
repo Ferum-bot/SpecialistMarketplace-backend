@@ -1,0 +1,40 @@
+{
+  "properties": [
+    {
+      "name": "bots.telegram.api.token",
+      "type": "java.lang.String",
+      "defaultValue": "",
+      "description": "Production telegram bot api token."
+    },
+    {
+      "name": "bots.telegram.api.username",
+      "type": "java.lang.String",
+      "defaultValue": "",
+      "description": "Production telegram bot api user name."
+    },
+    {
+      "name": "bots.telegram.api.path",
+      "type": "java.lang.String",
+      "defaultValue": "",
+      "description": "Production telegram bot api path."
+    },
+    {
+      "name": "bots.telegram.api.test.token",
+      "type": "java.lang.String",
+      "defaultValue": "",
+      "description": "Test telegram bot api token."
+    },
+    {
+      "name": "bots.telegram.api.test.username",
+      "type": "java.lang.String",
+      "defaultValue": "",
+      "description": "Test telegram bot api user name."
+    },
+    {
+      "name": "bots.telegram.api.test.path",
+      "type": "java.lang.String",
+      "defaultValue": "",
+      "description": "Test telegram bot api path."
+    }
+  ]
+}

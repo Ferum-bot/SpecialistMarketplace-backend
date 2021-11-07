@@ -42,8 +42,10 @@ fun DependencyHandler.annotationProcessor(dependencyNotation: Any): Dependency? 
 fun DependencyHandler.addAllStarters() {
     implementation(Dependencies.STARTER_WEB)
     implementation(Dependencies.STARTER_JPA)
-    implementation(TestDependencies.STARTER_SPRING)
     implementation(Dependencies.JACKSON)
+    testImplementation(TestDependencies.STARTER_SPRING)
+    annotationProcessor(Dependencies.STARTER_CONFIGURATION_PROCESSOR)
+    developmentOnly(Dependencies.STARTER_DEV_TOOLS)
 }
 
 fun DependencyHandler.addKotlin() {
@@ -53,9 +55,17 @@ fun DependencyHandler.addKotlin() {
 
 fun DependencyHandler.addStateMachine() {
     implementation(Dependencies.STATE_MACHINE)
-    implementation(TestDependencies.STATE_MACHINE)
+    testImplementation(TestDependencies.STATE_MACHINE)
 }
 
 fun DependencyHandler.addPostgres() {
-    implementation(RuntimeDependencies.POSTGRES)
+    runtimeOnly(RuntimeDependencies.POSTGRES)
+}
+
+fun DependencyHandler.addBotsApi() {
+    implementation(Dependencies.TELEGRAM_BOTS)
+}
+
+fun DependencyHandler.addJavaEmoji() {
+    implementation(Dependencies.EMOJI_JAVA)
 }
