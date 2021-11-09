@@ -42,6 +42,14 @@ data class TelegramUser(
     @OneToOne(mappedBy = "telegramUser")
     var specialist: Specialist? = null,
 
+    @ManyToMany
+    @JoinTable(
+        name = "TELEGRAM_USER_TO_SPECIALISTS_REQUESTS",
+        joinColumns = [ JoinColumn(name = "TELEGRAM_USER_ID") ],
+        inverseJoinColumns = [ JoinColumn(name = "SPECIALIST_ID") ]
+    )
+    var specialistsRequests: Collection<Specialist> = listOf(),
+
     @Column(name = "CREATED_DATE", updatable = false)
     var createdDate: LocalDateTime = LocalDateTime.now(),
 
