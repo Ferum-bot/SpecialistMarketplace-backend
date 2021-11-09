@@ -19,3 +19,12 @@ object OpenAboutEachSpecialistScreenEvent: IAmCustomerEvent {
 
     override val friendlyName: String = "About each specialist"
 }
+
+object OpenAllSelectedSpecialistsScreenEvent: IAmCustomerEvent {
+
+    override val eventName: String = "Open all selected specialists screen event"
+
+    override val commandAlias: String = "/open_all_selected_specialists"
+
+    override val friendlyName: String = "All selected specialists"
+}

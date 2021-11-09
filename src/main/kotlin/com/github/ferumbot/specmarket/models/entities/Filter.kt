@@ -8,6 +8,7 @@ data class Filter(
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "ID")
     var id: Long? = null,
 
     @Column(name = "ALIAS", unique = true, nullable = false)

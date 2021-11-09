@@ -6,7 +6,11 @@ import com.github.ferumbot.specmarket.bots.state_machine.state.BotState
 
 interface TelegramUserService {
 
+    fun userExists(info: BaseUpdateInfo): Boolean
+
     fun registerNewUser(info: RegisterNewUserUpdateInfo)
+
+    fun updateUserInfo(info: RegisterNewUserUpdateInfo)
 
     fun getAndSetUserPreviousState(info: BaseUpdateInfo): BotState
 

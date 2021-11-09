@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository
 interface TelegramUserRepository: JpaRepository<TelegramUser, Long> {
 
     fun findByTelegramUserId(telegramUserId: Long): TelegramUser?
+
+    fun existsTelegramUserByTelegramUserId(telegramUserId: Long): Boolean
 }

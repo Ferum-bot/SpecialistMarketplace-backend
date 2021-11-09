@@ -44,7 +44,11 @@ class CommonUpdateProcessor(
 
     private fun processRegisterNewUserEvent(info: RegisterNewUserUpdateInfo): MessageUpdateResultBunch<*> {
         val newState = StartScreenState
-        userService.registerNewUser(info)
+        if (userService.userExists(info)) {
+            userService.updateUserInfo(info)
+        } else {
+            userService.registerNewUser(info)
+        }
         return MessageUpdateResultBunch(newState, info)
     }
 

@@ -18,6 +18,12 @@ class TelegramUserServiceImpl @Autowired constructor(
     private val repository: TelegramUserRepository
 ): TelegramUserService {
 
+    @Transactional(readOnly = true)
+    override fun userExists(info: BaseUpdateInfo): Boolean {
+        val userId = info.userId
+        return repository.existsTelegramUserByTelegramUserId(userId)
+    }
+
     override fun registerNewUser(info: RegisterNewUserUpdateInfo) {
         val user = TelegramUser(
             isBot = info.isBot,
@@ -30,6 +36,19 @@ class TelegramUserServiceImpl @Autowired constructor(
         )
 
         repository.saveAndFlush(user)
+    }
+
+    override fun updateUserInfo(info: RegisterNewUserUpdateInfo) {
+        val foundUser = repository.findByTelegramUserId(info.userId)
+
+        foundUser?.let { user ->
+            user.isBot = info.isBot
+            user.languageCode = info.languageCode
+            user.firstName = info.firstName
+            user.lastName = info.lastName
+            user.userName = info.userName
+            repository.saveAndFlush(user)
+        }
     }
 
     override fun getAndSetUserPreviousState(info: BaseUpdateInfo): BotState {

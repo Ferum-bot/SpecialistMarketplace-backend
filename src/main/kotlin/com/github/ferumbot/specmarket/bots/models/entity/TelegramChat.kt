@@ -10,6 +10,7 @@ data class TelegramChat(
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "ID")
     var id: Long? = null,
 
     @Column(name = "TELEGRAM_CHAT_ID", unique = true, nullable = false)

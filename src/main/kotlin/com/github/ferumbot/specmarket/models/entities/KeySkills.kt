@@ -8,6 +8,7 @@ data class KeySkills(
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "ID")
     var id: Long?,
 
     @Column(name = "ALIAS", nullable = false)
@@ -20,4 +21,14 @@ data class KeySkills(
     var updatedDate: LocalDateTime = LocalDateTime.now(),
 ) {
 
+    @PrePersist
+    fun onCreate() {
+        createdDate = LocalDateTime.now()
+        updatedDate = LocalDateTime.now()
+    }
+
+    @PreUpdate
+    fun onUpdate() {
+        updatedDate = LocalDateTime.now()
+    }
 }

@@ -3,6 +3,7 @@ package com.github.ferumbot.specmarket.bots.models.entity
 import com.github.ferumbot.specmarket.bots.state_machine.state.BotState
 import com.github.ferumbot.specmarket.bots.state_machine.state.StartScreenState
 import com.github.ferumbot.specmarket.bots.state_machine.state.UnRegisteredState
+import com.github.ferumbot.specmarket.models.entities.Specialist
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -11,6 +12,7 @@ data class TelegramUser(
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "ID")
     var id: Long? = null,
 
     @Column(name = "TELEGRAM_USER_ID", unique = true, nullable = false)
@@ -36,6 +38,9 @@ data class TelegramUser(
 
     @Column(name = "LANGUAGE_CODE")
     var languageCode: String? = null,
+
+    @OneToOne(mappedBy = "telegramUser")
+    var specialist: Specialist? = null,
 
     @Column(name = "CREATED_DATE", updatable = false)
     var createdDate: LocalDateTime = LocalDateTime.now(),

@@ -1,5 +1,7 @@
 package com.github.ferumbot.specmarket.models.entities
 
+import com.github.ferumbot.specmarket.bots.models.entity.TelegramUser
+import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
@@ -7,6 +9,7 @@ data class Specialist(
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "ID")
     var id: Long?,
 
     @Column(name = "FULL_NAME", nullable = false, length = 1000)
@@ -32,4 +35,26 @@ data class Specialist(
 
     @Column(name = "EDUCATION_GRADE", nullable = false, length = 1000)
     var educationGrade: String,
-)
+
+    @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE])
+    @JoinColumn(name = "TELEGRAM_USER_ID", referencedColumnName = "ID")
+    var telegramUser: TelegramUser? = null,
+
+    @Column(name = "CREATED_DATE", nullable = false, updatable = false)
+    var createdDate: LocalDateTime = LocalDateTime.now(),
+
+    @Column(name = "UPDATED_DATE", nullable = false)
+    var updatedDate: LocalDateTime = LocalDateTime.now()
+) {
+
+    @PrePersist
+    fun onCreate() {
+        createdDate = LocalDateTime.now()
+        updatedDate = LocalDateTime.now()
+    }
+
+    @PreUpdate
+    fun onUpdate() {
+        updatedDate = LocalDateTime.now()
+    }
+}
