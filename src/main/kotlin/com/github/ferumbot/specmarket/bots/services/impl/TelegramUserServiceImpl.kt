@@ -1,7 +1,7 @@
 package com.github.ferumbot.specmarket.bots.services.impl
 
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.RegisterNewUserUpdateInfo
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.RegisterNewUserInfo
 import com.github.ferumbot.specmarket.bots.models.entity.TelegramUser
 import com.github.ferumbot.specmarket.bots.repositories.TelegramUserRepository
 import com.github.ferumbot.specmarket.bots.services.TelegramUserService
@@ -24,7 +24,7 @@ class TelegramUserServiceImpl @Autowired constructor(
         return repository.existsTelegramUserByTelegramUserId(userId)
     }
 
-    override fun registerNewUser(info: RegisterNewUserUpdateInfo) {
+    override fun registerNewUser(info: RegisterNewUserInfo) {
         val user = TelegramUser(
             isBot = info.isBot,
             languageCode = info.languageCode,
@@ -38,7 +38,7 @@ class TelegramUserServiceImpl @Autowired constructor(
         repository.saveAndFlush(user)
     }
 
-    override fun updateUserInfo(info: RegisterNewUserUpdateInfo) {
+    override fun updateUserInfo(info: RegisterNewUserInfo) {
         val foundUser = repository.findByTelegramUserId(info.userId)
 
         foundUser?.let { user ->

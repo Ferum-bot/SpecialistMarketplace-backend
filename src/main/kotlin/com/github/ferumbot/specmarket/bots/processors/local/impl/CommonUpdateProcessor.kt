@@ -3,7 +3,7 @@ package com.github.ferumbot.specmarket.bots.processors.local.impl
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.RegisterNewUserUpdateInfo
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.RegisterNewUserInfo
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
 import com.github.ferumbot.specmarket.bots.services.TelegramUserService
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
@@ -25,7 +25,7 @@ class CommonUpdateProcessor(
         return when(causedEvent) {
             is GoBackEvent -> processGoBackEvent(info)
             is OpenStartScreenEvent -> processOpenStartScreenEvent(info)
-            is RegisterNewUserEvent -> processRegisterNewUserEvent(info as RegisterNewUserUpdateInfo)
+            is RegisterNewUserEvent -> processRegisterNewUserEvent(info as RegisterNewUserInfo)
             is UnSupportedEvent -> processUnSupportedEvent(info)
             else -> LocalUpdateProcessor.unSupportedEvent(info)
         }
@@ -42,7 +42,7 @@ class CommonUpdateProcessor(
         return MessageUpdateResultBunch(newState, info)
     }
 
-    private fun processRegisterNewUserEvent(info: RegisterNewUserUpdateInfo): MessageUpdateResultBunch<*> {
+    private fun processRegisterNewUserEvent(info: RegisterNewUserInfo): MessageUpdateResultBunch<*> {
         val newState = StartScreenState
         if (userService.userExists(info)) {
             userService.updateUserInfo(info)

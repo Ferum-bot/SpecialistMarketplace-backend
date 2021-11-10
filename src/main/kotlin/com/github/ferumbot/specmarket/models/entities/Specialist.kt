@@ -10,31 +10,40 @@ data class Specialist(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "ID")
-    var id: Long?,
+    var id: Long? = null,
 
-    @Column(name = "FULL_NAME", nullable = false, length = 1000)
-    var fullName: String,
+    @Column(name = "FULL_NAME", length = 1000)
+    var fullName: String? = null,
 
-    @Column(name = "DEPARTMENT", nullable = false, length = 1000)
-    var department: String,
+    @Column(name = "DEPARTMENT", length = 1000)
+    var department: String? = null,
 
-    @Column(name = "ACTIVITY", nullable = false, length = 1000)
-    var activity: String,
+    @Column(name = "ACTIVITY", length = 1000)
+    var activity: String? = null,
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     var keySkills: Collection<KeySkills> = listOf(),
 
-    @Column(name = "PORTFOLIO_LINK", nullable = false, length = 1000)
-    var portfolioLink: String,
+    @Column(name = "PORTFOLIO_LINK", length = 1000)
+    var portfolioLink: String? = null,
 
-    @Column(name = "ABOUT_ME", nullable = false, length = 5000)
-    var aboutMe: String,
+    @Column(name = "ABOUT_ME", length = 5000)
+    var aboutMe: String? = null,
 
-    @Column(name = "WORKING_CONDITIONS", nullable = false, length = 1000)
-    var workingConditions: String,
+    @Column(name = "WORKING_CONDITIONS", length = 1000)
+    var workingConditions: String? = null,
 
-    @Column(name = "EDUCATION_GRADE", nullable = false, length = 1000)
-    var educationGrade: String,
+    @Column(name = "EDUCATION_GRADE", length = 1000)
+    var educationGrade: String? = null,
+
+    @Column(name = "CONTACT_LINKS", length = 1000)
+    var contactLinks: String? = null,
+
+    @Column(name = "IS_COMPLETELY_FILLED", nullable = false)
+    var isCompletelyFilled: Boolean = false,
+
+    @Column(name = "IS_VISIBLE", nullable = false)
+    var isVisible: Boolean = false,
 
     @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE])
     @JoinColumn(name = "TELEGRAM_USER_ID", referencedColumnName = "ID")
