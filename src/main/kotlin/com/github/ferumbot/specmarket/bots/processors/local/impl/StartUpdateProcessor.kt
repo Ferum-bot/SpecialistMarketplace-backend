@@ -3,6 +3,9 @@ package com.github.ferumbot.specmarket.bots.processors.local.impl
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
+import com.github.ferumbot.specmarket.bots.models.enums.TelegramUserSpecialistStatus
+import com.github.ferumbot.specmarket.bots.models.enums.TelegramUserSpecialistStatus.*
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
 import com.github.ferumbot.specmarket.bots.services.TelegramUserService
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
@@ -55,8 +58,33 @@ class StartUpdateProcessor(
     }
 
     private fun processOpenMyProfileScreen(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
-        val newState = NotImplementedScreenState
-        userService.setNewUserState(newState, info)
-        return MessageUpdateResultBunch(newState, info)
+        val currentUserStatus = userService.getUserSpecialistStatus(info)
+        val notAuthorizedState = YouAreNotAuthorizedScreenState
+
+        return when(currentUserStatus) {
+            NOT_AUTHORIZED -> {
+                userService.setNewUserState(notAuthorizedState, info)
+
+                MessageUpdateResultBunch(notAuthorizedState, info)
+            }
+            PARTIALLY_AUTHORIZED -> {
+                val goodState = YouAreNotFullAuthorizedScreenState
+                val specialistEntity = userService.getUserSpecialist(info)
+
+                specialistEntity?.let { specialist ->
+                    val newInfo = UserSpecialistInfo.getFrom(info, specialist)
+                    MessageUpdateResultBunch(goodState, newInfo)
+                } ?: MessageUpdateResultBunch(notAuthorizedState, info)
+            }
+            AUTHORIZED -> {
+                val goodState = YouAreAuthorizedScreenState
+                val specialistEntity = userService.getUserSpecialist(info)
+
+                specialistEntity?.let { specialist ->
+                    val newInfo = UserSpecialistInfo.getFrom(info, specialist)
+                    MessageUpdateResultBunch(goodState, newInfo)
+                } ?: MessageUpdateResultBunch(notAuthorizedState, info)
+            }
+        }
     }
 }

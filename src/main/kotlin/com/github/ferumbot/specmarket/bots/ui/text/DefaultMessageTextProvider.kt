@@ -1,5 +1,6 @@
 package com.github.ferumbot.specmarket.bots.ui.text
 
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
 import com.github.ferumbot.specmarket.bots.ui.text.MessageTextProvider
 import com.github.ferumbot.specmarket.core.wrappers.EmojiWrapper
 import com.vdurmont.emoji.EmojiManager
@@ -141,5 +142,48 @@ class DefaultMessageTextProvider: MessageTextProvider {
             .append("\n\n")
             .append(EmojiWrapper.getRandomEmojies(10))
             .toString()
+    }
+
+    override fun provideYouAreNotAuthorizedInfoMessage(): String {
+        return StringBuilder()
+            .append("This is Your profile\n")
+            .append("You are not authorized!\n")
+            .append("You can watch you requests!\n")
+            .toString()
+    }
+
+    override fun provideYouArePartiallyAuthorizedInfoMessage(info: UserSpecialistInfo): String {
+        return StringBuilder()
+            .append("This is Your profile\n")
+            .append("You have not completed the authorization process to the end\n")
+            .append("You can continue in any moment!\n")
+            .append("Now you profile looks like:\n")
+            .append(getProfileTemplate(info))
+            .append("You can watch you requests!\n")
+            .toString()
+    }
+
+    override fun provideYouAreAuthorizedInfoMessage(info: UserSpecialistInfo): String {
+        return StringBuilder()
+            .append("This is Your profile\n")
+            .append(getProfileTemplate(info))
+            .append("You can watch you requests!\n")
+            .toString()
+    }
+
+    private fun getProfileTemplate(info: UserSpecialistInfo): StringBuilder {
+        return info.run {
+            StringBuilder()
+                .append("Full Name: ${fullName ?: "-"} \n")
+                .append("Department: ${department ?: "-"} \n")
+                .append("Activity: ${activity ?: "-"} \n")
+                .append("Key skills: ${keySkills.joinToString().ifEmpty { "-" }} \n")
+                .append("Portfolio link: ${portfolioLink ?: "-"} \n")
+                .append("About me ${aboutMe ?: "-"} \n")
+                .append("Working conditions ${workingConditions ?: "-"} \n")
+                .append("Education grade ${educationGrade ?: "-"} \n")
+                .append("Contact links ${contactLinks ?: "-"} \n")
+                .append("\n")
+        }
     }
 }

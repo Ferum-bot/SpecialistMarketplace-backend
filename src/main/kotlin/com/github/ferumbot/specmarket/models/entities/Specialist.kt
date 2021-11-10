@@ -18,8 +18,13 @@ data class Specialist(
     @Column(name = "DEPARTMENT", length = 1000)
     var department: String? = null,
 
-    @Column(name = "ACTIVITY", length = 1000)
-    var activity: String? = null,
+    @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
+    @JoinTable(
+        name = "SPECIALISTS_TO_PROFESSIONS",
+        joinColumns = [JoinColumn(name = "SPECIALIST_ID")],
+        inverseJoinColumns = [JoinColumn(name = "PROFESSION_ID")]
+    )
+    var professions: Collection<Profession> = listOf(),
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     var keySkills: Collection<KeySkills> = listOf(),

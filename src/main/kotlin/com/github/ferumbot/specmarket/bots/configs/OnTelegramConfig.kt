@@ -4,6 +4,9 @@ import com.github.ferumbot.specmarket.bots.TelegramBot
 import com.github.ferumbot.specmarket.bots.controllers.TelegramController
 import com.github.ferumbot.specmarket.bots.interactors.BotInteractor
 import com.github.ferumbot.specmarket.bots.interactors.impl.BotUpdateToAdapterInteractor
+import com.github.ferumbot.specmarket.bots.interceptors.ExceptionInterceptor
+import com.github.ferumbot.specmarket.bots.interceptors.ExceptionInterceptorFacade
+import com.github.ferumbot.specmarket.bots.interceptors.impl.DebugExceptionInterceptor
 import com.github.ferumbot.specmarket.bots.models.entity.TelegramChat
 import com.github.ferumbot.specmarket.bots.services.impl.TelegramUserServiceImpl
 import org.slf4j.LoggerFactory
@@ -31,6 +34,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession
     UIConfig::class,
     RepositoriesConfig::class,
     TelegramUserServiceImpl::class,
+    ExceptionInterceptorFacade::class,
 ])
 class OnTelegramConfig {
 
@@ -38,6 +42,9 @@ class OnTelegramConfig {
 
     @Autowired
     private lateinit var interactor: BotUpdateToAdapterInteractor
+
+    @Autowired
+    private lateinit var exceptionInterceptor: ExceptionInterceptorFacade
 
     @Value("\${bots.telegram.api.path}")
     private lateinit var path: String
@@ -53,12 +60,17 @@ class OnTelegramConfig {
     @Scope("singleton")
     fun provideTelegramBot(): TelegramBot {
         val options = DefaultBotOptions()
-        return TelegramBot(options, interactor)
+        return TelegramBot(options, interactor, exceptionInterceptor)
     }
 
     @Bean
     fun provideWebhook(): SetWebhook {
         return SetWebhook.builder().url(path).build()
+    }
+
+    @Bean
+    fun provideDebugExceptionInterceptor(): ExceptionInterceptor {
+        return DebugExceptionInterceptor()
     }
 
     private fun initTelegramApi() {

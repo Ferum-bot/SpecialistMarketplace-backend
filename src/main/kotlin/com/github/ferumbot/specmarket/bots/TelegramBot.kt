@@ -1,6 +1,7 @@
 package com.github.ferumbot.specmarket.bots
 
 import com.github.ferumbot.specmarket.bots.interactors.BotInteractor
+import com.github.ferumbot.specmarket.bots.interceptors.ExceptionInterceptorFacade
 import org.springframework.beans.factory.annotation.Value
 import org.telegram.telegrambots.bots.DefaultBotOptions
 import org.telegram.telegrambots.bots.TelegramWebhookBot
@@ -13,7 +14,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 
 class TelegramBot(
     options: DefaultBotOptions,
-    private val interactor: BotInteractor<Update, BotApiMethod<*>?>
+    private val interactor: BotInteractor<Update, BotApiMethod<*>?>,
+    private val exceptionInterceptor: ExceptionInterceptorFacade,
 ): TelegramWebhookBot(options) {
 
     @Value("\${bots.telegram.api.token}")
@@ -32,6 +34,10 @@ class TelegramBot(
     override fun getBotPath() = path
 
     override fun onWebhookUpdateReceived(update: Update): BotApiMethod<*>? {
-        return interactor.handleTransfer(update)
+        return try {
+            interactor.handleTransfer(update)
+        } catch (ex: Exception) {
+            exceptionInterceptor.onExceptionRaised(ex, update)
+        }
     }
 }

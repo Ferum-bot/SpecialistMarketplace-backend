@@ -18,6 +18,17 @@ object StateMachine {
             IDoNotKnowWhatIWantScreenState.screenName -> IDoNotKnowWhatIWantScreenState
             AboutEachSpecialistScreenState.screenName -> AboutEachSpecialistScreenState
             IAmSpecialistInfoScreenState.screenName -> IAmSpecialistInfoScreenState
+            UserInputInvalidDataScreenState.screenName -> UserInputInvalidDataScreenState
+            UserInputFullNameScreenState.screenName -> UserInputFullNameScreenState
+            UserInputDepartmentScreenState.screenName -> UserInputDepartmentScreenState
+            UserInputActivityScreenState.screenName -> UserInputActivityScreenState
+            UserInputKeySkillsScreenState.screenName -> UserInputKeySkillsScreenState
+            UserInputPortfolioLinkScreenState.screenName -> UserInputPortfolioLinkScreenState
+            UserInputAboutMeScreenState.screenName -> UserInputAboutMeScreenState
+            UserInputWorkingConditionsScreenState.screenName -> UserInputWorkingConditionsScreenState
+            UserInputEducationGradeScreenState.screenName -> UserInputEducationGradeScreenState
+            UserInputContactLinksScreenState.screenName -> UserInputContactLinksScreenState
+            UserInputProfilePreviewScreenState.screenName -> UserInputProfilePreviewScreenState
             else -> UnSupportedScreenState
         }
     }

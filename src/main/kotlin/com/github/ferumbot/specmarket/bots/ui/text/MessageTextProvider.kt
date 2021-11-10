@@ -1,5 +1,7 @@
 package com.github.ferumbot.specmarket.bots.ui.text
 
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
+
 interface MessageTextProvider {
 
     fun provideStartScreenMessage(): String
@@ -21,4 +23,10 @@ interface MessageTextProvider {
     fun provideIAmSpecialistInfoMessage(): String
 
     fun provideAllSpecialistInfoMessage(): String
+
+    fun provideYouAreNotAuthorizedInfoMessage(): String
+
+    fun provideYouArePartiallyAuthorizedInfoMessage(info: UserSpecialistInfo): String
+
+    fun provideYouAreAuthorizedInfoMessage(info: UserSpecialistInfo): String
 }

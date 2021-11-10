@@ -1,7 +1,5 @@
 package com.github.ferumbot.specmarket.bots.models.entity
 
-import com.github.ferumbot.specmarket.bots.state_machine.state.BotState
-import com.github.ferumbot.specmarket.bots.state_machine.state.StartScreenState
 import com.github.ferumbot.specmarket.bots.state_machine.state.UnRegisteredState
 import com.github.ferumbot.specmarket.models.entities.Specialist
 import java.time.LocalDateTime
@@ -39,10 +37,10 @@ data class TelegramUser(
     @Column(name = "LANGUAGE_CODE")
     var languageCode: String? = null,
 
-    @OneToOne(mappedBy = "telegramUser")
+    @OneToOne(mappedBy = "telegramUser", cascade = [CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE])
     var specialist: Specialist? = null,
 
-    @ManyToMany
+    @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE])
     @JoinTable(
         name = "TELEGRAM_USER_TO_SPECIALISTS_REQUESTS",
         joinColumns = [ JoinColumn(name = "TELEGRAM_USER_ID") ],

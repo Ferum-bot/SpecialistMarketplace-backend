@@ -31,6 +31,11 @@ class DefaultKeyboardButtonsProvider: KeyboardMessageButtonsProvider {
 
         private val OPEN_I_DO_KNOW_WHAT_I_WANT_NAME = OpenIDoNotKnowWhatIWantScreenEvent.friendlyName
         private val OPEN_ABOUT_EACH_SPECIALIST_NAME = OpenAboutEachSpecialistScreenEvent.friendlyName
+
+        private val OPEN_MY_REQUESTS = OpenMyRequestsScreenEvent.friendlyName
+        private val START_REGISTRATION = StartRegistrationFlowEvent.friendlyName
+        private val CONTINUE_CREATING_PROFILE = ContinueCreatingProfileFlowEvent.friendlyName
+        private val EDIT_PROFILE = OpenEditInfoScreenEvent.friendlyName
     }
 
     override fun provideStartScreenButtons(): ReplyKeyboardMarkup {
@@ -64,6 +69,27 @@ class DefaultKeyboardButtonsProvider: KeyboardMessageButtonsProvider {
         val fivesRow = getRowWithButtons(NINES_SPECIALIST_NAME, TEN_SPECIALIST_NAME)
 
         return getKeyBoardWithRows(firstRow, secondRow, thirdRow, forthRow, fivesRow)
+    }
+
+    override fun provideNotAuthorizedInfoScreenButtons(): ReplyKeyboardMarkup {
+        val firstRow = getRowWithButtons(START_REGISTRATION)
+        val secondRow = getRowWithButtons(OPEN_MY_REQUESTS)
+
+        return getKeyBoardWithRows(firstRow, secondRow)
+    }
+
+    override fun providePartiallyAuthorizedInfoScreenButtons(): ReplyKeyboardMarkup {
+        val firstRow = getRowWithButtons(CONTINUE_CREATING_PROFILE)
+        val secondRow = getRowWithButtons(OPEN_MY_REQUESTS)
+
+        return getKeyBoardWithRows(firstRow, secondRow)
+    }
+
+    override fun provideAuthorizedInfoScreenButtons(): ReplyKeyboardMarkup {
+        val firstRow = getRowWithButtons(EDIT_PROFILE)
+        val secondRow = getRowWithButtons(OPEN_MY_REQUESTS)
+
+        return getKeyBoardWithRows(firstRow, secondRow)
     }
 
     private fun getDefaultKeyboardMarkup() = ReplyKeyboardMarkup()
