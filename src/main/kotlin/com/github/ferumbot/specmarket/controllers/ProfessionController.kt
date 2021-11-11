@@ -4,9 +4,11 @@ import com.github.ferumbot.specmarket.models.response.ApiResponse
 import com.github.ferumbot.specmarket.services.ProfessionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @RestController("api/professions")
+@Validated
 class ProfessionController {
 
     @Autowired
@@ -14,13 +16,22 @@ class ProfessionController {
 
     @GetMapping("/all")
     fun getAllAvailableProfessions(): ResponseEntity<ApiResponse<*>> {
-        TODO()
+        val professions = service.getAllAvailableProfessions()
+
+        val response = ApiResponse.success(professions)
+        return ResponseEntity.ok(response)
     }
 
 
     @GetMapping("/search/by_friendly_name")
-    fun searchProfessionsByFriendlyName(): ResponseEntity<ApiResponse<*>> {
-        TODO()
+    fun searchProfessionsByFriendlyName(
+        @RequestParam(value = "friendly_name", required = true)
+        friendlyName: String,
+    ): ResponseEntity<ApiResponse<*>> {
+        val professions = service.searchProfessionsByFriendlyName(friendlyName)
+
+        val response = ApiResponse.success(professions)
+        return ResponseEntity.ok(response)
     }
 
     @GetMapping("/get/by_alias")

@@ -20,7 +20,7 @@ interface ProfessionService {
 
     fun updateProfessionByAlias(alias: String, profession: UpdateProfessionDto): Profession?
 
-    fun deleteProfessionByAlias(alias: String): Boolean
+    fun deleteProfessionByAlias(alias: String)
 
-    fun deleteProfessionById(id: Long): Boolean
+    fun deleteProfessionById(id: Long)
 }

@@ -4,24 +4,24 @@ import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
-@Table(name = "FILTER")
+@Table(name = "filter")
 data class Filter(
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "ID")
+    @Column(name = "id")
     var id: Long? = null,
 
-    @Column(name = "ALIAS", unique = true, nullable = false)
+    @Column(name = "alias", unique = true, nullable = false)
     var alias: String,
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "name", nullable = false)
     var name: String,
 
-    @Column(name = "CREATED_DATE", updatable = false)
+    @Column(name = "created_date", updatable = false)
     var createdDate: LocalDateTime = LocalDateTime.now(),
 
-    @Column(name = "UPDATED_DATE")
+    @Column(name = "updated_date")
     var updatedDate: LocalDateTime = LocalDateTime.now(),
 ) {
 

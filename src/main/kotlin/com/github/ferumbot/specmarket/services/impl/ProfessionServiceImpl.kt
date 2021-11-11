@@ -1,5 +1,6 @@
 package com.github.ferumbot.specmarket.services.impl
 
+import com.github.ferumbot.specmarket.exceptions.ProfessionWasNotDeleted
 import com.github.ferumbot.specmarket.models.entities.Profession
 import com.github.ferumbot.specmarket.models.dto.ProfessionDto
 import com.github.ferumbot.specmarket.models.dto.UpdateProfessionDto
@@ -22,7 +23,7 @@ class ProfessionServiceImpl @Autowired constructor(
 
     @Transactional(readOnly = true)
     override fun searchProfessionsByFriendlyName(friendlyName: String): Collection<Profession> {
-        TODO("Not yet implemented")
+        return repository.searchProfessionsByFriendlyName(friendlyName)
     }
 
     @Transactional(readOnly = true)
@@ -58,14 +59,22 @@ class ProfessionServiceImpl @Autowired constructor(
         return entity?.run { updateEntity(this, profession) }
     }
 
-    override fun deleteProfessionByAlias(alias: String): Boolean {
-        repository.deleteByAlias(alias)
-        return true
+    override fun deleteProfessionByAlias(alias: String) {
+        runCatching {
+            repository.deleteByAlias(alias)
+        }.onFailure { error ->
+            val exception = ProfessionWasNotDeleted(reason = error.localizedMessage)
+            throw exception
+        }
     }
 
-    override fun deleteProfessionById(id: Long): Boolean {
-        repository.deleteById(id)
-        return true
+    override fun deleteProfessionById(id: Long) {
+        runCatching {
+            repository.deleteById(id)
+        }.onFailure { error ->
+            val exception = ProfessionWasNotDeleted(reason = error.localizedMessage)
+            throw exception
+        }
     }
 
     private fun updateEntity(entity: Profession, update: UpdateProfessionDto): Profession {

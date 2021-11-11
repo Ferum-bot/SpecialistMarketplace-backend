@@ -6,36 +6,36 @@ import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
-@Table(name = "TELEGRAM_USER")
+@Table(name = "telegram_user")
 data class TelegramUser(
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "ID")
+    @Column(name = "id")
     var id: Long? = null,
 
-    @Column(name = "TELEGRAM_USER_ID", unique = true, nullable = false)
+    @Column(name = "telegram_user_id", unique = true, nullable = false)
     var telegramUserId: Long,
 
-    @Column(name = "PERSONAL_TELEGRAM_CHAT_ID", unique = true, nullable = false)
+    @Column(name = "personal_telegram_chat_id", unique = true, nullable = false)
     var personalTelegramChatId: Long,
 
-    @Column(name = "CURRENT_BOT_STATE")
+    @Column(name = "current_bot_state")
     var currentBotState: String = UnRegisteredState.screenName,
 
-    @Column(name = "FIRST_NAME", length = 1000)
+    @Column(name = "first_name", length = 1000)
     var firstName: String? = null,
 
-    @Column(name = "LAST_NAME", length = 1000)
+    @Column(name = "last_name", length = 1000)
     var lastName: String? = null,
 
-    @Column(name = "USER_NAME", length = 1000)
+    @Column(name = "user_name", length = 1000)
     var userName: String? = null,
 
-    @Column(name = "IS_BOT")
+    @Column(name = "is_bot")
     var isBot: Boolean,
 
-    @Column(name = "LANGUAGE_CODE")
+    @Column(name = "language_code")
     var languageCode: String? = null,
 
     @OneToOne(mappedBy = "telegramUser")
@@ -47,16 +47,16 @@ data class TelegramUser(
         targetEntity = Specialist::class,
     )
     @JoinTable(
-        name = "TELEGRAM_USER_TO_SPECIALISTS_REQUESTS",
-        joinColumns = [ JoinColumn(name = "TELEGRAM_USER_ID", referencedColumnName = "ID") ],
-        inverseJoinColumns = [ JoinColumn(name = "SPECIALIST_ID", referencedColumnName = "ID") ]
+        name = "telegram_user_to_specialist_requests",
+        joinColumns = [ JoinColumn(name = "telegram_user_id", referencedColumnName = "id") ],
+        inverseJoinColumns = [ JoinColumn(name = "specialist_id", referencedColumnName = "id") ]
     )
     var specialistsRequests: Collection<Specialist> = listOf(),
 
-    @Column(name = "CREATED_DATE", updatable = false)
+    @Column(name = "created_date", updatable = false)
     var createdDate: LocalDateTime = LocalDateTime.now(),
 
-    @Column(name = "UPDATED_DATE")
+    @Column(name = "updated_date")
     var updatedDate: LocalDateTime = LocalDateTime.now(),
 ) {
 

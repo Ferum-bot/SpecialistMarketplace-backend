@@ -4,21 +4,21 @@ import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
-@Table(name = "KEY_SKILLS")
+@Table(name = "key_skills")
 data class KeySkills(
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "ID")
+    @Column(name = "id")
     var id: Long?,
 
-    @Column(name = "ALIAS", nullable = false)
+    @Column(name = "alias", nullable = false)
     var alias: String,
 
-    @Column(name = "CREATED_DATE", nullable = false, updatable = false)
+    @Column(name = "created_date", nullable = false, updatable = false)
     var createdDate: LocalDateTime = LocalDateTime.now(),
 
-    @Column(name = "UPDATED_DATE", nullable = false)
+    @Column(name = "updated_date", nullable = false)
     var updatedDate: LocalDateTime = LocalDateTime.now(),
 ) {
 

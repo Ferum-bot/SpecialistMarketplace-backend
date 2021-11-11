@@ -1,5 +1,6 @@
 package com.github.ferumbot.specmarket.controllers
 
+import com.github.ferumbot.specmarket.exceptions.ProfessionWasNotDeleted
 import com.github.ferumbot.specmarket.models.response.ApiResponse
 import com.github.ferumbot.specmarket.models.response.ErrorResponse
 import org.springframework.http.HttpStatus
@@ -10,9 +11,26 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 @ControllerAdvice
 class ExceptionControllerAdvice {
 
-    @ExceptionHandler
+    @ExceptionHandler(ProfessionWasNotDeleted::class)
+    fun professionWasNotDeleted(ex: ProfessionWasNotDeleted): ResponseEntity<ApiResponse<*>> {
+        val errorResponse = ErrorResponse(
+            cause = ex.reason,
+            totalExceptions = ex.suppressed.map { it.toString() }
+        )
+        val response = ApiResponse(
+            statusCode = HttpStatus.CONFLICT.value(),
+            statusMessage = "Conflict",
+            additionalMessage = "Error arose",
+            errorMessage = ex.localizedMessage,
+            data = errorResponse
+        )
+
+        return ResponseEntity.ok(response)
+    }
+
+    @ExceptionHandler(Exception::class)
     fun onExceptionRaised(ex: Exception): ResponseEntity<ApiResponse<*>> {
-        val errorResponse =  ErrorResponse(
+        val errorResponse = ErrorResponse(
             cause = ex.cause?.toString(),
             totalExceptions = ex.suppressed.map { it.toString() }
         )

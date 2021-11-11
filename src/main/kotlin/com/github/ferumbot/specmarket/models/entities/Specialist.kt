@@ -5,18 +5,18 @@ import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
-@Table(name = "SPECIALIST")
+@Table(name = "specialist")
 data class Specialist(
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "ID")
+    @Column(name = "id")
     var id: Long? = null,
 
-    @Column(name = "FULL_NAME", length = 1000)
+    @Column(name = "full_name", length = 1000)
     var fullName: String? = null,
 
-    @Column(name = "DEPARTMENT", length = 1000)
+    @Column(name = "department", length = 1000)
     var department: String? = null,
 
     @ManyToMany(
@@ -24,9 +24,9 @@ data class Specialist(
         fetch = FetchType.LAZY,
     )
     @JoinTable(
-        name = "SPECIALISTS_TO_PROFESSIONS",
-        joinColumns = [JoinColumn(name = "SPECIALIST_ID", referencedColumnName = "ID")],
-        inverseJoinColumns = [JoinColumn(name = "PROFESSION_ID", referencedColumnName = "ID")]
+        name = "specialists_to_professions",
+        joinColumns = [JoinColumn(name = "specialist_id", referencedColumnName = "id")],
+        inverseJoinColumns = [JoinColumn(name = "profession_id", referencedColumnName = "id")]
     )
     var professions: Collection<Profession> = listOf(),
 
@@ -36,38 +36,38 @@ data class Specialist(
     )
     var keySkills: Collection<KeySkills> = listOf(),
 
-    @Column(name = "PORTFOLIO_LINK", length = 1000)
+    @Column(name = "portfolio_link", length = 1000)
     var portfolioLink: String? = null,
 
-    @Column(name = "ABOUT_ME", length = 5000)
+    @Column(name = "about_me", length = 5000)
     var aboutMe: String? = null,
 
-    @Column(name = "WORKING_CONDITIONS", length = 1000)
+    @Column(name = "working_conditions", length = 1000)
     var workingConditions: String? = null,
 
-    @Column(name = "EDUCATION_GRADE", length = 1000)
+    @Column(name = "education_grade", length = 1000)
     var educationGrade: String? = null,
 
-    @Column(name = "CONTACT_LINKS", length = 1000)
+    @Column(name = "contact_links", length = 1000)
     var contactLinks: String? = null,
 
-    @Column(name = "IS_COMPLETELY_FILLED", nullable = false)
+    @Column(name = "is_completely_filled", nullable = false)
     var isCompletelyFilled: Boolean = false,
 
-    @Column(name = "IS_VISIBLE", nullable = false)
+    @Column(name = "is_visible", nullable = false)
     var isVisible: Boolean = false,
 
     @OneToOne(
         cascade = [CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE],
         fetch = FetchType.LAZY,
     )
-    @JoinColumn(name = "TELEGRAM_USER_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "telegram_user_id", referencedColumnName = "id")
     var telegramUser: TelegramUser? = null,
 
-    @Column(name = "CREATED_DATE", nullable = false, updatable = false)
+    @Column(name = "created_date", nullable = false, updatable = false)
     var createdDate: LocalDateTime = LocalDateTime.now(),
 
-    @Column(name = "UPDATED_DATE", nullable = false)
+    @Column(name = "updated_date", nullable = false)
     var updatedDate: LocalDateTime = LocalDateTime.now()
 ) {
 
