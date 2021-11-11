@@ -1,6 +1,7 @@
 package com.github.ferumbot.specmarket.services
 
-import com.github.ferumbot.specmarket.models.request.ProfessionDto
+import com.github.ferumbot.specmarket.models.dto.ProfessionDto
+import com.github.ferumbot.specmarket.models.dto.UpdateProfessionDto
 import com.github.ferumbot.specmarket.models.entities.Profession
 
 interface ProfessionService {
@@ -15,9 +16,9 @@ interface ProfessionService {
 
     fun createNewProfession(profession: ProfessionDto): Profession
 
-    fun updateProfessionById(id: Long, profession: ProfessionDto): Profession?
+    fun updateProfessionById(id: Long, profession: UpdateProfessionDto): Profession?
 
-    fun updateProfessionByAlias(alias: String, profession: ProfessionDto): Profession?
+    fun updateProfessionByAlias(alias: String, profession: UpdateProfessionDto): Profession?
 
     fun deleteProfessionByAlias(alias: String): Boolean
 

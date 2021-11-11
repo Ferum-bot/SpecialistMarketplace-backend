@@ -38,12 +38,13 @@ data class TelegramUser(
     @Column(name = "LANGUAGE_CODE")
     var languageCode: String? = null,
 
-    @OneToOne(mappedBy = "TELEGRAM_USER_ID")
+    @OneToOne(mappedBy = "telegramUser")
     var specialist: Specialist? = null,
 
     @ManyToMany(
         cascade = [CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE],
         fetch = FetchType.LAZY,
+        targetEntity = Specialist::class,
     )
     @JoinTable(
         name = "TELEGRAM_USER_TO_SPECIALISTS_REQUESTS",

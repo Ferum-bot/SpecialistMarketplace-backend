@@ -1,4 +1,4 @@
-package com.github.ferumbot.specmarket.models.request
+package com.github.ferumbot.specmarket.models.dto
 
 import javax.validation.constraints.NotBlank
 

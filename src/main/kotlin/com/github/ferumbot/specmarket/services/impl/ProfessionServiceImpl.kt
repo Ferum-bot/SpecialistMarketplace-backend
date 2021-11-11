@@ -1,7 +1,8 @@
 package com.github.ferumbot.specmarket.services.impl
 
 import com.github.ferumbot.specmarket.models.entities.Profession
-import com.github.ferumbot.specmarket.models.request.ProfessionDto
+import com.github.ferumbot.specmarket.models.dto.ProfessionDto
+import com.github.ferumbot.specmarket.models.dto.UpdateProfessionDto
 import com.github.ferumbot.specmarket.repositories.ProfessionRepository
 import com.github.ferumbot.specmarket.services.ProfessionService
 import org.springframework.beans.factory.annotation.Autowired
@@ -45,27 +46,33 @@ class ProfessionServiceImpl @Autowired constructor(
         return repository.saveAndFlush(entity)
     }
 
-    override fun updateProfessionById(id: Long, profession: ProfessionDto): Profession? {
+    override fun updateProfessionById(id: Long, profession: UpdateProfessionDto): Profession? {
         val entity: Profession? = repository.findById(id).orElse(null)
 
-        return entity?.run {
-            friendlyName = profession.friendlyName
-            alias = profession.alias
-            shortDescription = profession.shortDescription
-            longDescription = profession.longDescription
-            repository.saveAndFlush(entity)
-        }
+        return entity?.run { updateEntity(this, profession) }
     }
 
-    override fun updateProfessionByAlias(alias: String, profession: ProfessionDto): Profession? {
-        TODO("Not yet implemented")
+    override fun updateProfessionByAlias(alias: String, profession: UpdateProfessionDto): Profession? {
+        val entity = repository.getByAlias(alias)
+
+        return entity?.run { updateEntity(this, profession) }
     }
 
     override fun deleteProfessionByAlias(alias: String): Boolean {
-        TODO("Not yet implemented")
+        repository.deleteByAlias(alias)
+        return true
     }
 
     override fun deleteProfessionById(id: Long): Boolean {
-        TODO("Not yet implemented")
+        repository.deleteById(id)
+        return true
+    }
+
+    private fun updateEntity(entity: Profession, update: UpdateProfessionDto): Profession {
+        update.newFriendlyName?.run { entity.friendlyName = this }
+        update.newAlias?.run { entity.alias = this }
+        update.newShortDescription?.run { entity.shortDescription = this }
+        update.newLongDescription?.run { entity.longDescription = this }
+        return repository.saveAndFlush(entity)
     }
 }
