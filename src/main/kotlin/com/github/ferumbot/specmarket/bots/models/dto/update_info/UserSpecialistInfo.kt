@@ -12,7 +12,7 @@ data class UserSpecialistInfo(
 
     val department: String? = null,
 
-    val activity: String? = null,
+    val professions: List<String> = emptyList(),
 
     val keySkills: List<String> = emptyList(),
 
@@ -35,7 +35,7 @@ data class UserSpecialistInfo(
                 userId = info.userId,
                 fullName = specialist.fullName,
                 department = specialist.department,
-                activity = specialist.profession,
+                professions = specialist.professions.map { it.friendlyName },
                 keySkills = specialist.keySkills.map { it.alias },
                 portfolioLink = specialist.portfolioLink,
                 aboutMe = specialist.aboutMe,

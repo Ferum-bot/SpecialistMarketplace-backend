@@ -6,6 +6,7 @@ import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
+@Table(name = "TELEGRAM_USER")
 data class TelegramUser(
 
     @Id
@@ -37,14 +38,17 @@ data class TelegramUser(
     @Column(name = "LANGUAGE_CODE")
     var languageCode: String? = null,
 
-    @OneToOne(mappedBy = "telegramUser", cascade = [CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE])
+    @OneToOne(mappedBy = "TELEGRAM_USER_ID")
     var specialist: Specialist? = null,
 
-    @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE])
+    @ManyToMany(
+        cascade = [CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE],
+        fetch = FetchType.LAZY,
+    )
     @JoinTable(
         name = "TELEGRAM_USER_TO_SPECIALISTS_REQUESTS",
-        joinColumns = [ JoinColumn(name = "TELEGRAM_USER_ID") ],
-        inverseJoinColumns = [ JoinColumn(name = "SPECIALIST_ID") ]
+        joinColumns = [ JoinColumn(name = "TELEGRAM_USER_ID", referencedColumnName = "ID") ],
+        inverseJoinColumns = [ JoinColumn(name = "SPECIALIST_ID", referencedColumnName = "ID") ]
     )
     var specialistsRequests: Collection<Specialist> = listOf(),
 

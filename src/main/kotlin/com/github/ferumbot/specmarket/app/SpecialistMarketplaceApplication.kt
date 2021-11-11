@@ -4,6 +4,8 @@ import com.github.ferumbot.specmarket.bots.TelegramBot
 import com.github.ferumbot.specmarket.bots.configs.*
 import com.github.ferumbot.specmarket.bots.repositories.TelegramChatRepository
 import com.github.ferumbot.specmarket.bots.repositories.TelegramUserRepository
+import com.github.ferumbot.specmarket.configs.ControllerConfig
+import com.github.ferumbot.specmarket.security.SecurityConfig
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.ApplicationContext
@@ -16,6 +18,8 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession
 @SpringBootApplication
 @ComponentScan(basePackageClasses = [
 	OnTelegramConfig::class,
+	ControllerConfig::class,
+	SecurityConfig::class,
 ])
 class SpecialistMarketplaceApplication
 

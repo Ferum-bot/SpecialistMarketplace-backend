@@ -4,11 +4,13 @@ import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
+@Table(name = "PROFESSION")
 data class Profession(
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    var id: Long?,
+    @Column(name = "ID")
+    var id: Long? = null,
 
     @Column(name = "FRIENDLY_NAME", nullable = false, length = 1000)
     var friendlyName: String,
@@ -20,7 +22,7 @@ data class Profession(
     var shortDescription: String,
 
     @Column(name = "LONG_DESCRIPTION", length = 5000)
-    var longDescription: String?,
+    var longDescription: String? = null,
 
     @Column(name = "CREATED_DATE", nullable = false, updatable = false)
     var createdDate: LocalDateTime = LocalDateTime.now(),

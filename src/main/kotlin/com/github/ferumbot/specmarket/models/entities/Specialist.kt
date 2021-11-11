@@ -5,6 +5,7 @@ import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
+@Table(name = "SPECIALIST")
 data class Specialist(
 
     @Id
@@ -18,15 +19,21 @@ data class Specialist(
     @Column(name = "DEPARTMENT", length = 1000)
     var department: String? = null,
 
-    @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH])
+    @ManyToMany(
+        cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH],
+        fetch = FetchType.LAZY,
+    )
     @JoinTable(
         name = "SPECIALISTS_TO_PROFESSIONS",
-        joinColumns = [JoinColumn(name = "SPECIALIST_ID")],
-        inverseJoinColumns = [JoinColumn(name = "PROFESSION_ID")]
+        joinColumns = [JoinColumn(name = "SPECIALIST_ID", referencedColumnName = "ID")],
+        inverseJoinColumns = [JoinColumn(name = "PROFESSION_ID", referencedColumnName = "ID")]
     )
     var professions: Collection<Profession> = listOf(),
 
-    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(
+        cascade = [CascadeType.ALL], orphanRemoval = true,
+        fetch = FetchType.LAZY,
+    )
     var keySkills: Collection<KeySkills> = listOf(),
 
     @Column(name = "PORTFOLIO_LINK", length = 1000)
@@ -50,7 +57,10 @@ data class Specialist(
     @Column(name = "IS_VISIBLE", nullable = false)
     var isVisible: Boolean = false,
 
-    @OneToOne(cascade = [CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE])
+    @OneToOne(
+        cascade = [CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE],
+        fetch = FetchType.LAZY,
+    )
     @JoinColumn(name = "TELEGRAM_USER_ID", referencedColumnName = "ID")
     var telegramUser: TelegramUser? = null,
 

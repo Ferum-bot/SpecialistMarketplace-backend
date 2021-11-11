@@ -1,9 +1,7 @@
 package com.github.ferumbot.specmarket.bots.ui.text
 
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
-import com.github.ferumbot.specmarket.bots.ui.text.MessageTextProvider
 import com.github.ferumbot.specmarket.core.wrappers.EmojiWrapper
-import com.vdurmont.emoji.EmojiManager
 import java.lang.StringBuilder
 
 class DefaultMessageTextProvider: MessageTextProvider {
@@ -176,7 +174,7 @@ class DefaultMessageTextProvider: MessageTextProvider {
             StringBuilder()
                 .append("Full Name: ${fullName ?: "-"} \n")
                 .append("Department: ${department ?: "-"} \n")
-                .append("Activity: ${activity ?: "-"} \n")
+                .append("Activity: ${professions ?: "-"} \n")
                 .append("Key skills: ${keySkills.joinToString().ifEmpty { "-" }} \n")
                 .append("Portfolio link: ${portfolioLink ?: "-"} \n")
                 .append("About me ${aboutMe ?: "-"} \n")

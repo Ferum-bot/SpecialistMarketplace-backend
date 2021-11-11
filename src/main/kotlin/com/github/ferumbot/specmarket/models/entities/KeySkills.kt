@@ -4,6 +4,7 @@ import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
+@Table(name = "KEY_SKILLS")
 data class KeySkills(
 
     @Id

@@ -35,13 +35,25 @@ class ProfessionServiceImpl @Autowired constructor(
     }
 
     override fun createNewProfession(profession: ProfessionDto): Profession {
-        TODO("Not yet implemented")
+        val entity = Profession(
+            friendlyName = profession.friendlyName,
+            alias = profession.alias,
+            shortDescription = profession.shortDescription,
+            longDescription = profession.longDescription,
+        )
+
+        return repository.saveAndFlush(entity)
     }
 
     override fun updateProfessionById(id: Long, profession: ProfessionDto): Profession? {
         val entity: Profession? = repository.findById(id).orElse(null)
-        entity?.run {
+
+        return entity?.run {
             friendlyName = profession.friendlyName
+            alias = profession.alias
+            shortDescription = profession.shortDescription
+            longDescription = profession.longDescription
+            repository.saveAndFlush(entity)
         }
     }
 

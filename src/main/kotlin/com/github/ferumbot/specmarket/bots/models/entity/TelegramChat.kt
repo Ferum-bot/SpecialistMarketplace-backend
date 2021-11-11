@@ -6,6 +6,7 @@ import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
+@Table(name = "TELEGRAM_CHAT")
 data class TelegramChat(
 
     @Id
@@ -14,24 +15,24 @@ data class TelegramChat(
     var id: Long? = null,
 
     @Column(name = "TELEGRAM_CHAT_ID", unique = true, nullable = false)
-    val telegramChatId: Long? = null,
+    val telegramChatId: Long,
 
-    @Column(name = "CHAT_TYPE")
+    @Column(name = "CHAT_TYPE", nullable = false)
     var chatType: ChatType,
 
-    @Column(name = "TITLE")
+    @Column(name = "TITLE", length = 1000)
     var title: String? = null,
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "DESCRIPTION", length = 5000)
     var description: String? = null,
 
-    @Column(name = "INVITE_LINK")
+    @Column(name = "INVITE_LINK", length = 1000)
     var inviteLink: String? = null,
 
-    @Column(name = "CREATED_DATE", updatable = false)
+    @Column(name = "CREATED_DATE", updatable = false, nullable = false)
     var createdDate: LocalDateTime = LocalDateTime.now(),
 
-    @Column(name = "UPDATED_DATE")
+    @Column(name = "UPDATED_DATE", nullable = false)
     var updatedDate: LocalDateTime = LocalDateTime.now(),
 ) {
 
