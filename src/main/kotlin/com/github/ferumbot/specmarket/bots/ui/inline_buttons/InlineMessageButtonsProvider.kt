@@ -11,4 +11,6 @@ interface InlineMessageButtonsProvider {
     fun provideBackButton(): InlineKeyboardMarkup
 
     fun provideIDoNotKnowWhatIWantScreenButtons(): InlineKeyboardMarkup
+
+    fun provideSpecialistRequestsButtons(): InlineKeyboardMarkup
 }

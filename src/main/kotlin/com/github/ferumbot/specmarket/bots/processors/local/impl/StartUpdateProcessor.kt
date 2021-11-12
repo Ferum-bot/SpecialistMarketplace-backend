@@ -10,6 +10,7 @@ import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
 import com.github.ferumbot.specmarket.bots.services.TelegramUserService
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
+import com.github.ferumbot.specmarket.models.entities.Specialist
 
 class StartUpdateProcessor(
     private val userService: TelegramUserService
@@ -71,20 +72,26 @@ class StartUpdateProcessor(
                 val goodState = YouAreNotFullAuthorizedScreenState
                 val specialistEntity = userService.getUserSpecialist(info)
 
-                specialistEntity?.let { specialist ->
-                    val newInfo = UserSpecialistInfo.getFrom(info, specialist)
-                    MessageUpdateResultBunch(goodState, newInfo)
-                } ?: MessageUpdateResultBunch(notAuthorizedState, info)
+                getUpdateResultFor(info, specialistEntity, goodState)
             }
             AUTHORIZED -> {
                 val goodState = YouAreAuthorizedScreenState
                 val specialistEntity = userService.getUserSpecialist(info)
 
-                specialistEntity?.let { specialist ->
-                    val newInfo = UserSpecialistInfo.getFrom(info, specialist)
-                    MessageUpdateResultBunch(goodState, newInfo)
-                } ?: MessageUpdateResultBunch(notAuthorizedState, info)
+                getUpdateResultFor(info, specialistEntity, goodState)
             }
         }
+    }
+
+    private fun getUpdateResultFor(
+        info: BaseUpdateInfo, specialistEntity: Specialist?, goodState: ProfileState
+    ): MessageUpdateResultBunch<*> {
+        val notAuthorizedState = YouAreNotAuthorizedScreenState
+        return specialistEntity?.let { specialist ->
+            val newInfo = UserSpecialistInfo.getFrom(info, specialist)
+            userService.setNewUserState(goodState, info)
+
+            MessageUpdateResultBunch(goodState, newInfo)
+        } ?: MessageUpdateResultBunch(notAuthorizedState, info)
     }
 }

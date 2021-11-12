@@ -11,6 +11,15 @@ object OpenMyRequestsScreenEvent: MyProfileEvent {
     override val friendlyName: String = "Open my requests"
 }
 
+object OpenAnotherMyRequestsPageScreenEvent: MyProfileEvent {
+
+    override val eventName: String = "Open another my requests screen event"
+
+    override val commandAlias: String = "/open_my_requests_page:"
+
+    override val friendlyName: String = "Open my requests page: "
+}
+
 object OpenEditInfoScreenEvent: MyProfileEvent {
 
     override val eventName: String = "Open edit information screen event"

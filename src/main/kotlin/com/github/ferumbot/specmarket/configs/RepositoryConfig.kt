@@ -8,6 +8,7 @@ import com.github.ferumbot.specmarket.repositories.ProfessionRepository
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @Configuration
 @EntityScan(basePackageClasses = [
@@ -15,6 +16,9 @@ import org.springframework.context.annotation.Configuration
     KeySkills::class,
     Profession::class,
     Specialist::class,
+])
+@EnableJpaRepositories(basePackageClasses = [
+    ProfessionRepository::class,
 ])
 @ComponentScan(basePackageClasses = [
     ProfessionRepository::class,

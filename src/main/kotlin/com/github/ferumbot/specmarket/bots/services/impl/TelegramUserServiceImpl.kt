@@ -3,6 +3,7 @@ package com.github.ferumbot.specmarket.bots.services.impl
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.RegisterNewUserInfo
 import com.github.ferumbot.specmarket.bots.models.entity.TelegramUser
+import com.github.ferumbot.specmarket.bots.models.entity.embeded.UserBotState
 import com.github.ferumbot.specmarket.bots.models.enums.TelegramUserSpecialistStatus
 import com.github.ferumbot.specmarket.bots.models.enums.TelegramUserSpecialistStatus.*
 import com.github.ferumbot.specmarket.bots.repositories.TelegramUserRepository
@@ -12,6 +13,7 @@ import com.github.ferumbot.specmarket.bots.state_machine.state.BotState
 import com.github.ferumbot.specmarket.bots.state_machine.state.UnSupportedScreenState
 import com.github.ferumbot.specmarket.models.entities.Specialist
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -56,19 +58,30 @@ class TelegramUserServiceImpl @Autowired constructor(
 
     override fun getAndSetUserPreviousState(info: BaseUpdateInfo): BotState {
         val entity = repository.findByTelegramUserId(info.userId)
-        entity ?: return UnSupportedScreenState
-        val currentStateName = entity.currentBotState
-        val currentState = StateMachine.getStateByName(currentStateName)
+            ?: return UnSupportedScreenState
+        val currentState = entity.currentBotState.currentState
         val prevState = currentState.previousState
-        entity.currentBotState = prevState.screenName
+        entity.currentBotState.currentState = prevState
         repository.saveAndFlush(entity)
         return prevState
     }
 
-    override fun setNewUserState(newState: BotState, info: BaseUpdateInfo) {
+    override fun getUserCurrentState(info: BaseUpdateInfo): UserBotState {
         val entity = repository.findByTelegramUserId(info.userId)
-        entity ?: return
-        entity.currentBotState = newState.screenName
+            ?: return UserBotState.unSupported()
+        return entity.currentBotState
+    }
+
+    override fun setNewUserState(newState: BotState, currentPage: Int?, pageCount: Int?, info: BaseUpdateInfo) {
+        val entity = repository.findByTelegramUserId(info.userId)
+            ?: return
+
+        entity.currentBotState.apply {
+            currentState = newState
+            currentPageNumber = currentPage
+            totalAvailablePages = pageCount
+        }
+
         repository.saveAndFlush(entity)
     }
 
@@ -88,5 +101,10 @@ class TelegramUserServiceImpl @Autowired constructor(
     override fun getUserSpecialist(info: BaseUpdateInfo): Specialist? {
         val user = repository.findByTelegramUserId(info.userId)
         return user?.specialist
+    }
+
+    override fun getUserSpecialistRequests(info: BaseUpdateInfo, page: Pageable): Collection<Specialist> {
+        val user = repository.findByTelegramUserId(info.userId)
+        return user?.specialistsRequests ?: emptyList()
     }
 }

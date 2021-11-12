@@ -1,5 +1,6 @@
 package com.github.ferumbot.specmarket.bots.models.dto.update_info
 
+import com.github.ferumbot.specmarket.models.dto.SpecialistDto
 import com.github.ferumbot.specmarket.models.entities.Specialist
 
 data class UserSpecialistInfo(
@@ -8,31 +9,13 @@ data class UserSpecialistInfo(
 
     override val userId: Long,
 
-    val fullName: String? = null,
-
-    val department: String? = null,
-
-    val professions: List<String> = emptyList(),
-
-    val keySkills: List<String> = emptyList(),
-
-    val portfolioLink: String? = null,
-
-    val aboutMe: String? = null,
-
-    val workingConditions: String? = null,
-
-    val educationGrade: String? = null,
-
-    val contactLinks: String? = null
+    val specialist: SpecialistDto,
 ): BaseUpdateInfo {
 
     companion object {
 
         fun getFrom(info: BaseUpdateInfo, specialist: Specialist): UserSpecialistInfo {
-            return UserSpecialistInfo(
-                chatId = info.chatId,
-                userId = info.userId,
+            val specialistDto = SpecialistDto(
                 fullName = specialist.fullName,
                 department = specialist.department,
                 professions = specialist.professions.map { it.friendlyName },
@@ -42,6 +25,12 @@ data class UserSpecialistInfo(
                 workingConditions = specialist.workingConditions,
                 educationGrade = specialist.educationGrade,
                 contactLinks = specialist.contactLinks,
+            )
+
+            return UserSpecialistInfo(
+                chatId = info.chatId,
+                userId = info.userId,
+                specialist = specialistDto,
             )
         }
     }

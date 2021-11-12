@@ -1,7 +1,9 @@
 package com.github.ferumbot.specmarket.bots.models.entity
 
+import com.github.ferumbot.specmarket.bots.models.entity.embeded.UserBotState
 import com.github.ferumbot.specmarket.bots.state_machine.state.UnRegisteredState
 import com.github.ferumbot.specmarket.models.entities.Specialist
+import org.apache.catalina.User
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -20,9 +22,6 @@ data class TelegramUser(
     @Column(name = "personal_telegram_chat_id", unique = true, nullable = false)
     var personalTelegramChatId: Long,
 
-    @Column(name = "current_bot_state")
-    var currentBotState: String = UnRegisteredState.screenName,
-
     @Column(name = "first_name", length = 1000)
     var firstName: String? = null,
 
@@ -31,6 +30,9 @@ data class TelegramUser(
 
     @Column(name = "user_name", length = 1000)
     var userName: String? = null,
+
+    @Embedded
+    var currentBotState: UserBotState = UserBotState(),
 
     @Column(name = "is_bot")
     var isBot: Boolean,

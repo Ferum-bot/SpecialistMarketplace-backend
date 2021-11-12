@@ -54,6 +54,7 @@ class AdaptersConfig @Autowired constructor(
             provideIAmCustomerStateAdapter(),
             provideIAmSpecialistStateAdapter(),
             provideNotAvailableStateAdapter(),
+            provideMyProfileStateAdapter(),
         )
 
         return FacadeResultUpdateAdapter(adapters)
@@ -117,6 +118,11 @@ class AdaptersConfig @Autowired constructor(
     @Bean
     fun provideNotAvailableStateAdapter(): LocalUpdateResultAdapter {
         return NotAvailableStateAdapter(messageTextProvider, messageInlineButtonsProvider)
+    }
+
+    @Bean
+    fun provideMyProfileStateAdapter(): LocalUpdateResultAdapter {
+        return MyProfileStateAdapter(messageTextProvider, messageKeyboardButtonsProvider)
     }
 
     /**
