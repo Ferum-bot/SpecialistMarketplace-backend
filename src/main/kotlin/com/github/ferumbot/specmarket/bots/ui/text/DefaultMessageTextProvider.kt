@@ -2,6 +2,7 @@ package com.github.ferumbot.specmarket.bots.ui.text
 
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
 import com.github.ferumbot.specmarket.core.wrappers.EmojiWrapper
+import com.github.ferumbot.specmarket.models.dto.SpecialistDto
 import java.lang.StringBuilder
 
 class DefaultMessageTextProvider: MessageTextProvider {
@@ -150,27 +151,35 @@ class DefaultMessageTextProvider: MessageTextProvider {
             .toString()
     }
 
-    override fun provideYouArePartiallyAuthorizedInfoMessage(info: UserSpecialistInfo): String {
+    override fun provideYouArePartiallyAuthorizedInfoMessage(specialist: SpecialistDto): String {
         return StringBuilder()
             .append("This is Your profile\n")
             .append("You have not completed the authorization process to the end\n")
             .append("You can continue in any moment!\n")
             .append("Now you profile looks like:\n")
-            .append(getProfileTemplate(info))
+            .append(getProfileTemplate(specialist))
             .append("You can watch you requests!\n")
             .toString()
     }
 
-    override fun provideYouAreAuthorizedInfoMessage(info: UserSpecialistInfo): String {
+    override fun provideYouAreAuthorizedInfoMessage(specialist: SpecialistDto): String {
         return StringBuilder()
             .append("This is Your profile\n")
-            .append(getProfileTemplate(info))
+            .append(getProfileTemplate(specialist))
             .append("You can watch you requests!\n")
             .toString()
     }
 
-    private fun getProfileTemplate(info: UserSpecialistInfo): StringBuilder {
-        return info.run {
+    override fun provideSpecialistRequestInfoMessage(specialists: Collection<SpecialistDto>): String {
+        TODO("Not yet implemented")
+    }
+
+    override fun provideEditProfileInfoMessage(specialist: SpecialistDto): String {
+        TODO("Not yet implemented")
+    }
+
+    private fun getProfileTemplate(specialist: SpecialistDto): StringBuilder {
+        return specialist.run {
             StringBuilder()
                 .append("Full Name: ${fullName ?: "-"} \n")
                 .append("Department: ${department ?: "-"} \n")

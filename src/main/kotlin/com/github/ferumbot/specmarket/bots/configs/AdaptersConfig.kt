@@ -122,7 +122,7 @@ class AdaptersConfig @Autowired constructor(
 
     @Bean
     fun provideMyProfileStateAdapter(): LocalUpdateResultAdapter {
-        return MyProfileStateAdapter(messageTextProvider, messageKeyboardButtonsProvider)
+        return MyProfileStateAdapter(messageTextProvider, messageKeyboardButtonsProvider, messageInlineButtonsProvider)
     }
 
     /**

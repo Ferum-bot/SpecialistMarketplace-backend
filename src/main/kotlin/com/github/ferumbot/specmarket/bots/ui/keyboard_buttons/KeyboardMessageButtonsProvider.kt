@@ -17,4 +17,6 @@ interface KeyboardMessageButtonsProvider {
     fun providePartiallyAuthorizedInfoScreenButtons(): ReplyKeyboardMarkup
 
     fun provideAuthorizedInfoScreenButtons(): ReplyKeyboardMarkup
+
+    fun provideEditProfileInfoScreenButtons(): ReplyKeyboardMarkup
 }

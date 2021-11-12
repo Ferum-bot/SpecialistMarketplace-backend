@@ -21,7 +21,7 @@ interface TelegramUserService {
     fun getUserCurrentState(info: BaseUpdateInfo): UserBotState
 
     fun setNewUserState(
-        newState: BotState, currentPage: Int? = null, pageCount: Int? = null, info: BaseUpdateInfo
+        newState: BotState, info: BaseUpdateInfo, currentPage: Int? = null, pageCount: Int? = null
     )
 
     fun getUserSpecialistStatus(info: BaseUpdateInfo): TelegramUserSpecialistStatus
@@ -29,4 +29,6 @@ interface TelegramUserService {
     fun getUserSpecialist(info: BaseUpdateInfo): Specialist?
 
     fun getUserSpecialistRequests(info: BaseUpdateInfo, page: Pageable): Collection<Specialist>
+
+    fun countUserSpecialistRequests(info: BaseUpdateInfo): Int
 }

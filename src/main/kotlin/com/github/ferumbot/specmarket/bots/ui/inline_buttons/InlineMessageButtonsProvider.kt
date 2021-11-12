@@ -12,5 +12,5 @@ interface InlineMessageButtonsProvider {
 
     fun provideIDoNotKnowWhatIWantScreenButtons(): InlineKeyboardMarkup
 
-    fun provideSpecialistRequestsButtons(): InlineKeyboardMarkup
+    fun provideSpecialistRequestsButtons(currentPage: Int, totalPageCount: Int): InlineKeyboardMarkup
 }

@@ -66,13 +66,14 @@ class TelegramUserServiceImpl @Autowired constructor(
         return prevState
     }
 
+    @Transactional(readOnly = true)
     override fun getUserCurrentState(info: BaseUpdateInfo): UserBotState {
         val entity = repository.findByTelegramUserId(info.userId)
             ?: return UserBotState.unSupported()
         return entity.currentBotState
     }
 
-    override fun setNewUserState(newState: BotState, currentPage: Int?, pageCount: Int?, info: BaseUpdateInfo) {
+    override fun setNewUserState(newState: BotState, info: BaseUpdateInfo, currentPage: Int?, pageCount: Int?) {
         val entity = repository.findByTelegramUserId(info.userId)
             ?: return
 
@@ -85,6 +86,7 @@ class TelegramUserServiceImpl @Autowired constructor(
         repository.saveAndFlush(entity)
     }
 
+    @Transactional(readOnly = true)
     override fun getUserSpecialistStatus(info: BaseUpdateInfo): TelegramUserSpecialistStatus {
         val userEntity = repository.findByTelegramUserId(info.userId)
             ?: return NOT_AUTHORIZED
@@ -98,13 +100,20 @@ class TelegramUserServiceImpl @Autowired constructor(
         }
     }
 
+    @Transactional(readOnly = true)
     override fun getUserSpecialist(info: BaseUpdateInfo): Specialist? {
         val user = repository.findByTelegramUserId(info.userId)
         return user?.specialist
     }
 
+    @Transactional(readOnly = true)
     override fun getUserSpecialistRequests(info: BaseUpdateInfo, page: Pageable): Collection<Specialist> {
         val user = repository.findByTelegramUserId(info.userId)
         return user?.specialistsRequests ?: emptyList()
+    }
+
+    @Transactional(readOnly = true)
+    override fun countUserSpecialistRequests(info: BaseUpdateInfo): Int {
+        return repository.countUserSpecialistRequests(info.userId)
     }
 }

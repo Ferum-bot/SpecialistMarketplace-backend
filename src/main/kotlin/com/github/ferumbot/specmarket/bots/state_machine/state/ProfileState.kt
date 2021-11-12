@@ -29,3 +29,10 @@ object MyRequestsScreenState: ProfileState {
 
     override val previousState: BotState = StartScreenState
 }
+
+object EditProfileScreenState: ProfileState {
+
+    override val screenName: String = "Edit profile screen state"
+
+    override val previousState: BotState = StartScreenState
+}

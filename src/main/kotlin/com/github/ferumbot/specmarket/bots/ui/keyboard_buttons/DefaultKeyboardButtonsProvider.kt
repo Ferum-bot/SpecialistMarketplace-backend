@@ -36,6 +36,16 @@ class DefaultKeyboardButtonsProvider: KeyboardMessageButtonsProvider {
         private val START_REGISTRATION = StartRegistrationFlowEvent.friendlyName
         private val CONTINUE_CREATING_PROFILE = ContinueCreatingProfileFlowEvent.friendlyName
         private val EDIT_PROFILE = OpenEditInfoScreenEvent.friendlyName
+
+        private const val CHANGE_FULL_NAME = "Change full name"
+        private const val CHANGE_DEPARTMENT = "Change department"
+        private const val CHANGE_PROFESSIONS = "Change professions"
+        private const val CHANGE_KEY_SKILLS = "Change key skills"
+        private const val CHANGE_PORTFOLIO_LINK = "Change portfolio link"
+        private const val CHANGE_ABOUT_ME = "Change about me"
+        private const val CHANGE_WORKING_CONDITIONS = "Change working conditions"
+        private const val CHANGE_EDUCATION_GRADE = "Change education grades"
+        private const val CHANGE_CONTACT_LINKS = "Change contact links"
     }
 
     override fun provideStartScreenButtons(): ReplyKeyboardMarkup {
@@ -90,6 +100,16 @@ class DefaultKeyboardButtonsProvider: KeyboardMessageButtonsProvider {
         val secondRow = getRowWithButtons(OPEN_MY_REQUESTS)
 
         return getKeyBoardWithRows(firstRow, secondRow)
+    }
+
+    override fun provideEditProfileInfoScreenButtons(): ReplyKeyboardMarkup {
+        val firstRow = getRowWithButtons(CHANGE_FULL_NAME, CHANGE_DEPARTMENT)
+        val secondRow = getRowWithButtons(CHANGE_PROFESSIONS, CHANGE_KEY_SKILLS)
+        val thirdRow = getRowWithButtons(CHANGE_PORTFOLIO_LINK, CHANGE_ABOUT_ME)
+        val forthRow = getRowWithButtons(CHANGE_WORKING_CONDITIONS, CHANGE_EDUCATION_GRADE)
+        val fivesRow = getRowWithButtons(CHANGE_CONTACT_LINKS)
+
+        return getKeyBoardWithRows(firstRow, secondRow, thirdRow, forthRow, fivesRow)
     }
 
     private fun getDefaultKeyboardMarkup() = ReplyKeyboardMarkup()
