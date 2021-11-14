@@ -29,5 +29,32 @@ data class ApiResponse<T: Any?>(
                 data = data,
             )
         }
+
+        fun done(extraMessage: () -> String): ApiResponse<*> {
+            return ApiResponse(
+                statusCode = HttpStatus.OK.value(),
+                statusMessage = "OK",
+                additionalMessage = extraMessage.invoke(),
+                data = null,
+            )
+        }
+
+        fun notFound(extraMessage: () -> String): ApiResponse<*> {
+            return ApiResponse(
+                statusCode = HttpStatus.NOT_FOUND.value(),
+                statusMessage = "NOT FOUND",
+                errorMessage = extraMessage.invoke(),
+                data = null
+            )
+        }
+
+        fun notAcceptable(extraMessage: () -> String): ApiResponse<*> {
+            return ApiResponse(
+                statusCode = HttpStatus.NOT_ACCEPTABLE.value(),
+                statusMessage = "NOT ACCEPTABLE",
+                errorMessage = extraMessage.invoke(),
+                data = null,
+            )
+        }
     }
 }

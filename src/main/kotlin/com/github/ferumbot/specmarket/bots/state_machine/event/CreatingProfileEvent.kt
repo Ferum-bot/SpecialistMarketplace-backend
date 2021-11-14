@@ -11,6 +11,15 @@ object StartRegistrationFlowEvent: CreatingProfileEvent {
     override val friendlyName: String = "Start registration flow"
 }
 
+object RestartRegistrationFlowEvent: CreatingProfileEvent {
+
+    override val eventName: String = "Restart registration flow event"
+
+    override val commandAlias: String = "/restart_registration_flow"
+
+    override val friendlyName: String = "Restart registration flow"
+}
+
 object OnUserInputFullNameEvent: CreatingProfileEvent {
 
     override val eventName: String = "On user input full name event"

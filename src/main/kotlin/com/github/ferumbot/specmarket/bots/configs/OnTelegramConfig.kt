@@ -2,27 +2,19 @@ package com.github.ferumbot.specmarket.bots.configs
 
 import com.github.ferumbot.specmarket.bots.TelegramBot
 import com.github.ferumbot.specmarket.bots.controllers.TelegramController
-import com.github.ferumbot.specmarket.bots.interactors.BotInteractor
 import com.github.ferumbot.specmarket.bots.interactors.impl.BotUpdateToAdapterInteractor
 import com.github.ferumbot.specmarket.bots.interceptors.ExceptionInterceptor
 import com.github.ferumbot.specmarket.bots.interceptors.ExceptionInterceptorFacade
 import com.github.ferumbot.specmarket.bots.interceptors.impl.DebugExceptionInterceptor
-import com.github.ferumbot.specmarket.bots.models.entity.TelegramChat
-import com.github.ferumbot.specmarket.bots.services.impl.TelegramUserServiceImpl
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.context.annotation.*
 import org.springframework.context.event.ContextRefreshedEvent
-import org.springframework.context.event.ContextStartedEvent
 import org.springframework.context.event.EventListener
 import org.telegram.telegrambots.bots.DefaultBotOptions
 import org.telegram.telegrambots.meta.TelegramBotsApi
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook
-import org.telegram.telegrambots.meta.api.objects.Update
-import org.telegram.telegrambots.meta.generics.Webhook
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession
 
 @Configuration
@@ -32,7 +24,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession
     InteractorsConfig::class,
     ProcessorsConfig::class,
     RepositoriesConfig::class,
-    ServiceConfig::class,
+    ServicesConfig::class,
     UIConfig::class,
     ExceptionInterceptorFacade::class,
 ])

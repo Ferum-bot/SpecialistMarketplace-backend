@@ -14,6 +14,7 @@ import com.github.ferumbot.specmarket.bots.services.TelegramUserService
 import com.github.ferumbot.specmarket.bots.ui.inline_buttons.InlineMessageButtonsProvider
 import com.github.ferumbot.specmarket.bots.ui.keyboard_buttons.KeyboardMessageButtonsProvider
 import com.github.ferumbot.specmarket.bots.ui.text.MessageTextProvider
+import com.github.ferumbot.specmarket.services.ProfessionService
 import org.apache.tomcat.jni.Local
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -30,6 +31,9 @@ class AdaptersConfig @Autowired constructor(
     @Autowired
     private lateinit var userService: TelegramUserService
 
+    @Autowired
+    private lateinit var professionService: ProfessionService
+
     /**
      *  Incoming event adapters
      */
@@ -42,8 +46,9 @@ class AdaptersConfig @Autowired constructor(
             provideAllSpecialistsEventAdapter(),
             provideIAmCustomerEventAdapter(),
             provideIAmSpecialistEventAdapter(),
-            provideCreatingProfileInputEventAdapter(),
+            provideMyProfileEventAdapter(),
             provideCreatingProfileCommonEventAdapter(),
+            provideCreatingProfileInputEventAdapter(),
         )
 
         /**
@@ -82,6 +87,11 @@ class AdaptersConfig @Autowired constructor(
     }
 
     @Bean
+    fun provideMyProfileEventAdapter(): LocalUpdateAdapter {
+        return MyProfileEventAdapter()
+    }
+
+    @Bean
     fun provideChatMemberEventAdapter(): LocalUpdateAdapter {
         return ChatMemberEventAdapter()
     }
@@ -113,6 +123,7 @@ class AdaptersConfig @Autowired constructor(
             provideIAmSpecialistStateAdapter(),
             provideNotAvailableStateAdapter(),
             provideMyProfileStateAdapter(),
+            provideCreatingProfileStateAdapter(),
         )
 
         return FacadeResultUpdateAdapter(adapters)
@@ -145,7 +156,15 @@ class AdaptersConfig @Autowired constructor(
 
     @Bean
     fun provideMyProfileStateAdapter(): LocalUpdateResultAdapter {
-        return MyProfileStateAdapter(messageTextProvider, messageKeyboardButtonsProvider, messageInlineButtonsProvider)
+        return MyProfileStateAdapter(
+            messageTextProvider, messageKeyboardButtonsProvider, messageInlineButtonsProvider
+        )
+    }
+
+    fun provideCreatingProfileStateAdapter(): LocalUpdateResultAdapter {
+        return CreatingProfileStateAdapter(
+            professionService, messageTextProvider, messageInlineButtonsProvider, messageKeyboardButtonsProvider
+        )
     }
 
     /**

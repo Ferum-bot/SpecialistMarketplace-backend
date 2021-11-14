@@ -223,6 +223,7 @@ class DefaultMessageTextProvider: MessageTextProvider {
     override fun provideUserInputProfessionsInfoMessage(availableProfessions: Collection<ProfessionDto>): String {
         val professionsInfo = availableProfessions.fold(StringBuilder()) { builder, profession ->
             builder.append("${profession.friendlyName}: ${profession.shortDescription}\n")
+            builder.append("Choose /${profession.alias} \n")
         }
 
         return StringBuilder()

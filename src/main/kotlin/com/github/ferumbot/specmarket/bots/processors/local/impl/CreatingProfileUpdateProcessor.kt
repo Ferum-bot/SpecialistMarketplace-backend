@@ -39,6 +39,7 @@ class CreatingProfileUpdateProcessor(
             is OnUserInputContactLinksEvent -> processOnUserInputContactLinks(info as CreatingProfileUserInput)
             is OpenHowItLooksLikeNowScreenEvent -> processOpenHowProfileLooksNow(info)
             is OnUserRegistrationFinishedEvent -> processFinishRegistrationFlow(info)
+            is RestartRegistrationFlowEvent -> processRestartRegistrationFlow(info)
             else -> LocalUpdateProcessor.unSupportedEvent(info)
         }
     }
@@ -148,6 +149,13 @@ class CreatingProfileUpdateProcessor(
 
     private fun processFinishRegistrationFlow(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
         val state = YouAreAuthorizedScreenState
+        userService.setNewUserState(state, info)
+
+        return MessageUpdateResultBunch(state, info)
+    }
+
+    private fun processRestartRegistrationFlow(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
+        val state = UserInputFullNameScreenState
         userService.setNewUserState(state, info)
 
         return MessageUpdateResultBunch(state, info)

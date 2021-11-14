@@ -12,4 +12,4 @@ import org.springframework.context.annotation.Configuration
     TelegramUserServiceImpl::class,
     TelegramUserSpecialistServiceImpl::class,
 ])
-class ServiceConfig
+class ServicesConfig

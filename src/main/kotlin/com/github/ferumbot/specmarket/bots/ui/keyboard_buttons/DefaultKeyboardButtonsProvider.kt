@@ -47,6 +47,9 @@ class DefaultKeyboardButtonsProvider: KeyboardMessageButtonsProvider {
         private const val CHANGE_WORKING_CONDITIONS = "Change working conditions"
         private const val CHANGE_EDUCATION_GRADE = "Change education grades"
         private const val CHANGE_CONTACT_LINKS = "Change contact links"
+
+        private val RESTART_REGISTRATION = RestartRegistrationFlowEvent.friendlyName
+        private val FINISH_REGISTRATION = OnUserRegistrationFinishedEvent.friendlyName
     }
 
     override fun provideStartScreenButtons(): ReplyKeyboardMarkup {
@@ -112,6 +115,13 @@ class DefaultKeyboardButtonsProvider: KeyboardMessageButtonsProvider {
         val fivesRow = getRowWithButtons(CHANGE_CONTACT_LINKS)
 
         return getKeyBoardWithRows(firstRow, secondRow, thirdRow, forthRow, fivesRow)
+    }
+
+    override fun provideShowProfileButtons(): ReplyKeyboardMarkup {
+        val firstRow = getRowWithButtons(FINISH_REGISTRATION)
+        val secondRow = getRowWithButtons(RESTART_REGISTRATION)
+
+        return getKeyBoardWithRows(firstRow, secondRow)
     }
 
     private fun getDefaultKeyboardMarkup() = ReplyKeyboardMarkup()

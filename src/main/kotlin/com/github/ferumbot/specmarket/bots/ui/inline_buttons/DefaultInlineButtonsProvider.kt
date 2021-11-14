@@ -1,9 +1,6 @@
 package com.github.ferumbot.specmarket.bots.ui.inline_buttons
 
-import com.github.ferumbot.specmarket.bots.state_machine.event.GoBackEvent
-import com.github.ferumbot.specmarket.bots.state_machine.event.OpenAboutEachSpecialistScreenEvent
-import com.github.ferumbot.specmarket.bots.state_machine.event.OpenAnotherMyRequestsPageScreenEvent
-import com.github.ferumbot.specmarket.bots.state_machine.event.OpenStartScreenEvent
+import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import kotlin.time.times
@@ -22,6 +19,15 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
         private val ABOUT_EACH_SPECIALIST_NAME = OpenAboutEachSpecialistScreenEvent.friendlyName
 
         private val OPEN_REQUESTS_PAGE_COMMAND = OpenAnotherMyRequestsPageScreenEvent.commandAlias
+
+        private val SHOW_HOW_IT_LOOKS_LIKE_NOW_NAME = OpenHowItLooksLikeNowScreenEvent.friendlyName
+        private val SHOW_HOW_IT_LOOKS_LIKE_NOW_COMMAND = OpenHowItLooksLikeNowScreenEvent.commandAlias
+
+        private val CONTINUE_REGISTRATION_FLOW_NAME = ContinueCreatingProfileFlowEvent.friendlyName
+        private val CONTINUE_REGISTRATION_FLOW_COMMAND = ContinueCreatingProfileFlowEvent.commandAlias
+
+        private val RESTART_REGISTRATION_FLOW_NAME = RestartRegistrationFlowEvent.friendlyName
+        private val RESTART_REGISTRATION_FLOW_COMMAND = RestartRegistrationFlowEvent.commandAlias
     }
 
     override fun provideNotImplementedScreenButtons(): InlineKeyboardMarkup {
@@ -49,6 +55,29 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
         } else {
             getSpecialistRequestComplicatedButtons(currentPage, totalPageCount)
         }
+    }
+
+    override fun provideCreatingProfileButtons(): InlineKeyboardMarkup {
+        val firstButton = InlineButton(
+            SHOW_HOW_IT_LOOKS_LIKE_NOW_NAME, SHOW_HOW_IT_LOOKS_LIKE_NOW_COMMAND
+        )
+        val firstRow = getInlineRow(firstButton)
+
+        return getInlineKeyboard(firstRow)
+    }
+
+    override fun provideHowProfileLooksLikeKnowButtons(): InlineKeyboardMarkup {
+        val firstButton = InlineButton(
+            CONTINUE_REGISTRATION_FLOW_NAME, CONTINUE_REGISTRATION_FLOW_COMMAND
+        )
+        val secondButton = InlineButton(
+            RESTART_REGISTRATION_FLOW_NAME, RESTART_REGISTRATION_FLOW_COMMAND
+        )
+
+        val firstRow = getInlineRow(firstButton)
+        val secondRow = getInlineRow(secondButton)
+
+        return getInlineKeyboard(firstRow, secondRow)
     }
 
     private fun getSpecialistRequestsSimpleButtons(currentPage: Int, pageCount: Int): InlineKeyboardMarkup {
