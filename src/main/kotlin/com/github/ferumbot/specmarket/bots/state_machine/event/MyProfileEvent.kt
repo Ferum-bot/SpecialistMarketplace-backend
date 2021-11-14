@@ -37,3 +37,12 @@ object OpenEditInfoScreenEvent: MyProfileEvent {
 
     override val friendlyName: String = "Open edit information"
 }
+
+object ChangeProfileSpecialistVisibilityScreenEvent: MyProfileEvent {
+
+    override val eventName: String = "Change profile specialist visibility screen event"
+
+    override val commandAlias: String = "/change_profile_visibility"
+
+    override val friendlyName: String = "Change profile visibility"
+}

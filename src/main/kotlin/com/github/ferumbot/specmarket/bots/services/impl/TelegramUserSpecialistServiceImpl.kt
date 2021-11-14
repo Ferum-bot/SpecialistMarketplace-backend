@@ -77,7 +77,7 @@ class TelegramUserSpecialistServiceImpl(
         userRepository.saveAndFlush(user)
     }
 
-    override fun addKeySkills(info: BaseUpdateInfo, skillsAlias: List<String>) {
+    override fun addKeySkills(info: BaseUpdateInfo, skillsAlias: Collection<String>) {
         val user = userRepository.findByTelegramUserId(info.userId)
             ?: return
 
@@ -155,6 +155,16 @@ class TelegramUserSpecialistServiceImpl(
 
         prepareUserSpecialist(user)
         user.specialist?.isCompletelyFilled = completelyFilled
+
+        userRepository.saveAndFlush(user)
+    }
+
+    override fun updateVisibility(info: BaseUpdateInfo, visibility: Boolean) {
+        val user = userRepository.findByTelegramUserId(info.userId)
+            ?: return
+
+        prepareUserSpecialist(user)
+        user.specialist?.isVisible = visibility
 
         userRepository.saveAndFlush(user)
     }

@@ -20,11 +20,13 @@ class MyProfileEventAdapter: LocalUpdateAdapter {
         private val OPEN_START_REGISTRATION_NAME = StartRegistrationFlowEvent.friendlyName
         private val OPEN_ANOTHER_MY_REQUESTS_PAGE_NAME = OpenAnotherMyRequestsPageScreenEvent.friendlyName
         private val OPEN_ANOTHER_MY_REQUESTS_PAGE_COMMAND = OpenAnotherMyRequestsPageScreenEvent.commandAlias
+        private val CHANGE_PROFILE_VISIBILITY = ChangeProfileSpecialistVisibilityScreenEvent.friendlyName
 
         private val handlingEvents = listOf(
             OPEN_MY_REQUESTS_NAME, OPEN_EDIT_PROFILE_NAME,
             OPEN_START_REGISTRATION_NAME, OPEN_CONTINUE_REGISTRATION_NAME,
-            OPEN_ANOTHER_MY_REQUESTS_PAGE_NAME, OPEN_ANOTHER_MY_REQUESTS_PAGE_COMMAND
+            OPEN_ANOTHER_MY_REQUESTS_PAGE_NAME, OPEN_ANOTHER_MY_REQUESTS_PAGE_COMMAND,
+            CHANGE_PROFILE_VISIBILITY
         )
     }
 
@@ -49,6 +51,7 @@ class MyProfileEventAdapter: LocalUpdateAdapter {
             OPEN_EDIT_PROFILE_NAME -> openEditProfile(update)
             OPEN_CONTINUE_REGISTRATION_NAME -> openContinueRegistration(update)
             OPEN_START_REGISTRATION_NAME -> openStartRegistration(update)
+            CHANGE_PROFILE_VISIBILITY -> changeProfileVisibility(update)
             else -> LocalUpdateAdapter.unSupportedUpdate(update)
         }
     }
@@ -95,6 +98,14 @@ class MyProfileEventAdapter: LocalUpdateAdapter {
 
         val info = OpenAnotherPageRequest(chatId, userId, pageToOpen)
         return MessageUpdateBunch(event, info)
+    }
+
+    private fun changeProfileVisibility(update: Update): MessageUpdateBunch<*> {
+        val chatId = update.getChatId()
+        val userId = update.getUserId()
+        val event = ChangeProfileSpecialistVisibilityScreenEvent
+
+        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
     }
 
     private fun String.isOpenAnotherRequestsPageCommand(): Boolean {

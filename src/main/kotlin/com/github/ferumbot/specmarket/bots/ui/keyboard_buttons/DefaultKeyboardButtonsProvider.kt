@@ -36,6 +36,7 @@ class DefaultKeyboardButtonsProvider: KeyboardMessageButtonsProvider {
         private val START_REGISTRATION = StartRegistrationFlowEvent.friendlyName
         private val CONTINUE_CREATING_PROFILE = ContinueCreatingProfileFlowEvent.friendlyName
         private val EDIT_PROFILE = OpenEditInfoScreenEvent.friendlyName
+        private val CHANGE_VISIBILITY = ChangeProfileSpecialistVisibilityScreenEvent.friendlyName
 
         private const val CHANGE_FULL_NAME = "Change full name"
         private const val CHANGE_DEPARTMENT = "Change department"
@@ -98,8 +99,9 @@ class DefaultKeyboardButtonsProvider: KeyboardMessageButtonsProvider {
     override fun provideAuthorizedInfoScreenButtons(): ReplyKeyboardMarkup {
         val firstRow = getRowWithButtons(EDIT_PROFILE)
         val secondRow = getRowWithButtons(OPEN_MY_REQUESTS)
+        val thirdRow = getRowWithButtons(CHANGE_VISIBILITY)
 
-        return getKeyBoardWithRows(firstRow, secondRow)
+        return getKeyBoardWithRows(firstRow, secondRow, thirdRow)
     }
 
     override fun provideEditProfileInfoScreenButtons(): ReplyKeyboardMarkup {

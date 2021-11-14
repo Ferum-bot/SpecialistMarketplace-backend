@@ -14,7 +14,7 @@ interface TelegramUserSpecialistService {
 
     fun clearProfessions(info: BaseUpdateInfo)
 
-    fun addKeySkills(info: BaseUpdateInfo, skillsAlias: List<String>)
+    fun addKeySkills(info: BaseUpdateInfo, skillsAlias: Collection<String>)
 
     fun clearKeySkills(info: BaseUpdateInfo)
 
@@ -29,4 +29,6 @@ interface TelegramUserSpecialistService {
     fun updateContactLinks(info: BaseUpdateInfo, newContactLinks: String)
 
     fun updateCompletelyFilled(info: BaseUpdateInfo, completelyFilled: Boolean)
+
+    fun updateVisibility(info: BaseUpdateInfo, visibility: Boolean)
 }

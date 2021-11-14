@@ -1,5 +1,6 @@
 package com.github.ferumbot.specmarket.models.dto
 
+import com.github.ferumbot.specmarket.models.entities.Profession
 import javax.validation.constraints.NotBlank
 
 data class ProfessionDto(
@@ -14,4 +15,16 @@ data class ProfessionDto(
     val shortDescription: String,
 
     val longDescription: String? = null,
-)
+) {
+
+    companion object {
+
+        fun from(profession: Profession): ProfessionDto {
+            return profession.run {
+                ProfessionDto(
+                    friendlyName, alias, shortDescription, longDescription
+                )
+            }
+        }
+    }
+}

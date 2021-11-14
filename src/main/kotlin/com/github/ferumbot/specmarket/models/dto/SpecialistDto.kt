@@ -31,6 +31,10 @@ data class SpecialistDto(
 
     @JsonInclude(JsonInclude.Include.ALWAYS)
     val contactLinks: String? = null,
+
+    val isVisible: Boolean = false,
+
+    val isCompletelyFilled: Boolean = false,
 ) {
 
     companion object {
@@ -46,6 +50,8 @@ data class SpecialistDto(
                 workingConditions = specialist.workingConditions,
                 educationGrade = specialist.educationGrade,
                 contactLinks = specialist.contactLinks,
+                isVisible = specialist.isVisible,
+                isCompletelyFilled = specialist.isCompletelyFilled
             )
         }
     }

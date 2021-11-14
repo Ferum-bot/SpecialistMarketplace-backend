@@ -8,17 +8,17 @@ import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialist
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistRequests
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
 import com.github.ferumbot.specmarket.bots.services.TelegramUserService
-import com.github.ferumbot.specmarket.bots.state_machine.event.MyProfileEvent
-import com.github.ferumbot.specmarket.bots.state_machine.event.OpenAnotherMyRequestsPageScreenEvent
-import com.github.ferumbot.specmarket.bots.state_machine.event.OpenEditInfoScreenEvent
-import com.github.ferumbot.specmarket.bots.state_machine.event.OpenMyRequestsScreenEvent
+import com.github.ferumbot.specmarket.bots.services.TelegramUserSpecialistService
+import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import com.github.ferumbot.specmarket.bots.state_machine.state.EditProfileScreenState
 import com.github.ferumbot.specmarket.bots.state_machine.state.MyRequestsScreenState
+import com.github.ferumbot.specmarket.bots.state_machine.state.YouAreAuthorizedScreenState
 import com.github.ferumbot.specmarket.models.dto.SpecialistDto
 import org.springframework.data.domain.PageRequest
 
 class MyProfileUpdateProcessor(
     private val userService: TelegramUserService,
+    private val specialistService: TelegramUserSpecialistService,
 ): LocalUpdateProcessor {
 
     companion object {
@@ -38,6 +38,7 @@ class MyProfileUpdateProcessor(
             is OpenMyRequestsScreenEvent -> openMyRequestsScreen(info)
             is OpenEditInfoScreenEvent -> openEditMyProfile(info)
             is OpenAnotherMyRequestsPageScreenEvent -> openAnotherMyRequestPageScreen(info as OpenAnotherPageRequest)
+            is ChangeProfileSpecialistVisibilityScreenEvent -> changeProfileVisibilityEvent(info)
             else -> LocalUpdateProcessor.unSupportedEvent(info)
         }
     }
@@ -61,6 +62,7 @@ class MyProfileUpdateProcessor(
         val newState = EditProfileScreenState
         val userSpecialist = userService.getUserSpecialist(info)
         val resultInfo = UserSpecialistInfo.getFrom(info, userSpecialist!!)
+        userService.setNewUserState(newState, info)
 
         return MessageUpdateResultBunch(newState, resultInfo)
     }
@@ -77,5 +79,18 @@ class MyProfileUpdateProcessor(
         userService.setNewUserState(MyRequestsScreenState, info, info.pageNumber, totalCount)
 
         return MessageUpdateResultBunch(newState, resultInfo)
+    }
+
+    private fun changeProfileVisibilityEvent(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
+        val state = YouAreAuthorizedScreenState
+        val specialist = userService.getUserSpecialist(info)
+        val newVisibility = specialist?.isVisible != true
+        specialistService.updateVisibility(info, newVisibility)
+        userService.setNewUserState(state, info)
+
+        val userSpecialist = userService.getUserSpecialist(info)
+        val resultInfo = UserSpecialistInfo.getFrom(info, userSpecialist!!)
+
+        return MessageUpdateResultBunch(state, resultInfo)
     }
 }
