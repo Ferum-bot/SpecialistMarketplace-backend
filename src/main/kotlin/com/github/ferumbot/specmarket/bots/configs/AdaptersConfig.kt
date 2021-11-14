@@ -10,9 +10,11 @@ import com.github.ferumbot.specmarket.bots.adapters.update.local.LocalUpdateAdap
 import com.github.ferumbot.specmarket.bots.adapters.update.local.impl.*
 import com.github.ferumbot.specmarket.bots.interactors.impl.BotAdapterToProcessorInteractor
 import com.github.ferumbot.specmarket.bots.processors.BotUpdateProcessor
+import com.github.ferumbot.specmarket.bots.services.TelegramUserService
 import com.github.ferumbot.specmarket.bots.ui.inline_buttons.InlineMessageButtonsProvider
 import com.github.ferumbot.specmarket.bots.ui.keyboard_buttons.KeyboardMessageButtonsProvider
 import com.github.ferumbot.specmarket.bots.ui.text.MessageTextProvider
+import org.apache.tomcat.jni.Local
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -25,6 +27,12 @@ class AdaptersConfig @Autowired constructor(
     private val processor: BotUpdateProcessor,
 ) {
 
+    @Autowired
+    private lateinit var userService: TelegramUserService
+
+    /**
+     *  Incoming event adapters
+     */
     @Bean
     fun provideFacadeUpdateAdapter(): BotUpdateAdapter {
         val adapters = mutableListOf(
@@ -33,7 +41,9 @@ class AdaptersConfig @Autowired constructor(
             provideStartEventAdapter(),
             provideAllSpecialistsEventAdapter(),
             provideIAmCustomerEventAdapter(),
-            provideIAmSpecialistEventAdapter()
+            provideIAmSpecialistEventAdapter(),
+            provideCreatingProfileInputEventAdapter(),
+            provideCreatingProfileCommonEventAdapter(),
         )
 
         /**
@@ -44,20 +54,6 @@ class AdaptersConfig @Autowired constructor(
         )
 
         return FacadeBotUpdateAdapter(provideAdapterToProcessorInteractor(), adapters)
-    }
-
-    @Bean
-    fun provideFacadeResultUpdateAdapter(): BotUpdateResultAdapter {
-        val adapters = listOf(
-            provideGeneralStateAdapter(),
-            provideAllSpecialistStateAdapter(),
-            provideIAmCustomerStateAdapter(),
-            provideIAmSpecialistStateAdapter(),
-            provideNotAvailableStateAdapter(),
-            provideMyProfileStateAdapter(),
-        )
-
-        return FacadeResultUpdateAdapter(adapters)
     }
 
     @Bean
@@ -93,6 +89,33 @@ class AdaptersConfig @Autowired constructor(
     @Bean
     fun provideUnSupportedEventAdapter(): LocalUpdateAdapter {
         return UnSupportedEventAdapter()
+    }
+
+    @Bean
+    fun provideCreatingProfileInputEventAdapter(): LocalUpdateAdapter {
+        return CreatingProfileInputEventAdapter(userService)
+    }
+
+    @Bean
+    fun provideCreatingProfileCommonEventAdapter(): LocalUpdateAdapter {
+        return CreatingProfileCommonEventAdapter()
+    }
+
+    /**
+     * Out coming state adapters
+     */
+    @Bean
+    fun provideFacadeResultUpdateAdapter(): BotUpdateResultAdapter {
+        val adapters = listOf(
+            provideGeneralStateAdapter(),
+            provideAllSpecialistStateAdapter(),
+            provideIAmCustomerStateAdapter(),
+            provideIAmSpecialistStateAdapter(),
+            provideNotAvailableStateAdapter(),
+            provideMyProfileStateAdapter(),
+        )
+
+        return FacadeResultUpdateAdapter(adapters)
     }
 
     @Bean

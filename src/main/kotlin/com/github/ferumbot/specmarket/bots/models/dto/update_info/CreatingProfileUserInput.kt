@@ -6,5 +6,22 @@ data class CreatingProfileUserInput(
 
     override val userId: Long,
 
-    val userInput: List<String>,
-): BaseUpdateInfo
+    val userInput: Collection<String>,
+): BaseUpdateInfo {
+
+    companion object {
+
+        fun from(info: BaseUpdateInfo, input: String): CreatingProfileUserInput {
+            return CreatingProfileUserInput(
+                info.chatId, info.userId, listOf(input)
+            )
+        }
+
+        fun from(info: BaseUpdateInfo, input: Collection<String>): CreatingProfileUserInput {
+            return CreatingProfileUserInput(
+                info.chatId, info.userId, input
+            )
+        }
+
+    }
+}

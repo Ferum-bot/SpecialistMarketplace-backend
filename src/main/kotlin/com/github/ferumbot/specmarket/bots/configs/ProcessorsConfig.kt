@@ -5,6 +5,7 @@ import com.github.ferumbot.specmarket.bots.processors.FacadeBotUpdateProcessor
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
 import com.github.ferumbot.specmarket.bots.processors.local.impl.*
 import com.github.ferumbot.specmarket.bots.services.TelegramUserService
+import com.github.ferumbot.specmarket.bots.services.TelegramUserSpecialistService
 import org.apache.tomcat.jni.Local
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -16,6 +17,9 @@ class ProcessorsConfig {
     @Autowired
     private lateinit var userService: TelegramUserService
 
+    @Autowired
+    private lateinit var specialistService: TelegramUserSpecialistService
+
     @Bean
     fun provideFacadeProcessor(): BotUpdateProcessor {
         val processors = mutableListOf(
@@ -24,7 +28,8 @@ class ProcessorsConfig {
             provideAllSpecialistsProcessor(),
             provideIAmCustomerProcessor(),
             provideIAmSpecialistProcessor(),
-            provideStartProcessor()
+            provideStartProcessor(),
+            provideCreatingProfileProcessor(),
         )
 
         /**
@@ -70,5 +75,10 @@ class ProcessorsConfig {
     @Bean
     fun provideChatMemberProcessor(): LocalUpdateProcessor {
         return ChatMemberUpdateProcessor()
+    }
+
+    @Bean
+    fun provideCreatingProfileProcessor(): LocalUpdateProcessor {
+        return CreatingProfileUpdateProcessor(userService, specialistService)
     }
 }

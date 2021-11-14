@@ -85,10 +85,3 @@ object ShowProfilePreviewScreenState: CreatingProfileState {
 
     override val previousState: BotState = UserInputContactLinksScreenState
 }
-
-val CreatingProfileState.allAvailableStates: Collection<CreatingProfileState>
-    get() = listOf(
-        UserInputInvalidDataScreenState, UserInputFullNameScreenState, UserInputDepartmentScreenState, UserInputProfessionScreenState,
-        UserInputKeySkillsScreenState, UserInputPortfolioLinkScreenState, UserInputAboutMeScreenState, UserInputWorkingConditionsScreenState,
-        UserInputEducationGradeScreenState, UserInputContactLinksScreenState, ShowHowProfileLooksNowScreenState, ShowProfilePreviewScreenState
-    )
