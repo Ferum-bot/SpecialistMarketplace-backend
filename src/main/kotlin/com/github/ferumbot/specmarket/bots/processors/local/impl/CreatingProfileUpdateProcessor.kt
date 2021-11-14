@@ -5,6 +5,7 @@ import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultB
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.CreatingProfileUserInput
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.RegisterNewUserInfo
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
 import com.github.ferumbot.specmarket.bots.services.TelegramUserService
 import com.github.ferumbot.specmarket.bots.services.TelegramUserSpecialistService
@@ -142,9 +143,11 @@ class CreatingProfileUpdateProcessor(
 
     private fun processOpenHowProfileLooksNow(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
         val state = ShowHowProfileLooksNowScreenState
+        val specialist = userService.getUserSpecialist(info)
+        val resultInfo = UserSpecialistInfo.getFrom(info, specialist!!)
         userService.setNewUserState(state, info)
 
-        return MessageUpdateResultBunch(state, info)
+        return MessageUpdateResultBunch(state, resultInfo)
     }
 
     private fun processFinishRegistrationFlow(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {

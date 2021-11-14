@@ -303,7 +303,7 @@ class DefaultMessageTextProvider: MessageTextProvider {
             StringBuilder()
                 .append("Full Name: ${fullName ?: "-"} \n")
                 .append("Department: ${department ?: "-"} \n")
-                .append("Activity: ${professions ?: "-"} \n")
+                .append("Professions: $professions \n")
                 .append("Key skills: ${keySkills.joinToString().ifEmpty { "-" }} \n")
                 .append("Portfolio link: ${portfolioLink ?: "-"} \n")
                 .append("About me ${aboutMe ?: "-"} \n")

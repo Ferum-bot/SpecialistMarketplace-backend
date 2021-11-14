@@ -8,5 +8,5 @@ data class ErrorResponse(
     val cause: String? = null,
 
     @JsonInclude(JsonInclude.Include.ALWAYS)
-    val totalExceptions: Collection<String> = emptyList(),
+    val totalExceptions: Collection<String>? = emptyList(),
 )

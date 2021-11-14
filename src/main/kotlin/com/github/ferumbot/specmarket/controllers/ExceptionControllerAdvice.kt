@@ -32,7 +32,7 @@ class ExceptionControllerAdvice {
     fun onExceptionRaised(ex: Exception): ResponseEntity<ApiResponse<*>> {
         val errorResponse = ErrorResponse(
             cause = ex.cause?.toString(),
-            totalExceptions = ex.suppressed.map { it.toString() }
+            totalExceptions = ex.suppressed?.map { it.toString() }
         )
         val response = ApiResponse(
             statusCode = HttpStatus.BAD_REQUEST.value(),
