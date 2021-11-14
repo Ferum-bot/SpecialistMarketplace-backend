@@ -10,12 +10,3 @@ object OpenIDoNotKnowWhatIWantScreenEvent: IAmCustomerEvent {
 
     override val friendlyName: String = "I don't know what I want"
 }
-
-object OpenAboutEachSpecialistScreenEvent: IAmCustomerEvent {
-
-    override val eventName: String = "Open about each specialist screen event"
-
-    override val commandAlias: String = "/open_about_each_specialist"
-
-    override val friendlyName: String = "About each specialist"
-}

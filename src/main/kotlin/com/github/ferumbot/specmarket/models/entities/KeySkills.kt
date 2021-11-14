@@ -4,20 +4,32 @@ import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
+@Table(name = "key_skills")
 data class KeySkills(
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    var id: Long?,
+    @Column(name = "id")
+    var id: Long? = null,
 
-    @Column(name = "ALIAS", nullable = false)
+    @Column(name = "alias", nullable = false)
     var alias: String,
 
-    @Column(name = "CREATED_DATE", nullable = false, updatable = false)
+    @Column(name = "created_date", nullable = false, updatable = false)
     var createdDate: LocalDateTime = LocalDateTime.now(),
 
-    @Column(name = "UPDATED_DATE", nullable = false)
+    @Column(name = "updated_date", nullable = false)
     var updatedDate: LocalDateTime = LocalDateTime.now(),
 ) {
 
+    @PrePersist
+    fun onCreate() {
+        createdDate = LocalDateTime.now()
+        updatedDate = LocalDateTime.now()
+    }
+
+    @PreUpdate
+    fun onUpdate() {
+        updatedDate = LocalDateTime.now()
+    }
 }

@@ -2,7 +2,7 @@ package com.github.ferumbot.specmarket.bots.models.dto.update_info
 
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 
-data class RegisterNewUserUpdateInfo(
+data class RegisterNewUserInfo(
 
     override val chatId: Long,
 

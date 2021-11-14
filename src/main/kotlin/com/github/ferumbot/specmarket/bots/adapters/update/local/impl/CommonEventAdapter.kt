@@ -7,7 +7,7 @@ import com.github.ferumbot.specmarket.bots.core.getUserId
 import com.github.ferumbot.specmarket.bots.core.isCommand
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.RegisterNewUserUpdateInfo
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.RegisterNewUserInfo
 import com.github.ferumbot.specmarket.bots.state_machine.event.GoBackEvent
 import com.github.ferumbot.specmarket.bots.state_machine.event.OpenContactWithUsScreenEvent
 import com.github.ferumbot.specmarket.bots.state_machine.event.OpenStartScreenEvent
@@ -57,7 +57,7 @@ class CommonEventAdapter: LocalUpdateAdapter {
         val isBot = message.from.isBot
         val languageCode = message.from.languageCode
 
-        val updateInfo = RegisterNewUserUpdateInfo(
+        val updateInfo = RegisterNewUserInfo(
             linkedChatId, userId, firstName, lastName, userName, isBot, languageCode
         )
 

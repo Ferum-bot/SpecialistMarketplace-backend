@@ -1,46 +1,67 @@
 package com.github.ferumbot.specmarket.bots.models.entity
 
-import com.github.ferumbot.specmarket.bots.state_machine.state.BotState
-import com.github.ferumbot.specmarket.bots.state_machine.state.StartScreenState
+import com.github.ferumbot.specmarket.bots.models.entity.embeded.UserBotState
 import com.github.ferumbot.specmarket.bots.state_machine.state.UnRegisteredState
+import com.github.ferumbot.specmarket.models.entities.Specialist
+import org.apache.catalina.User
 import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
+@Table(name = "telegram_user")
 data class TelegramUser(
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id")
     var id: Long? = null,
 
-    @Column(name = "TELEGRAM_USER_ID", unique = true, nullable = false)
+    @Column(name = "telegram_user_id", unique = true, nullable = false)
     var telegramUserId: Long,
 
-    @Column(name = "PERSONAL_TELEGRAM_CHAT_ID", unique = true, nullable = false)
+    @Column(name = "personal_telegram_chat_id", unique = true, nullable = false)
     var personalTelegramChatId: Long,
 
-    @Column(name = "CURRENT_BOT_STATE")
-    var currentBotState: String = UnRegisteredState.screenName,
-
-    @Column(name = "FIRST_NAME", length = 1000)
+    @Column(name = "first_name", length = 1000)
     var firstName: String? = null,
 
-    @Column(name = "LAST_NAME", length = 1000)
+    @Column(name = "last_name", length = 1000)
     var lastName: String? = null,
 
-    @Column(name = "USER_NAME", length = 1000)
+    @Column(name = "user_name", length = 1000)
     var userName: String? = null,
 
-    @Column(name = "IS_BOT")
+    @Embedded
+    var currentBotState: UserBotState = UserBotState(),
+
+    @Column(name = "is_bot")
     var isBot: Boolean,
 
-    @Column(name = "LANGUAGE_CODE")
+    @Column(name = "language_code")
     var languageCode: String? = null,
 
-    @Column(name = "CREATED_DATE", updatable = false)
+    @OneToOne(
+        mappedBy = "telegramUser",
+        cascade = [CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE]
+    )
+    var specialist: Specialist? = null,
+
+    @ManyToMany(
+        cascade = [CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE],
+        fetch = FetchType.LAZY,
+        targetEntity = Specialist::class,
+    )
+    @JoinTable(
+        name = "telegram_user_to_specialist_requests",
+        joinColumns = [ JoinColumn(name = "telegram_user_id", referencedColumnName = "id") ],
+        inverseJoinColumns = [ JoinColumn(name = "specialist_id", referencedColumnName = "id") ]
+    )
+    var specialistsRequests: Collection<Specialist> = listOf(),
+
+    @Column(name = "created_date", updatable = false)
     var createdDate: LocalDateTime = LocalDateTime.now(),
 
-    @Column(name = "UPDATED_DATE")
+    @Column(name = "updated_date")
     var updatedDate: LocalDateTime = LocalDateTime.now(),
 ) {
 

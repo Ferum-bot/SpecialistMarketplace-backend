@@ -25,7 +25,6 @@ class IAmCustomerUpdateProcessor(
 
         return when(event) {
             is OpenIDoNotKnowWhatIWantScreenEvent -> processOpenIDoNotKnowEvent(info)
-            is OpenAboutEachSpecialistScreenEvent -> processOpenAboutEachSpecialistEvent(info)
             else -> LocalUpdateProcessor.unSupportedEvent(info)
         }
     }

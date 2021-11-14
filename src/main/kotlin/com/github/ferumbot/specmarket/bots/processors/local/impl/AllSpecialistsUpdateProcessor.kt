@@ -24,7 +24,6 @@ class AllSpecialistsUpdateProcessor(
         val info = bunch.extraInformation
 
         return when(event) {
-            is OpenFilterScreenEvent -> processOpenFilterScreenEvent(info)
             is OpenIDoNotKnowWhoISearchScreenEvent -> processOpenIDoNotKnowWhoISearchScreenEvent(info)
             else -> LocalUpdateProcessor.unSupportedEvent(info)
         }
