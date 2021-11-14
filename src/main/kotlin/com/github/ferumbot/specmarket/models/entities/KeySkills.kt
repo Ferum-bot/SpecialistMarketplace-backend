@@ -10,7 +10,7 @@ data class KeySkills(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
-    var id: Long?,
+    var id: Long? = null,
 
     @Column(name = "alias", nullable = false)
     var alias: String,

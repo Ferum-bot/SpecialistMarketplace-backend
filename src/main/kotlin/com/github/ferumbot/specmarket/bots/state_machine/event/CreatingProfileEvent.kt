@@ -29,9 +29,9 @@ object OnUserInputDepartmentEvent: CreatingProfileEvent {
     override val friendlyName: String = ""
 }
 
-object OnUserInputActivityEvent: CreatingProfileEvent {
+object OnUserInputProfessionEvent: CreatingProfileEvent {
 
-    override val eventName: String = "On user input activity event"
+    override val eventName: String = "On user input profession event"
 
     override val commandAlias: String = ""
 

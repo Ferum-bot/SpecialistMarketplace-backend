@@ -31,9 +31,9 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession
     AdaptersConfig::class,
     InteractorsConfig::class,
     ProcessorsConfig::class,
-    UIConfig::class,
     RepositoriesConfig::class,
-    TelegramUserServiceImpl::class,
+    ServiceConfig::class,
+    UIConfig::class,
     ExceptionInterceptorFacade::class,
 ])
 class OnTelegramConfig {

@@ -40,7 +40,10 @@ data class TelegramUser(
     @Column(name = "language_code")
     var languageCode: String? = null,
 
-    @OneToOne(mappedBy = "telegramUser")
+    @OneToOne(
+        mappedBy = "telegramUser",
+        cascade = [CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE]
+    )
     var specialist: Specialist? = null,
 
     @ManyToMany(

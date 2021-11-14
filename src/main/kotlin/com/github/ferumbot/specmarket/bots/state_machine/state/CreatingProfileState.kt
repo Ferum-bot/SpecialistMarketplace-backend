@@ -23,7 +23,7 @@ object UserInputDepartmentScreenState: CreatingProfileState {
     override val previousState: BotState = UserInputFullNameScreenState
 }
 
-object UserInputActivityScreenState: CreatingProfileState {
+object UserInputProfessionScreenState: CreatingProfileState {
 
     override val screenName: String = "User input activity screen state"
 
@@ -34,7 +34,7 @@ object UserInputKeySkillsScreenState: CreatingProfileState {
 
     override val screenName: String = "User input key skills screen state"
 
-    override val previousState: BotState = UserInputActivityScreenState
+    override val previousState: BotState = UserInputProfessionScreenState
 }
 
 object UserInputPortfolioLinkScreenState: CreatingProfileState {
@@ -72,9 +72,23 @@ object UserInputContactLinksScreenState: CreatingProfileState {
     override val previousState: BotState = UserInputEducationGradeScreenState
 }
 
-object UserInputProfilePreviewScreenState: CreatingProfileState {
+object ShowHowProfileLooksNowScreenState: CreatingProfileState {
 
-    override val screenName: String = "User input profile preview screen state"
+    override val screenName: String = "Show how profile looks now screen state"
+
+    override val previousState: BotState = UserInputFullNameScreenState
+}
+
+object ShowProfilePreviewScreenState: CreatingProfileState {
+
+    override val screenName: String = "Show profile preview screen state"
 
     override val previousState: BotState = UserInputContactLinksScreenState
 }
+
+val CreatingProfileState.allAvailableStates: Collection<CreatingProfileState>
+    get() = listOf(
+        UserInputInvalidDataScreenState, UserInputFullNameScreenState, UserInputDepartmentScreenState, UserInputProfessionScreenState,
+        UserInputKeySkillsScreenState, UserInputPortfolioLinkScreenState, UserInputAboutMeScreenState, UserInputWorkingConditionsScreenState,
+        UserInputEducationGradeScreenState, UserInputContactLinksScreenState, ShowHowProfileLooksNowScreenState, ShowProfilePreviewScreenState
+    )

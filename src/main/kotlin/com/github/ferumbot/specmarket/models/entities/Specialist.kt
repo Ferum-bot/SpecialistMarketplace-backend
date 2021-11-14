@@ -28,13 +28,13 @@ data class Specialist(
         joinColumns = [JoinColumn(name = "specialist_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "profession_id", referencedColumnName = "id")]
     )
-    var professions: Collection<Profession> = listOf(),
+    var professions: MutableCollection<Profession> = mutableListOf(),
 
     @OneToMany(
         cascade = [CascadeType.ALL], orphanRemoval = true,
         fetch = FetchType.LAZY,
     )
-    var keySkills: Collection<KeySkills> = listOf(),
+    var keySkills: MutableCollection<KeySkills> = mutableListOf(),
 
     @Column(name = "portfolio_link", length = 1000)
     var portfolioLink: String? = null,

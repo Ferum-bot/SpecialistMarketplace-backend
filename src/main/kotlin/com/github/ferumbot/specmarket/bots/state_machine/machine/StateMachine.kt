@@ -21,14 +21,14 @@ object StateMachine {
             UserInputInvalidDataScreenState.screenName -> UserInputInvalidDataScreenState
             UserInputFullNameScreenState.screenName -> UserInputFullNameScreenState
             UserInputDepartmentScreenState.screenName -> UserInputDepartmentScreenState
-            UserInputActivityScreenState.screenName -> UserInputActivityScreenState
+            UserInputProfessionScreenState.screenName -> UserInputProfessionScreenState
             UserInputKeySkillsScreenState.screenName -> UserInputKeySkillsScreenState
             UserInputPortfolioLinkScreenState.screenName -> UserInputPortfolioLinkScreenState
             UserInputAboutMeScreenState.screenName -> UserInputAboutMeScreenState
             UserInputWorkingConditionsScreenState.screenName -> UserInputWorkingConditionsScreenState
             UserInputEducationGradeScreenState.screenName -> UserInputEducationGradeScreenState
             UserInputContactLinksScreenState.screenName -> UserInputContactLinksScreenState
-            UserInputProfilePreviewScreenState.screenName -> UserInputProfilePreviewScreenState
+            ShowProfilePreviewScreenState.screenName -> ShowProfilePreviewScreenState
             else -> UnSupportedScreenState
         }
     }
