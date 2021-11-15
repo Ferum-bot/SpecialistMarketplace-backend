@@ -55,7 +55,7 @@ data class Specialist(
     var isCompletelyFilled: Boolean = false,
 
     @Column(name = "is_visible", nullable = false)
-    var isVisible: Boolean = false,
+    var isVisible: Boolean = true,
 
     @OneToOne(
         cascade = [CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE],

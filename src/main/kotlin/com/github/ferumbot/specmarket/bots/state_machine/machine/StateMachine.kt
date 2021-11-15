@@ -8,6 +8,7 @@ object StateMachine {
         return when(stateName) {
             NotImplementedScreenState.screenName -> NotImplementedScreenState
             UnSupportedScreenState.screenName -> UnSupportedScreenState
+            EmptyScreenState.screenName -> EmptyScreenState
             StartScreenState.screenName -> StartScreenState
             ContactWithUsScreenState.screenName -> ContactWithUsScreenState
             UnRegisteredState.screenName -> UnRegisteredState
@@ -29,6 +30,12 @@ object StateMachine {
             UserInputEducationGradeScreenState.screenName -> UserInputEducationGradeScreenState
             UserInputContactLinksScreenState.screenName -> UserInputContactLinksScreenState
             ShowProfilePreviewScreenState.screenName -> ShowProfilePreviewScreenState
+            ShowHowProfileLooksNowScreenState.screenName -> ShowHowProfileLooksNowScreenState
+            YouAreNotAuthorizedScreenState.screenName -> YouAreNotAuthorizedScreenState
+            YouAreNotFullAuthorizedScreenState.screenName -> YouAreNotFullAuthorizedScreenState
+            YouAreAuthorizedScreenState.screenName -> YouAreAuthorizedScreenState
+            MyRequestsScreenState.screenName -> MyRequestsScreenState
+            EditProfileScreenState.screenName -> EditProfileScreenState
             else -> UnSupportedScreenState
         }
     }

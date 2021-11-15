@@ -8,6 +8,7 @@ import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.state_machine.event.ContinueCreatingProfileFlowEvent
 import com.github.ferumbot.specmarket.bots.state_machine.event.OnUserRegistrationFinishedEvent
+import com.github.ferumbot.specmarket.bots.state_machine.event.OpenHowItLooksLikeNowScreenEvent
 import com.github.ferumbot.specmarket.bots.state_machine.event.RestartRegistrationFlowEvent
 import org.telegram.telegrambots.meta.api.objects.Update
 
@@ -24,10 +25,14 @@ class CreatingProfileCommonEventAdapter: LocalUpdateAdapter {
         private val REGISTRATION_FINISHED_NAME = OnUserRegistrationFinishedEvent.friendlyName
         private val REGISTRATION_FINISHED_COMMAND = OnUserRegistrationFinishedEvent.commandAlias
 
+        private val OPEN_HOW_IT_LOOKS_LIKE_NOW_NAME = OpenHowItLooksLikeNowScreenEvent.friendlyName
+        private val OPEN_HOW_IT_LOOKS_LIKE_NOW_COMMAND = OpenHowItLooksLikeNowScreenEvent.commandAlias
+
         private val handlingEvents = listOf(
             RESTART_REGISTRATION_NAME, RESTART_REGISTRATION_COMMAND,
             CONTINUE_CREATING_PROFILE_NAME, CONTINUE_CREATING_PROFILE_COMMAND,
-            REGISTRATION_FINISHED_NAME, REGISTRATION_FINISHED_COMMAND
+            REGISTRATION_FINISHED_NAME, REGISTRATION_FINISHED_COMMAND,
+            OPEN_HOW_IT_LOOKS_LIKE_NOW_NAME, OPEN_HOW_IT_LOOKS_LIKE_NOW_COMMAND
         )
     }
 
@@ -45,6 +50,8 @@ class CreatingProfileCommonEventAdapter: LocalUpdateAdapter {
                 continueCreatingProfileFlow(update)
             REGISTRATION_FINISHED_NAME, REGISTRATION_FINISHED_COMMAND ->
                 registrationFlowFinished(update)
+            OPEN_HOW_IT_LOOKS_LIKE_NOW_NAME, OPEN_HOW_IT_LOOKS_LIKE_NOW_COMMAND ->
+                openHotItLooksNow(update)
             else ->
                 LocalUpdateAdapter.unSupportedUpdate(update)
         }
@@ -70,6 +77,14 @@ class CreatingProfileCommonEventAdapter: LocalUpdateAdapter {
         val chatId = update.getChatId()
         val userId = update.getUserId()
         val event = OnUserRegistrationFinishedEvent
+
+        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+    }
+
+    private fun openHotItLooksNow(update: Update): MessageUpdateBunch<*> {
+        val chatId = update.getChatId()
+        val userId = update.getUserId()
+        val event = OpenHowItLooksLikeNowScreenEvent
 
         return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
     }

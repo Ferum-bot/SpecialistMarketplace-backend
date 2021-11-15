@@ -29,6 +29,7 @@ class ProcessorsConfig {
             provideIAmCustomerProcessor(),
             provideIAmSpecialistProcessor(),
             provideStartProcessor(),
+            provideMyProfileProcessor(),
             provideCreatingProfileProcessor(),
         )
 
@@ -75,6 +76,11 @@ class ProcessorsConfig {
     @Bean
     fun provideChatMemberProcessor(): LocalUpdateProcessor {
         return ChatMemberUpdateProcessor()
+    }
+
+    @Bean
+    fun provideMyProfileProcessor(): LocalUpdateProcessor {
+        return MyProfileUpdateProcessor(userService, specialistService)
     }
 
     @Bean

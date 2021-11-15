@@ -20,13 +20,13 @@ class MyProfileEventAdapter: LocalUpdateAdapter {
         private val OPEN_START_REGISTRATION_NAME = StartRegistrationFlowEvent.friendlyName
         private val OPEN_ANOTHER_MY_REQUESTS_PAGE_NAME = OpenAnotherMyRequestsPageScreenEvent.friendlyName
         private val OPEN_ANOTHER_MY_REQUESTS_PAGE_COMMAND = OpenAnotherMyRequestsPageScreenEvent.commandAlias
-        private val CHANGE_PROFILE_VISIBILITY = ChangeProfileSpecialistVisibilityScreenEvent.friendlyName
+        private val CHANGE_PROFILE_VISIBILITY_NAME = ChangeProfileSpecialistVisibilityScreenEvent.friendlyName
 
         private val handlingEvents = listOf(
             OPEN_MY_REQUESTS_NAME, OPEN_EDIT_PROFILE_NAME,
             OPEN_START_REGISTRATION_NAME, OPEN_CONTINUE_REGISTRATION_NAME,
             OPEN_ANOTHER_MY_REQUESTS_PAGE_NAME, OPEN_ANOTHER_MY_REQUESTS_PAGE_COMMAND,
-            CHANGE_PROFILE_VISIBILITY
+            CHANGE_PROFILE_VISIBILITY_NAME,
         )
     }
 
@@ -51,7 +51,7 @@ class MyProfileEventAdapter: LocalUpdateAdapter {
             OPEN_EDIT_PROFILE_NAME -> openEditProfile(update)
             OPEN_CONTINUE_REGISTRATION_NAME -> openContinueRegistration(update)
             OPEN_START_REGISTRATION_NAME -> openStartRegistration(update)
-            CHANGE_PROFILE_VISIBILITY -> changeProfileVisibility(update)
+            CHANGE_PROFILE_VISIBILITY_NAME -> changeProfileVisibility(update)
             else -> LocalUpdateAdapter.unSupportedUpdate(update)
         }
     }

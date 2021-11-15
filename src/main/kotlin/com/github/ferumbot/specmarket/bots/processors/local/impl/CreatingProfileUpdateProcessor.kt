@@ -11,6 +11,7 @@ import com.github.ferumbot.specmarket.bots.services.TelegramUserService
 import com.github.ferumbot.specmarket.bots.services.TelegramUserSpecialistService
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
+import com.github.ferumbot.specmarket.core.extensions.removeFirstCharIf
 import com.github.ferumbot.specmarket.models.entities.Specialist
 
 class CreatingProfileUpdateProcessor(
@@ -81,6 +82,8 @@ class CreatingProfileUpdateProcessor(
     private fun processOnUserInputProfession(info: CreatingProfileUserInput): MessageUpdateResultBunch<*> {
         val state = UserInputKeySkillsScreenState
         val profession = info.userInput.firstOrNull().orEmpty()
+            .removeFirstCharIf { it.first() == '/' }
+
         specialistService.addProfession(info, profession)
         userService.setNewUserState(state, info)
 
@@ -138,23 +141,31 @@ class CreatingProfileUpdateProcessor(
         specialistService.updateContactLinks(info, contactLinks)
         userService.setNewUserState(state, info)
 
-        return MessageUpdateResultBunch(state, info)
+        val specialist = userService.getUserSpecialist(info)
+        val newInfo = UserSpecialistInfo.getFrom(info, specialist!!)
+
+        return MessageUpdateResultBunch(state, newInfo)
     }
 
     private fun processOpenHowProfileLooksNow(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
         val state = ShowHowProfileLooksNowScreenState
         val specialist = userService.getUserSpecialist(info)
-        val resultInfo = UserSpecialistInfo.getFrom(info, specialist!!)
         userService.setNewUserState(state, info)
+
+        val resultInfo = UserSpecialistInfo.getFrom(info, specialist!!)
 
         return MessageUpdateResultBunch(state, resultInfo)
     }
 
     private fun processFinishRegistrationFlow(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
         val state = YouAreAuthorizedScreenState
+        specialistService.updateCompletelyFilled(info, true)
         userService.setNewUserState(state, info)
 
-        return MessageUpdateResultBunch(state, info)
+        val specialist = userService.getUserSpecialist(info)
+        val resultInfo = UserSpecialistInfo.getFrom(info, specialist!!)
+
+        return MessageUpdateResultBunch(state, resultInfo)
     }
 
     private fun processRestartRegistrationFlow(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {

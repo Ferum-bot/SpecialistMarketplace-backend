@@ -193,7 +193,8 @@ class DefaultMessageTextProvider: MessageTextProvider {
 
     override fun provideEditProfileInfoMessage(specialist: SpecialistDto): String {
         return StringBuilder()
-            .append("Now you profile looks like this\n")
+            .append("Now you profile looks like this:\n")
+            .append(getProfileTemplate(specialist))
             .append("You can edit any parameter\n")
             .toString()
     }
@@ -293,7 +294,7 @@ class DefaultMessageTextProvider: MessageTextProvider {
             .append("This is your profile!\n")
             .append(getProfileTemplate(profile))
             .append("If you finish registration, you profile will automatically become visible to all customers\n")
-            .append("You can change it in any time in your profile")
+            .append("You can change it in any time in your profile\n")
             .append("You can also edit your profile in any time!\n")
             .toString()
     }
@@ -301,15 +302,15 @@ class DefaultMessageTextProvider: MessageTextProvider {
     private fun getProfileTemplate(specialist: SpecialistDto): StringBuilder {
         return specialist.run {
             StringBuilder()
-                .append("Full Name: ${fullName ?: "-"} \n")
-                .append("Department: ${department ?: "-"} \n")
-                .append("Professions: $professions \n")
-                .append("Key skills: ${keySkills.joinToString().ifEmpty { "-" }} \n")
-                .append("Portfolio link: ${portfolioLink ?: "-"} \n")
-                .append("About me ${aboutMe ?: "-"} \n")
-                .append("Working conditions ${workingConditions ?: "-"} \n")
-                .append("Education grade ${educationGrade ?: "-"} \n")
-                .append("Contact links ${contactLinks ?: "-"} \n")
+                .append("1. Full Name:\n ${fullName ?: "-"} \n")
+                .append("2. Department:\n ${department ?: "-"} \n")
+                .append("3. Professions:\n ${professions.joinToString().ifEmpty { "-" }} \n")
+                .append("4. Key skills:\n ${keySkills.joinToString().ifEmpty { "-" }} \n")
+                .append("5. Portfolio link:\n ${portfolioLink ?: "-"} \n")
+                .append("6. About me:\n ${aboutMe ?: "-"} \n")
+                .append("7. Working conditions:\n ${workingConditions ?: "-"} \n")
+                .append("8. Education grade:\n ${educationGrade ?: "-"} \n")
+                .append("9. Contact links:\n ${contactLinks ?: "-"} \n")
                 .append("\n")
         }
     }
