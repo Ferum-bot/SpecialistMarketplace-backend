@@ -6,11 +6,10 @@ import com.github.ferumbot.specmarket.bots.core.getCommandAlias
 import com.github.ferumbot.specmarket.bots.core.getUserId
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.CreatingProfileUserInput
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUserInputInfo
 import com.github.ferumbot.specmarket.bots.services.TelegramUserService
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
-import org.apache.tomcat.jni.Local
 import org.telegram.telegrambots.meta.api.objects.Update
 
 class CreatingProfileInputEventAdapter(
@@ -69,14 +68,14 @@ class CreatingProfileInputEventAdapter(
 
     private fun getSimpleUserInput(info: BaseUpdateInfo, update: Update, event: CreatingProfileEvent): MessageUpdateBunch<*> {
         val input = update.getCommandAlias()
-        val inputInfo = CreatingProfileUserInput.from(info, input)
+        val inputInfo = BaseUserInputInfo.from(info, input)
 
         return MessageUpdateBunch(event, inputInfo)
     }
 
     private fun getCollectionUserInput(info: BaseUpdateInfo, update: Update, event: CreatingProfileEvent): MessageUpdateBunch<*> {
         val input = update.getCommandAlias().split(',', ignoreCase = true)
-        val inputInfo = CreatingProfileUserInput.from(info, input)
+        val inputInfo = BaseUserInputInfo.from(info, input)
 
         return MessageUpdateBunch(event, inputInfo)
     }

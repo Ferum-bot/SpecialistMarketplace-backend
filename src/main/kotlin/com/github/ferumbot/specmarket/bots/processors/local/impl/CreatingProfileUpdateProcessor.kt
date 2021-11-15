@@ -3,8 +3,7 @@ package com.github.ferumbot.specmarket.bots.processors.local.impl
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.CreatingProfileUserInput
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.RegisterNewUserInfo
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUserInputInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
 import com.github.ferumbot.specmarket.bots.services.TelegramUserService
@@ -30,15 +29,15 @@ class CreatingProfileUpdateProcessor(
         return when(event) {
             is StartRegistrationFlowEvent -> processStartRegistrationFlow(info)
             is ContinueCreatingProfileFlowEvent -> processContinueRegistrationFlow(info)
-            is OnUserInputFullNameEvent -> processOnUserInputFullName(info as CreatingProfileUserInput)
-            is OnUserInputDepartmentEvent -> processOnUserInputDepartment(info as CreatingProfileUserInput)
-            is OnUserInputProfessionEvent -> processOnUserInputProfession(info as CreatingProfileUserInput)
-            is OnUserInputKeySkillsEvent -> processOnUserInputKeySkills(info as CreatingProfileUserInput)
-            is OnUserInputPortfolioLinkEvent -> processOnUserInputPortfolioLink(info as CreatingProfileUserInput)
-            is OnUserInputAboutMeEvent -> processOnUserInputAboutMe(info as CreatingProfileUserInput)
-            is OnUserInputWorkingConditionsEvent -> processOnUserInputWorkingConditions(info as CreatingProfileUserInput)
-            is OnUserInputEducationGradeEvent -> processOnUserInputEducationGrade(info as CreatingProfileUserInput)
-            is OnUserInputContactLinksEvent -> processOnUserInputContactLinks(info as CreatingProfileUserInput)
+            is OnUserInputFullNameEvent -> processOnUserInputFullName(info as BaseUserInputInfo)
+            is OnUserInputDepartmentEvent -> processOnUserInputDepartment(info as BaseUserInputInfo)
+            is OnUserInputProfessionEvent -> processOnUserInputProfession(info as BaseUserInputInfo)
+            is OnUserInputKeySkillsEvent -> processOnUserInputKeySkills(info as BaseUserInputInfo)
+            is OnUserInputPortfolioLinkEvent -> processOnUserInputPortfolioLink(info as BaseUserInputInfo)
+            is OnUserInputAboutMeEvent -> processOnUserInputAboutMe(info as BaseUserInputInfo)
+            is OnUserInputWorkingConditionsEvent -> processOnUserInputWorkingConditions(info as BaseUserInputInfo)
+            is OnUserInputEducationGradeEvent -> processOnUserInputEducationGrade(info as BaseUserInputInfo)
+            is OnUserInputContactLinksEvent -> processOnUserInputContactLinks(info as BaseUserInputInfo)
             is OpenHowItLooksLikeNowScreenEvent -> processOpenHowProfileLooksNow(info)
             is OnUserRegistrationFinishedEvent -> processFinishRegistrationFlow(info)
             is RestartRegistrationFlowEvent -> processRestartRegistrationFlow(info)
@@ -61,7 +60,7 @@ class CreatingProfileUpdateProcessor(
         return MessageUpdateResultBunch(state, info)
     }
 
-    private fun processOnUserInputFullName(info: CreatingProfileUserInput): MessageUpdateResultBunch<*> {
+    private fun processOnUserInputFullName(info: BaseUserInputInfo): MessageUpdateResultBunch<*> {
         val state = UserInputDepartmentScreenState
         val fullName = info.userInput.firstOrNull().orEmpty()
         specialistService.updateFullName(info, fullName)
@@ -70,7 +69,7 @@ class CreatingProfileUpdateProcessor(
         return MessageUpdateResultBunch(state, info)
     }
 
-    private fun processOnUserInputDepartment(info: CreatingProfileUserInput): MessageUpdateResultBunch<*> {
+    private fun processOnUserInputDepartment(info: BaseUserInputInfo): MessageUpdateResultBunch<*> {
         val state = UserInputProfessionScreenState
         val department = info.userInput.firstOrNull().orEmpty()
         specialistService.updateDepartment(info, department)
@@ -79,7 +78,7 @@ class CreatingProfileUpdateProcessor(
         return MessageUpdateResultBunch(state, info)
     }
 
-    private fun processOnUserInputProfession(info: CreatingProfileUserInput): MessageUpdateResultBunch<*> {
+    private fun processOnUserInputProfession(info: BaseUserInputInfo): MessageUpdateResultBunch<*> {
         val state = UserInputKeySkillsScreenState
         val profession = info.userInput.firstOrNull().orEmpty()
             .removeFirstCharIf { it.first() == '/' }
@@ -90,7 +89,7 @@ class CreatingProfileUpdateProcessor(
         return MessageUpdateResultBunch(state, info)
     }
 
-    private fun processOnUserInputKeySkills(info: CreatingProfileUserInput): MessageUpdateResultBunch<*> {
+    private fun processOnUserInputKeySkills(info: BaseUserInputInfo): MessageUpdateResultBunch<*> {
         val state = UserInputPortfolioLinkScreenState
         val keySkills = info.userInput
         specialistService.addKeySkills(info, keySkills)
@@ -99,7 +98,7 @@ class CreatingProfileUpdateProcessor(
         return MessageUpdateResultBunch(state, info)
     }
 
-    private fun processOnUserInputPortfolioLink(info: CreatingProfileUserInput): MessageUpdateResultBunch<*> {
+    private fun processOnUserInputPortfolioLink(info: BaseUserInputInfo): MessageUpdateResultBunch<*> {
         val state = UserInputAboutMeScreenState
         val portfolioLink = info.userInput.firstOrNull().orEmpty()
         specialistService.updatePortfolioLink(info, portfolioLink)
@@ -108,7 +107,7 @@ class CreatingProfileUpdateProcessor(
         return MessageUpdateResultBunch(state, info)
     }
 
-    private fun processOnUserInputAboutMe(info: CreatingProfileUserInput): MessageUpdateResultBunch<*> {
+    private fun processOnUserInputAboutMe(info: BaseUserInputInfo): MessageUpdateResultBunch<*> {
         val state = UserInputWorkingConditionsScreenState
         val aboutMe = info.userInput.firstOrNull().orEmpty()
         specialistService.updateAboutMe(info, aboutMe)
@@ -117,7 +116,7 @@ class CreatingProfileUpdateProcessor(
         return MessageUpdateResultBunch(state, info)
     }
 
-    private fun processOnUserInputWorkingConditions(info: CreatingProfileUserInput): MessageUpdateResultBunch<*> {
+    private fun processOnUserInputWorkingConditions(info: BaseUserInputInfo): MessageUpdateResultBunch<*> {
         val state = UserInputEducationGradeScreenState
         val workingConditions = info.userInput.firstOrNull().orEmpty()
         specialistService.updateWorkingConditions(info, workingConditions)
@@ -126,7 +125,7 @@ class CreatingProfileUpdateProcessor(
         return MessageUpdateResultBunch(state, info)
     }
 
-    private fun processOnUserInputEducationGrade(info: CreatingProfileUserInput): MessageUpdateResultBunch<*> {
+    private fun processOnUserInputEducationGrade(info: BaseUserInputInfo): MessageUpdateResultBunch<*> {
         val state = UserInputContactLinksScreenState
         val educationGrade = info.userInput.firstOrNull().orEmpty()
         specialistService.updateEducationGrade(info, educationGrade)
@@ -135,7 +134,7 @@ class CreatingProfileUpdateProcessor(
         return MessageUpdateResultBunch(state, info)
     }
 
-    private fun processOnUserInputContactLinks(info: CreatingProfileUserInput): MessageUpdateResultBunch<*> {
+    private fun processOnUserInputContactLinks(info: BaseUserInputInfo): MessageUpdateResultBunch<*> {
         val state = ShowProfilePreviewScreenState
         val contactLinks = info.userInput.firstOrNull().orEmpty()
         specialistService.updateContactLinks(info, contactLinks)
