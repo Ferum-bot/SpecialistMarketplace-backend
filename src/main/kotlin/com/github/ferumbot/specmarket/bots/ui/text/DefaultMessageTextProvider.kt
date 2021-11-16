@@ -180,6 +180,12 @@ class DefaultMessageTextProvider: MessageTextProvider {
     }
 
     override fun provideSpecialistRequestInfoMessage(specialists: Collection<SpecialistDto>): String {
+        if (specialists.isEmpty()) {
+            return StringBuilder()
+                .append("You doesn't have any requests yet!")
+                .toString()
+        }
+
         val specialistsString = specialists.fold(StringBuilder()) { builder, specialist ->
             builder
                 .append(getProfileTemplate(specialist))

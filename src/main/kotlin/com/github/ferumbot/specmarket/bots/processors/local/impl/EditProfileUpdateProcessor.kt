@@ -11,6 +11,7 @@ import com.github.ferumbot.specmarket.bots.services.TelegramUserSpecialistServic
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
 import com.github.ferumbot.specmarket.core.extensions.firstOrEmpty
+import com.github.ferumbot.specmarket.core.extensions.removeFirstCharIf
 import com.github.ferumbot.specmarket.models.entities.Specialist
 
 class EditProfileUpdateProcessor(
@@ -123,6 +124,7 @@ class EditProfileUpdateProcessor(
 
     private fun processUserChangedProfession(info: BaseUserInputInfo): MessageUpdateResultBunch<*> {
         val newProfession = info.simpleInput
+            .removeFirstCharIf { it.first() == '/' }
 
         specialistService.clearProfessions(info)
         val specialist = specialistService.addProfession(info, newProfession)

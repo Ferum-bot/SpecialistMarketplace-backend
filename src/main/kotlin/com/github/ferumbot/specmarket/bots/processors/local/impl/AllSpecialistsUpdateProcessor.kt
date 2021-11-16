@@ -29,12 +29,6 @@ class AllSpecialistsUpdateProcessor(
         }
     }
 
-    private fun processOpenFilterScreenEvent(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
-        val newState = NotImplementedScreenState
-        userService.setNewUserState(newState, info)
-        return MessageUpdateResultBunch(newState, info)
-    }
-
     private fun processOpenIDoNotKnowWhoISearchScreenEvent(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
         val newState = IDoNotKnowWhoISearchScreenState
         userService.setNewUserState(newState, info)
