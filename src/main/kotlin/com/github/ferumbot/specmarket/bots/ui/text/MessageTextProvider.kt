@@ -59,4 +59,22 @@ interface MessageTextProvider {
     fun provideHowProfileLooksNowMessage(profile: SpecialistDto): String
 
     fun provideProfilePreviewMessage(profile: SpecialistDto): String
+
+    fun provideUserChangeFullNameInfoMessage(): String
+
+    fun provideUserChangeDepartmentInfoMessage(): String
+
+    fun provideUserChangeProfessionsInfoMessage(professions: Collection<ProfessionDto>): String
+
+    fun provideUserChangeKeySkillsInfoMessage(): String
+
+    fun provideUserChangePortfolioLinkInfoMessage(): String
+
+    fun provideUserChangeAboutMeInfoMessage(): String
+
+    fun provideUserChangeWorkingConditionsInfoMessage(): String
+
+    fun provideUserChangeEducationGradeInfoMessage(): String
+
+    fun provideUserChangeContactLinksInfoMessage(): String
 }

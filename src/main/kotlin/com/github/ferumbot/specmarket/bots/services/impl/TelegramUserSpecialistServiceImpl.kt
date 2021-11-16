@@ -200,6 +200,6 @@ class TelegramUserSpecialistServiceImpl(
             isBot = false
         )
 
-        return userRepository.saveAndFlush(user)
+        return userRepository.save(user)
     }
 }

@@ -43,6 +43,7 @@ fun DependencyHandler.addAllStarters() {
     implementation(Dependencies.STARTER_WEB)
     implementation(Dependencies.STARTER_JPA)
     implementation(Dependencies.JACKSON)
+    implementation(Dependencies.STARTER_ACTUATOR)
     testImplementation(TestDependencies.STARTER_SPRING)
     annotationProcessor(Dependencies.STARTER_CONFIGURATION_PROCESSOR)
     developmentOnly(Dependencies.STARTER_DEV_TOOLS)

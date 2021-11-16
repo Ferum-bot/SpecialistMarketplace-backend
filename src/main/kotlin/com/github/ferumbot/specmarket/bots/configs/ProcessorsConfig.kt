@@ -31,6 +31,7 @@ class ProcessorsConfig {
             provideStartProcessor(),
             provideMyProfileProcessor(),
             provideCreatingProfileProcessor(),
+            provideEditProfileProcessor(),
         )
 
         /**
@@ -86,5 +87,10 @@ class ProcessorsConfig {
     @Bean
     fun provideCreatingProfileProcessor(): LocalUpdateProcessor {
         return CreatingProfileUpdateProcessor(userService, specialistService)
+    }
+
+    @Bean
+    fun provideEditProfileProcessor(): LocalUpdateProcessor {
+        return EditProfileUpdateProcessor(userService, specialistService)
     }
 }

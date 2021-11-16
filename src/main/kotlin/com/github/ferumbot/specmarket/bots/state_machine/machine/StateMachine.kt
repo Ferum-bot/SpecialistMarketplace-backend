@@ -36,6 +36,15 @@ object StateMachine {
             YouAreAuthorizedScreenState.screenName -> YouAreAuthorizedScreenState
             MyRequestsScreenState.screenName -> MyRequestsScreenState
             EditProfileScreenState.screenName -> EditProfileScreenState
+            UserChangeFullNameScreenState.screenName -> UserChangeFullNameScreenState
+            UserChangeDepartmentScreenState.screenName -> UserChangeDepartmentScreenState
+            UserChangeProfessionScreenState.screenName -> UserChangeProfessionScreenState
+            UserChangeKeySkillsScreenState.screenName -> UserChangeKeySkillsScreenState
+            UserChangePortfolioLinkScreenState.screenName -> UserChangePortfolioLinkScreenState
+            UserChangeAboutMeScreenState.screenName -> UserChangeAboutMeScreenState
+            UserChangeWorkingConditionsScreenState.screenName -> UserChangeWorkingConditionsScreenState
+            UserChangeEducationGradeScreenState.screenName -> UserChangeEducationGradeScreenState
+            UserChangeContactLinksScreenState.screenName -> UserChangeContactLinksScreenState
             else -> UnSupportedScreenState
         }
     }

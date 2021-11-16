@@ -6,6 +6,7 @@ object Dependencies {
     const val STARTER_WEB = "org.springframework.boot:spring-boot-starter-web"
     const val STARTER_CONFIGURATION_PROCESSOR = "org.springframework.boot:spring-boot-configuration-processor"
     const val STARTER_DEV_TOOLS = "org.springframework.boot:spring-boot-devtools"
+    const val STARTER_ACTUATOR = "org.springframework.boot:spring-boot-starter-actuator"
 
     const val STATE_MACHINE = "org.springframework.statemachine:spring-statemachine-core:${Versions.STATE_MACHINE}"
 

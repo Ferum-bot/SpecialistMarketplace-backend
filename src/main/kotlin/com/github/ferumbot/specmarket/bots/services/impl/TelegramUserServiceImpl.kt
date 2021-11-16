@@ -58,7 +58,7 @@ class TelegramUserServiceImpl @Autowired constructor(
 
     override fun getAndSetUserPreviousState(info: BaseUpdateInfo): BotState {
         val entity = repository.findByTelegramUserId(info.userId)
-            ?: return UnSupportedScreenState
+            ?: registerNewUser(info)
         val currentState = entity.currentBotState.currentState
         val prevState = currentState.previousState
         entity.currentBotState.currentState = prevState
@@ -69,13 +69,13 @@ class TelegramUserServiceImpl @Autowired constructor(
     @Transactional(readOnly = true)
     override fun getUserCurrentState(info: BaseUpdateInfo): UserBotState {
         val entity = repository.findByTelegramUserId(info.userId)
-            ?: return UserBotState.unSupported()
+            ?: registerNewUser(info)
         return entity.currentBotState
     }
 
     override fun setNewUserState(newState: BotState, info: BaseUpdateInfo, currentPage: Int?, pageCount: Int?) {
         val entity = repository.findByTelegramUserId(info.userId)
-            ?: return
+            ?: registerNewUser(info)
 
         entity.currentBotState.apply {
             currentState = newState
@@ -89,7 +89,7 @@ class TelegramUserServiceImpl @Autowired constructor(
     @Transactional(readOnly = true)
     override fun getUserSpecialistStatus(info: BaseUpdateInfo): TelegramUserSpecialistStatus {
         val userEntity = repository.findByTelegramUserId(info.userId)
-            ?: return NOT_AUTHORIZED
+            ?: registerNewUser(info)
         val specialistEntity = userEntity.specialist
             ?: return NOT_AUTHORIZED
 
@@ -115,5 +115,14 @@ class TelegramUserServiceImpl @Autowired constructor(
     @Transactional(readOnly = true)
     override fun countUserSpecialistRequests(info: BaseUpdateInfo): Int {
         return repository.countUserSpecialistRequests(info.userId)
+    }
+
+    private fun registerNewUser(info: BaseUpdateInfo): TelegramUser {
+        val entity = TelegramUser(
+            telegramUserId = info.userId,
+            personalTelegramChatId = info.chatId,
+            isBot = false,
+        )
+        return repository.save(entity)
     }
 }

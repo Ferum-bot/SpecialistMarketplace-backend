@@ -209,74 +209,63 @@ class DefaultMessageTextProvider: MessageTextProvider {
     override fun provideUserInputFullNameInfoMessage(): String {
         return StringBuilder()
             .append("Now let's begin with your full name!\n")
-            .append("Input your full name\n")
-            .append("Example: Bob Bush")
+            .append(userInputFullNameTemplate())
             .toString()
     }
 
     override fun provideUserInputDepartmentInfoMessage(): String {
         return StringBuilder()
             .append("Now input your department!\n")
-            .append("Example: Car business, instagram")
+            .append(userInputDepartmentTemplate())
             .toString()
     }
 
     override fun provideUserInputProfessionsInfoMessage(availableProfessions: Collection<ProfessionDto>): String {
-        val professionsInfo = availableProfessions.fold(StringBuilder()) { builder, profession ->
-            builder.append("${profession.friendlyName}: ${profession.shortDescription}\n")
-            builder.append("Choose /${profession.alias} \n")
-        }
-
         return StringBuilder()
             .append("Now choose you profession!\n")
-            .append("Now available ${availableProfessions.count()} professions!\n")
-            .append(professionsInfo)
-            .append("Choose you profession!\n")
+            .append(userInputProfessionTemplate(availableProfessions))
             .toString()
     }
 
     override fun provideUserInputKeySkillsInfoMessage(): String {
         return StringBuilder()
             .append("Now write you key skills!\n")
-            .append("For example: diligence, availability\n")
+            .append(userInputKeySkillsTemplate())
             .toString()
     }
 
     override fun provideUserInputPortfolioLinkInfoMessage(): String {
         return StringBuilder()
             .append("Now send link to you portfolio!\n")
-            .append("Add your cases, done work and etc")
+            .append(userInputPortfolioLinkTemplate())
             .toString()
     }
 
     override fun provideUserInputAboutMeInfoMessage(): String {
         return StringBuilder()
             .append("Write some information about you\n")
-            .append("It is very important to your customers!\n")
-            .append("For example: I have been working in this industry for more than three years, made a coverage of half a million")
+            .append(userInputAboutMeTemplate())
             .toString()
     }
 
     override fun provideUserInputWorkingConditionsInfoMessage(): String {
         return StringBuilder()
             .append("Now write your working conditions\n")
-            .append("For example: from 500$ + percent")
+            .append(userInputWorkingConditionsTemplate())
             .toString()
     }
 
     override fun provideUserInputEducationGradeInfoMessage(): String {
         return StringBuilder()
             .append("Now write your education grade\n")
-            .append("For example: Finished guitar courses")
+            .append(userInputEducationGradeTemplate())
             .toString()
     }
 
     override fun provideUserInputContactLinksInfoMessage(): String {
         return StringBuilder()
             .append("Now send your contact links!\n")
-            .append("Write as most links as you can\n")
-            .append("We will show it to customers\n")
-            .append("For example: tg: ..., vk: ...")
+            .append(userInputContactLinksTemplate())
             .toString()
     }
 
@@ -297,6 +286,125 @@ class DefaultMessageTextProvider: MessageTextProvider {
             .append("You can change it in any time in your profile\n")
             .append("You can also edit your profile in any time!\n")
             .toString()
+    }
+
+    override fun provideUserChangeFullNameInfoMessage(): String {
+        return StringBuilder()
+            .append("Input your new full name!\n")
+            .append(userInputFullNameTemplate())
+            .toString()
+    }
+
+    override fun provideUserChangeDepartmentInfoMessage(): String {
+        return StringBuilder()
+            .append("Input your new department!\n")
+            .append(userInputDepartmentTemplate())
+            .toString()
+    }
+
+    override fun provideUserChangeProfessionsInfoMessage(professions: Collection<ProfessionDto>): String {
+        return StringBuilder()
+            .append("Input your new profession!\n")
+            .append(userInputProfessionTemplate(professions))
+            .toString()
+    }
+
+    override fun provideUserChangeKeySkillsInfoMessage(): String {
+        return StringBuilder()
+            .append("Input your new key skills!\n")
+            .append(userInputKeySkillsTemplate())
+            .toString()
+    }
+
+    override fun provideUserChangePortfolioLinkInfoMessage(): String {
+        return StringBuilder()
+            .append("Input your new portfolio link!\n")
+            .append(userInputPortfolioLinkTemplate())
+            .toString()
+    }
+
+    override fun provideUserChangeAboutMeInfoMessage(): String {
+        return StringBuilder()
+            .append("Input your new about me!\n")
+            .append(userInputAboutMeTemplate())
+            .toString()
+    }
+
+    override fun provideUserChangeWorkingConditionsInfoMessage(): String {
+        return StringBuilder()
+            .append("Input your new working conditions!\n")
+            .append(userInputWorkingConditionsTemplate())
+            .toString()
+    }
+
+    override fun provideUserChangeEducationGradeInfoMessage(): String {
+        return StringBuilder()
+            .append("Input your new education grade!\n")
+            .append(userInputEducationGradeTemplate())
+            .toString()
+    }
+
+    override fun provideUserChangeContactLinksInfoMessage(): String {
+        return StringBuilder()
+            .append("Input your new contact links!\n")
+            .append(userInputContactLinksTemplate())
+            .toString()
+    }
+
+    private fun userInputFullNameTemplate(): StringBuilder {
+        return StringBuilder()
+            .append("Input your full name\n")
+            .append("Example: Bob Bush")
+    }
+
+    private fun userInputDepartmentTemplate(): StringBuilder {
+        return StringBuilder()
+            .append("Example: Car business, instagram")
+    }
+
+    private fun userInputProfessionTemplate(professions: Collection<ProfessionDto>): StringBuilder {
+        val professionsInfo = professions.fold(StringBuilder()) { builder, profession ->
+            builder.append("${profession.friendlyName}: ${profession.shortDescription}\n")
+            builder.append("Choose /${profession.alias} \n")
+        }
+
+        return StringBuilder()
+            .append("Now available ${professions.count()} professions!\n")
+            .append(professionsInfo)
+            .append("Choose you profession!\n")
+    }
+
+    private fun userInputKeySkillsTemplate(): StringBuilder {
+        return StringBuilder()
+            .append("For example: diligence, availability\n")
+    }
+
+    private fun userInputPortfolioLinkTemplate(): StringBuilder {
+        return StringBuilder()
+            .append("Add your cases, done work and etc")
+    }
+
+    private fun userInputAboutMeTemplate(): StringBuilder {
+        return StringBuilder()
+            .append("It is very important to your customers!\n")
+            .append("For example: I have been working in this industry for more than three years, made a coverage of half a million")
+    }
+
+    private fun userInputWorkingConditionsTemplate(): StringBuilder {
+        return StringBuilder()
+            .append("For example: from 500$ + percent")
+    }
+
+    private fun userInputEducationGradeTemplate(): StringBuilder {
+        return StringBuilder()
+            .append("For example: Finished guitar courses")
+    }
+
+    private fun userInputContactLinksTemplate(): StringBuilder {
+        return StringBuilder()
+            .append("Write as most links as you can\n")
+            .append("We will show it to customers\n")
+            .append("For example: tg: ..., vk: ...")
     }
 
     private fun getProfileTemplate(specialist: SpecialistDto): StringBuilder {

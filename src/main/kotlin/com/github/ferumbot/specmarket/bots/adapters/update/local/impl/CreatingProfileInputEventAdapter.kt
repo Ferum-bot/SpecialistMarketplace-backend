@@ -28,18 +28,13 @@ class CreatingProfileInputEventAdapter(
     }
 
     override fun isFor(update: Update): Boolean {
-        val userId = update.getUserId()
-        val chatId = update.getChatId()
-        val info = BaseUpdateInfo.get(chatId, userId)
-
+        val info = BaseUpdateInfo.get(update)
         val currentState = userService.getUserCurrentState(info)
         return currentState.currentState in handlingStates
     }
 
     override fun adapt(update: Update): MessageUpdateBunch<*> {
-        val userId = update.getUserId()
-        val chatId = update.getChatId()
-        val info = BaseUpdateInfo.get(chatId, userId)
+        val info = BaseUpdateInfo.get(update)
         val currentState = userService.getUserCurrentState(info).currentState as CreatingProfileState
 
         return when(currentState) {
@@ -66,14 +61,18 @@ class CreatingProfileInputEventAdapter(
         }
     }
 
-    private fun getSimpleUserInput(info: BaseUpdateInfo, update: Update, event: CreatingProfileEvent): MessageUpdateBunch<*> {
+    private fun getSimpleUserInput(
+        info: BaseUpdateInfo, update: Update, event: CreatingProfileEvent
+    ): MessageUpdateBunch<*> {
         val input = update.getCommandAlias()
         val inputInfo = BaseUserInputInfo.from(info, input)
 
         return MessageUpdateBunch(event, inputInfo)
     }
 
-    private fun getCollectionUserInput(info: BaseUpdateInfo, update: Update, event: CreatingProfileEvent): MessageUpdateBunch<*> {
+    private fun getCollectionUserInput(
+        info: BaseUpdateInfo, update: Update, event: CreatingProfileEvent
+    ): MessageUpdateBunch<*> {
         val input = update.getCommandAlias().split(',', ignoreCase = true)
         val inputInfo = BaseUserInputInfo.from(info, input)
 
