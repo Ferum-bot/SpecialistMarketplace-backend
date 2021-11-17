@@ -30,9 +30,6 @@ class AdaptersConfig @Autowired constructor(
     @Autowired
     private lateinit var userService: TelegramUserService
 
-    @Autowired
-    private lateinit var professionService: ProfessionService
-
     /**
      *  Incoming event adapters
      */
@@ -176,14 +173,14 @@ class AdaptersConfig @Autowired constructor(
     @Bean
     fun provideCreatingProfileStateAdapter(): LocalUpdateResultAdapter {
         return CreatingProfileStateAdapter(
-            professionService, messageTextProvider, messageInlineButtonsProvider, messageKeyboardButtonsProvider
+            messageTextProvider, messageInlineButtonsProvider, messageKeyboardButtonsProvider
         )
     }
 
     @Bean
     fun provideEditProfileStateAdapter(): LocalUpdateResultAdapter {
         return EditProfileStateAdapter(
-            professionService, messageTextProvider, messageInlineButtonsProvider
+            messageTextProvider, messageInlineButtonsProvider
         )
     }
 

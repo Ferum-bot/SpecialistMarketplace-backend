@@ -13,15 +13,19 @@ data class SpecialistsPageInfo(
     val currentPageNumber: Int,
 
     val totalPageCount: Int,
+
+    val additionalData: String? = null,
 ): BaseUpdateInfo {
 
     companion object {
 
         fun from(
-            info: BaseUpdateInfo, specialists: Collection<SpecialistDto>, currentPage: Int, totalPages: Int
+            info: BaseUpdateInfo, specialists: Collection<SpecialistDto>,
+            currentPage: Int, totalPages: Int, data: String? = null,
         ): SpecialistsPageInfo {
             return SpecialistsPageInfo(
-                info.chatId, info.userId, specialists, currentPage, totalPages,
+                info.chatId, info.userId, specialists,
+                currentPage, totalPages, data
             )
         }
     }

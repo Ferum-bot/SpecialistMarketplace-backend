@@ -117,7 +117,7 @@ class MyProfileEventAdapter: LocalUpdateAdapter {
         val separator = ':'
         val separatorIndex = indexOf(separator)
         if (separatorIndex == -1) {
-            return 0
+            return 1
         }
 
         return substring(separatorIndex + 1).toInt()

@@ -3,7 +3,6 @@ package com.github.ferumbot.specmarket.bots.ui.inline_buttons
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
-import kotlin.time.times
 
 class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
 
@@ -19,6 +18,7 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
         private val ABOUT_EACH_SPECIALIST_NAME = OpenAboutEachSpecialistScreenEvent.friendlyName
 
         private val OPEN_REQUESTS_PAGE_COMMAND = OpenAnotherMyRequestsPageScreenEvent.commandAlias
+        private val OPEN_SPECIALISTS_PAGE_COMMAND = OpenAnotherSpecialistsPageScreenEvent.commandAlias
 
         private val SHOW_HOW_IT_LOOKS_LIKE_NOW_NAME = OpenHowItLooksLikeNowScreenEvent.friendlyName
         private val SHOW_HOW_IT_LOOKS_LIKE_NOW_COMMAND = OpenHowItLooksLikeNowScreenEvent.commandAlias
@@ -50,10 +50,38 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
     }
 
     override fun provideSpecialistRequestsButtons(currentPage: Int, totalPageCount: Int): InlineKeyboardMarkup {
+        val buttonProvider = object: ButtonProvider {
+
+            override fun invoke(page: Int, selectedPage: Int)
+            = InlineButton(
+                aliasForPageButton(page, selectedPage, totalPageCount),
+                commandForPageRequestsButton(page)
+            )
+        }
+
         return if (totalPageCount <= 5) {
-            getSpecialistRequestsSimpleButtons(currentPage, totalPageCount)
+            getPageSimpleButtons(currentPage, totalPageCount, buttonProvider)
         } else {
-            getSpecialistRequestComplicatedButtons(currentPage, totalPageCount)
+            getPageComplicatedButtons(currentPage, totalPageCount, buttonProvider)
+        }
+    }
+
+    override fun provideCurrentSpecialistsButton(
+        currentPage: Int, totalPageCount: Int, professionAlias: String
+    ): InlineKeyboardMarkup {
+        val buttonProvider = object: ButtonProvider {
+
+            override fun invoke(page: Int, selectedPage: Int)
+            = InlineButton(
+                aliasForPageButton(page, selectedPage, totalPageCount),
+                commandForPageSpecialistsButton(page, professionAlias),
+            )
+        }
+
+        return if (totalPageCount <= 5) {
+            getPageSimpleButtons(currentPage, totalPageCount, buttonProvider)
+        } else {
+            getPageComplicatedButtons(currentPage, totalPageCount, buttonProvider)
         }
     }
 
@@ -80,78 +108,49 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
         return getInlineKeyboard(firstRow, secondRow)
     }
 
-    private fun getSpecialistRequestsSimpleButtons(currentPage: Int, pageCount: Int): InlineKeyboardMarkup {
+    private fun getPageSimpleButtons(
+        selectedPage: Int, pageCount: Int, buttonProvider: ButtonProvider,
+    ): InlineKeyboardMarkup {
         val buttons = (1).rangeTo(pageCount).map { page ->
-            InlineButton(
-                aliasForPageButton(page, currentPage),
-                commandForPageButton(page)
-            )
+            buttonProvider(page, selectedPage)
         }
         val row = getInlineRow(*buttons.toTypedArray())
 
         return getInlineKeyboard(row)
     }
 
-    private fun getSpecialistRequestComplicatedButtons(currentPage: Int, pageCount: Int): InlineKeyboardMarkup {
+    private fun getPageComplicatedButtons(
+        selectedPage: Int, pageCount: Int, buttonProvider: ButtonProvider,
+    ): InlineKeyboardMarkup {
         val first = 1
 
-        val firstButton = InlineButton(
-            aliasForPageButton(first, currentPage, isLeftBorder = true),
-            commandForPageButton(first),
-        )
-        val fivesButton = InlineButton(
-            aliasForPageButton(pageCount, currentPage, isRightBorder = true),
-            commandForPageButton(pageCount)
-        )
+        val firstButton = buttonProvider(first, selectedPage)
+        val fivesButton = buttonProvider(pageCount, selectedPage)
 
-        if (currentPage == pageCount - 1) {
-            val forthButton = InlineButton(
-                aliasForPageButton(pageCount - 1, currentPage),
-                commandForPageButton(pageCount - 1)
-            )
-            val thirdButton = InlineButton(
-                aliasForPageButton(pageCount - 2, currentPage),
-                commandForPageButton(pageCount - 2)
-            )
-            val secondButton = InlineButton(
-                aliasForPageButton(pageCount - 3, currentPage),
-                commandForPageButton(pageCount - 3)
-            )
+        if (selectedPage == pageCount - 1) {
+            val forthButton = buttonProvider(pageCount - 1, selectedPage)
+            val thirdButton = buttonProvider(pageCount - 2, selectedPage)
+            val secondButton = buttonProvider(pageCount - 3, selectedPage)
+
             val row = getInlineRow(firstButton, secondButton, thirdButton, forthButton, fivesButton)
 
             return getInlineKeyboard(row)
         }
 
-        if (currentPage == first + 1) {
-            val secondButton = InlineButton(
-                aliasForPageButton(first + 1, currentPage),
-                commandForPageButton(first + 1)
-            )
-            val thirdButton = InlineButton(
-                aliasForPageButton(first + 2, currentPage),
-                commandForPageButton(first + 2)
-            )
-            val forthButton = InlineButton(
-                aliasForPageButton(first + 3, currentPage),
-                commandForPageButton(first + 3)
-            )
+        if (selectedPage == first + 1) {
+            val secondButton = buttonProvider(first + 1, selectedPage)
+            val thirdButton = buttonProvider(first + 2, selectedPage)
+            val forthButton = buttonProvider(first + 3, selectedPage)
+
             val row = getInlineRow(firstButton, secondButton, thirdButton, forthButton, fivesButton)
 
             return getInlineKeyboard(row)
         }
 
-        val secondButton = InlineButton(
-            aliasForPageButton(currentPage - 1, currentPage),
-            commandForPageButton(currentPage - 1)
-        )
-        val thirdButton = InlineButton(
-            aliasForPageButton(currentPage, currentPage),
-            commandForPageButton(currentPage)
-        )
-        val forthButton = InlineButton(
-            aliasForPageButton(currentPage + 1, currentPage),
-            commandForPageButton(currentPage + 1)
-        )
+        val secondButton = buttonProvider(selectedPage - 1, selectedPage)
+        val thirdButton = buttonProvider(selectedPage, selectedPage)
+        val forthButton = buttonProvider(selectedPage + 1, selectedPage)
+
         val row = getInlineRow(firstButton, secondButton, thirdButton, forthButton)
 
         return getInlineKeyboard(row)
@@ -192,8 +191,11 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
     }
 
     private fun aliasForPageButton(
-        page: Int, selectedPage: Int, isLeftBorder: Boolean = false, isRightBorder: Boolean = false,
+        page: Int, selectedPage: Int, pageCount: Int,
     ): String {
+        val isLeftBorder = page == 1
+        val isRightBorder = page == pageCount
+
         if (page == selectedPage) {
             return "* $page *"
         }
@@ -206,6 +208,15 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
         return page.toString()
     }
 
-    private fun commandForPageButton(page: Int) =
+    private fun commandForPageRequestsButton(page: Int) =
         "$OPEN_REQUESTS_PAGE_COMMAND$page"
+
+    private fun commandForPageSpecialistsButton(page: Int, alias: String) =
+        "$OPEN_SPECIALISTS_PAGE_COMMAND$page:$alias"
+
+    /**
+     * @param First current page
+     * @param Second selected page
+     */
+    private interface ButtonProvider: ((Int, Int) -> InlineButton)
 }

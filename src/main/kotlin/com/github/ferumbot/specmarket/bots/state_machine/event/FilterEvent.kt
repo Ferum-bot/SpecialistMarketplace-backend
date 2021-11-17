@@ -24,7 +24,7 @@ object OpenAnotherSpecialistsPageScreenEvent: FilterEvent {
 
     override val eventName: String = "Open another specialists page screen event"
 
-    override val commandAlias: String = "/open_another_specialists_page"
+    override val commandAlias: String = "/open_another_specialists_page:"
 
     override val friendlyName: String = "Open another specialists page"
 }

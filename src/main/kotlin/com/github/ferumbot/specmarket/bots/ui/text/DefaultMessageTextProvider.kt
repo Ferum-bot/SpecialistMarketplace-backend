@@ -144,6 +144,17 @@ class DefaultMessageTextProvider: MessageTextProvider {
             .toString()
     }
 
+    override fun provideFilterScreenInfoMessage(professions: Collection<ProfessionDto>): String {
+        val professionsToFilter = professions.fold(StringBuilder()) { builder, profession ->
+            builder.append("")
+        }
+
+        return StringBuilder()
+            .append("You can filter specialists by professions!\n")
+            .append("Available professions to filter")
+            .toString()
+    }
+
     override fun provideYouAreNotAuthorizedInfoMessage(): String {
         return StringBuilder()
             .append("This is Your profile\n")

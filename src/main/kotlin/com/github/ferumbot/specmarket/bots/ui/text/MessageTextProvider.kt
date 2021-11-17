@@ -26,6 +26,10 @@ interface MessageTextProvider {
 
     fun provideAllSpecialistInfoMessage(): String
 
+    fun provideFilterScreenInfoMessage(professions: Collection<ProfessionDto>): String
+
+    fun provideCurrentSpecialistsInfoMessage(specialists: Collection<SpecialistDto>): String
+
     fun provideYouAreNotAuthorizedInfoMessage(): String
 
     fun provideYouArePartiallyAuthorizedInfoMessage(specialist: SpecialistDto): String
