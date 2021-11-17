@@ -3,9 +3,9 @@ package com.github.ferumbot.specmarket.bots.processors.local.impl
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.OpenAnotherPageRequest
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.OpenAnotherPageInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistRequests
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.SpecialistsPageInfo
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
 import com.github.ferumbot.specmarket.bots.services.TelegramUserService
 import com.github.ferumbot.specmarket.bots.services.TelegramUserSpecialistService
@@ -37,7 +37,7 @@ class MyProfileUpdateProcessor(
         return when(event) {
             is OpenMyRequestsScreenEvent -> openMyRequestsScreen(info)
             is OpenEditInfoScreenEvent -> openEditMyProfile(info)
-            is OpenAnotherMyRequestsPageScreenEvent -> openAnotherMyRequestPageScreen(info as OpenAnotherPageRequest)
+            is OpenAnotherMyRequestsPageScreenEvent -> openAnotherMyRequestPageScreen(info as OpenAnotherPageInfo)
             is ChangeProfileSpecialistVisibilityScreenEvent -> changeProfileVisibilityEvent(info)
             else -> LocalUpdateProcessor.unSupportedEvent(info)
         }
@@ -47,11 +47,10 @@ class MyProfileUpdateProcessor(
         val newState = MyRequestsScreenState
         val totalCount = userService.countUserSpecialistRequests(info)
         val firstPage = 1
-        val startPage = PageRequest.of(firstPage, SPECIALIST_PER_SCREEN)
-        val specialistRequests = userService.getUserSpecialistRequests(info, startPage)
+        val specialistRequests = userService.getUserSpecialistRequests(info, firstPage, SPECIALIST_PER_SCREEN)
             .map { SpecialistDto.from(it) }
-        val resultInfo = UserSpecialistRequests(
-            info.chatId, info.userId, specialistRequests, firstPage, totalCount
+        val resultInfo = SpecialistsPageInfo.from(
+            info, specialistRequests, firstPage, totalCount
         )
         userService.setNewUserState(newState, info, firstPage, totalCount)
 
@@ -67,13 +66,12 @@ class MyProfileUpdateProcessor(
         return MessageUpdateResultBunch(newState, resultInfo)
     }
 
-    private fun openAnotherMyRequestPageScreen(info: OpenAnotherPageRequest): MessageUpdateResultBunch<*> {
+    private fun openAnotherMyRequestPageScreen(info: OpenAnotherPageInfo): MessageUpdateResultBunch<*> {
         val newState = MyRequestsScreenState
-        val pageToOpen = PageRequest.of(info.pageNumber, SPECIALIST_PER_SCREEN)
-        val specialistRequests = userService.getUserSpecialistRequests(info, pageToOpen)
+        val specialistRequests = userService.getUserSpecialistRequests(info, info.pageNumber, SPECIALIST_PER_SCREEN)
             .map { SpecialistDto.from(it) }
         val totalCount = userService.countUserSpecialistRequests(info)
-        val resultInfo = UserSpecialistRequests(
+        val resultInfo = SpecialistsPageInfo(
             info.chatId, info.userId, specialistRequests, info.pageNumber, totalCount
         )
         userService.setNewUserState(MyRequestsScreenState, info, info.pageNumber, totalCount)

@@ -107,7 +107,7 @@ class TelegramUserServiceImpl @Autowired constructor(
     }
 
     @Transactional(readOnly = true)
-    override fun getUserSpecialistRequests(info: BaseUpdateInfo, page: Pageable): Collection<Specialist> {
+    override fun getUserSpecialistRequests(info: BaseUpdateInfo, pageNumber: Int, pageSize: Int): Collection<Specialist> {
         val user = repository.findByTelegramUserId(info.userId)
         return user?.specialistsRequests ?: emptyList()
     }

@@ -3,20 +3,23 @@ package com.github.ferumbot.specmarket.bots.processors.local.impl
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUserInputInfo
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseInputInfo
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.ProfessionsInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
 import com.github.ferumbot.specmarket.bots.services.TelegramUserService
 import com.github.ferumbot.specmarket.bots.services.TelegramUserSpecialistService
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
-import com.github.ferumbot.specmarket.core.extensions.firstOrEmpty
 import com.github.ferumbot.specmarket.core.extensions.removeFirstCharIf
+import com.github.ferumbot.specmarket.models.dto.ProfessionDto
 import com.github.ferumbot.specmarket.models.entities.Specialist
+import com.github.ferumbot.specmarket.services.ProfessionService
 
 class EditProfileUpdateProcessor(
     private val userService: TelegramUserService,
     private val specialistService: TelegramUserSpecialistService,
+    private val professionService: ProfessionService,
 ): LocalUpdateProcessor {
 
     override fun canProcess(bunch: MessageUpdateBunch<*>): Boolean {
@@ -39,15 +42,15 @@ class EditProfileUpdateProcessor(
             is ChangeContactLinksEvent -> processChangeContactLinks(info)
             is FinishProfileEditingEvent -> processFinishProfileEditing(info)
 
-            is OnUserChangedFullNameEvent -> processUserChangedFullName(info as BaseUserInputInfo)
-            is OnUserChangedDepartmentEvent -> processUserChangedDepartment(info as BaseUserInputInfo)
-            is OnUserChangedProfessionEvent -> processUserChangedProfession(info as BaseUserInputInfo)
-            is OnUserChangedKeySkillsEvent -> processUserChangedKeySkills(info as BaseUserInputInfo)
-            is OnUserChangedPortfolioLinkEvent -> processUserChangedPortfolioLink(info as BaseUserInputInfo)
-            is OnUserChangedAboutMeEvent -> processUserChangedAboutMe(info as BaseUserInputInfo)
-            is OnUserChangedWorkingConditionsEvent -> processUserChangedWorkingConditions(info as BaseUserInputInfo)
-            is OnUserChangedEducationGradeEvent -> processUserChangedEducationGrade(info as BaseUserInputInfo)
-            is OnUserChangedContactLinksEvent -> processUserChangedContactLinks(info as BaseUserInputInfo)
+            is OnUserChangedFullNameEvent -> processUserChangedFullName(info as BaseInputInfo)
+            is OnUserChangedDepartmentEvent -> processUserChangedDepartment(info as BaseInputInfo)
+            is OnUserChangedProfessionEvent -> processUserChangedProfession(info as BaseInputInfo)
+            is OnUserChangedKeySkillsEvent -> processUserChangedKeySkills(info as BaseInputInfo)
+            is OnUserChangedPortfolioLinkEvent -> processUserChangedPortfolioLink(info as BaseInputInfo)
+            is OnUserChangedAboutMeEvent -> processUserChangedAboutMe(info as BaseInputInfo)
+            is OnUserChangedWorkingConditionsEvent -> processUserChangedWorkingConditions(info as BaseInputInfo)
+            is OnUserChangedEducationGradeEvent -> processUserChangedEducationGrade(info as BaseInputInfo)
+            is OnUserChangedContactLinksEvent -> processUserChangedContactLinks(info as BaseInputInfo)
 
             else -> LocalUpdateProcessor.unSupportedEvent(info)
         }
@@ -65,7 +68,13 @@ class EditProfileUpdateProcessor(
 
     private fun processChangeProfession(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
         val newState = UserChangeProfessionScreenState
-        return setNewStateAndReturn(info, newState)
+        userService.setNewUserState(newState, info)
+
+        val professions = professionService.getAllAvailableProfessions()
+            .map { ProfessionDto.from(it) }
+        val newInfo = ProfessionsInfo.from(info, professions)
+
+        return MessageUpdateResultBunch(newState, newInfo)
     }
 
     private fun processChangeKeySkills(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
@@ -108,21 +117,21 @@ class EditProfileUpdateProcessor(
         return MessageUpdateResultBunch(newState, newInfo)
     }
 
-    private fun processUserChangedFullName(info: BaseUserInputInfo): MessageUpdateResultBunch<*> {
+    private fun processUserChangedFullName(info: BaseInputInfo): MessageUpdateResultBunch<*> {
         val newFullName = info.simpleInput
 
         val specialist = specialistService.updateFullName(info, newFullName)
         return setEditStateAndReturn(info, specialist)
     }
 
-    private fun processUserChangedDepartment(info: BaseUserInputInfo): MessageUpdateResultBunch<*> {
+    private fun processUserChangedDepartment(info: BaseInputInfo): MessageUpdateResultBunch<*> {
         val newDepartment = info.simpleInput
 
         val specialist = specialistService.updateDepartment(info, newDepartment)
         return setEditStateAndReturn(info, specialist)
     }
 
-    private fun processUserChangedProfession(info: BaseUserInputInfo): MessageUpdateResultBunch<*> {
+    private fun processUserChangedProfession(info: BaseInputInfo): MessageUpdateResultBunch<*> {
         val newProfession = info.simpleInput
             .removeFirstCharIf { it.first() == '/' }
 
@@ -131,7 +140,7 @@ class EditProfileUpdateProcessor(
         return setEditStateAndReturn(info, specialist)
     }
 
-    private fun processUserChangedKeySkills(info: BaseUserInputInfo): MessageUpdateResultBunch<*> {
+    private fun processUserChangedKeySkills(info: BaseInputInfo): MessageUpdateResultBunch<*> {
         val newKeySkills = info.userInput
 
         specialistService.clearKeySkills(info)
@@ -139,35 +148,35 @@ class EditProfileUpdateProcessor(
         return setEditStateAndReturn(info, specialist)
     }
 
-    private fun processUserChangedPortfolioLink(info: BaseUserInputInfo): MessageUpdateResultBunch<*> {
+    private fun processUserChangedPortfolioLink(info: BaseInputInfo): MessageUpdateResultBunch<*> {
         val newPortfolioLink = info.simpleInput
 
         val specialist = specialistService.updatePortfolioLink(info, newPortfolioLink)
         return setEditStateAndReturn(info, specialist)
     }
 
-    private fun processUserChangedAboutMe(info: BaseUserInputInfo): MessageUpdateResultBunch<*> {
+    private fun processUserChangedAboutMe(info: BaseInputInfo): MessageUpdateResultBunch<*> {
         val newAbout = info.simpleInput
 
         val specialist = specialistService.updateAboutMe(info, newAbout)
         return setEditStateAndReturn(info, specialist)
     }
 
-    private fun processUserChangedWorkingConditions(info: BaseUserInputInfo): MessageUpdateResultBunch<*> {
+    private fun processUserChangedWorkingConditions(info: BaseInputInfo): MessageUpdateResultBunch<*> {
         val newWorkingConditions = info.simpleInput
 
         val specialist = specialistService.updateWorkingConditions(info, newWorkingConditions)
         return setEditStateAndReturn(info, specialist)
     }
 
-    private fun processUserChangedEducationGrade(info: BaseUserInputInfo): MessageUpdateResultBunch<*> {
+    private fun processUserChangedEducationGrade(info: BaseInputInfo): MessageUpdateResultBunch<*> {
         val newEducationGrade = info.simpleInput
 
         val specialist = specialistService.updateEducationGrade(info, newEducationGrade)
         return setEditStateAndReturn(info, specialist)
     }
 
-    private fun processUserChangedContactLinks(info: BaseUserInputInfo): MessageUpdateResultBunch<*> {
+    private fun processUserChangedContactLinks(info: BaseInputInfo): MessageUpdateResultBunch<*> {
         val newContactLinks = info.simpleInput
 
         val specialist = specialistService.updateContactLinks(info, newContactLinks)

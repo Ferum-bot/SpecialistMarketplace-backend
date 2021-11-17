@@ -28,7 +28,7 @@ interface TelegramUserService {
 
     fun getUserSpecialist(info: BaseUpdateInfo): Specialist?
 
-    fun getUserSpecialistRequests(info: BaseUpdateInfo, page: Pageable): Collection<Specialist>
+    fun getUserSpecialistRequests(info: BaseUpdateInfo, pageNumber: Int, pageSize: Int): Collection<Specialist>
 
     fun countUserSpecialistRequests(info: BaseUpdateInfo): Int
 }

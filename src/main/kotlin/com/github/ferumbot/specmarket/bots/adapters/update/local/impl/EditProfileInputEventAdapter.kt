@@ -1,12 +1,10 @@
 package com.github.ferumbot.specmarket.bots.adapters.update.local.impl
 
 import com.github.ferumbot.specmarket.bots.adapters.update.local.LocalUpdateAdapter
-import com.github.ferumbot.specmarket.bots.core.getChatId
 import com.github.ferumbot.specmarket.bots.core.getCommandAlias
-import com.github.ferumbot.specmarket.bots.core.getUserId
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUserInputInfo
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseInputInfo
 import com.github.ferumbot.specmarket.bots.services.TelegramUserService
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
@@ -64,7 +62,7 @@ class EditProfileInputEventAdapter(
         info: BaseUpdateInfo, update: Update, event: EditProfileEvent
     ): MessageUpdateBunch<*> {
         val input = update.getCommandAlias()
-        val inputInfo = BaseUserInputInfo.from(info, input)
+        val inputInfo = BaseInputInfo.from(info, input)
         return MessageUpdateBunch(event, inputInfo)
     }
 
@@ -72,7 +70,7 @@ class EditProfileInputEventAdapter(
         info: BaseUpdateInfo, update: Update, event: EditProfileEvent
     ): MessageUpdateBunch<*> {
         val input = update.getCommandAlias().split(',', ignoreCase = true)
-        val inputInfo = BaseUserInputInfo.from(info, input)
+        val inputInfo = BaseInputInfo.from(info, input)
         return MessageUpdateBunch(event, inputInfo)
     }
 }

@@ -6,7 +6,7 @@ import com.github.ferumbot.specmarket.bots.core.getCommandAlias
 import com.github.ferumbot.specmarket.bots.core.getUserId
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.OpenAnotherPageRequest
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.OpenAnotherPageInfo
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import org.telegram.telegrambots.meta.api.objects.Update
 
@@ -96,7 +96,7 @@ class MyProfileEventAdapter: LocalUpdateAdapter {
         val command = update.getCommandAlias()
         val pageToOpen = command.pageToOpen
 
-        val info = OpenAnotherPageRequest(chatId, userId, pageToOpen)
+        val info = OpenAnotherPageInfo(chatId, userId, pageToOpen)
         return MessageUpdateBunch(event, info)
     }
 

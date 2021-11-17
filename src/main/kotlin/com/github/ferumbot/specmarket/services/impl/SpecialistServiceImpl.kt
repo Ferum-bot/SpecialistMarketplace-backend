@@ -41,4 +41,14 @@ class SpecialistServiceImpl @Autowired constructor(
 
         return result.content.map { SpecialistDto.from(it) }
     }
+
+    @Transactional(readOnly = true)
+    override fun countSpecialistsByProfessionId(professionId: Long): Int {
+        TODO("Not yet implemented")
+    }
+
+    @Transactional(readOnly = true)
+    override fun countSpecialistsByProfessionAlias(alias: String): Int {
+        TODO("Not yet implemented")
+    }
 }

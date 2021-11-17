@@ -3,6 +3,7 @@ package com.github.ferumbot.specmarket.bots.adapters.result.local.impl
 import com.github.ferumbot.specmarket.bots.adapters.result.local.LocalUpdateResultAdapter
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.ProfessionsInfo
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
 import com.github.ferumbot.specmarket.bots.ui.inline_buttons.InlineMessageButtonsProvider
 import com.github.ferumbot.specmarket.bots.ui.text.MessageTextProvider
@@ -12,7 +13,6 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 
 class EditProfileStateAdapter(
-    private val professionService: ProfessionService,
     private val textProvider: MessageTextProvider,
     private val inlineButtonsProvider: InlineMessageButtonsProvider,
 ): LocalUpdateResultAdapter {
@@ -28,7 +28,7 @@ class EditProfileStateAdapter(
         return when(state) {
             is UserChangeFullNameScreenState -> getUserChangeFullName(info)
             is UserChangeDepartmentScreenState -> getUserChangeDepartment(info)
-            is UserChangeProfessionScreenState -> getUserChangeProfession(info)
+            is UserChangeProfessionScreenState -> getUserChangeProfession(info as ProfessionsInfo)
             is UserChangeKeySkillsScreenState -> getUserChangeKeySkills(info)
             is UserChangePortfolioLinkScreenState -> getUserChangePortfolioLink(info)
             is UserChangeAboutMeScreenState -> getUserChangeAboutMe(info)
@@ -49,9 +49,8 @@ class EditProfileStateAdapter(
         return getDefaultMethod(text, info)
     }
 
-    private fun getUserChangeProfession(info: BaseUpdateInfo): BotApiMethod<*> {
-        val professions = professionService.getAllAvailableProfessions()
-            .map { ProfessionDto.from(it) }
+    private fun getUserChangeProfession(info: ProfessionsInfo): BotApiMethod<*> {
+        val professions = info.professions
         val text = textProvider.provideUserChangeProfessionsInfoMessage(professions)
         return getDefaultMethod(text, info)
     }

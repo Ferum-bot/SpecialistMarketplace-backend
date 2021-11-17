@@ -2,7 +2,7 @@ package com.github.ferumbot.specmarket.bots.models.dto.update_info
 
 import com.github.ferumbot.specmarket.core.extensions.firstOrEmpty
 
-data class BaseUserInputInfo(
+data class BaseInputInfo(
 
     override val chatId: Long,
 
@@ -13,14 +13,14 @@ data class BaseUserInputInfo(
 
     companion object {
 
-        fun from(info: BaseUpdateInfo, input: String): BaseUserInputInfo {
-            return BaseUserInputInfo(
+        fun from(info: BaseUpdateInfo, input: String): BaseInputInfo {
+            return BaseInputInfo(
                 info.chatId, info.userId, listOf(input)
             )
         }
 
-        fun from(info: BaseUpdateInfo, input: Collection<String>): BaseUserInputInfo {
-            return BaseUserInputInfo(
+        fun from(info: BaseUpdateInfo, input: Collection<String>): BaseInputInfo {
+            return BaseInputInfo(
                 info.chatId, info.userId, input
             )
         }
