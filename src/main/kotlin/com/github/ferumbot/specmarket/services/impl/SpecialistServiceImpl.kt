@@ -69,12 +69,22 @@ class SpecialistServiceImpl @Autowired constructor(
     }
 
     @Transactional(readOnly = true)
-    override fun countSpecialistsByProfessionId(professionId: Long): Int {
-        return repository.countSpecialistsByProfessionId(professionId)
+    override fun countAllSpecialistsByProfessionId(professionId: Long): Int {
+        return repository.countAllSpecialistsByProfessionId(professionId)
     }
 
     @Transactional(readOnly = true)
-    override fun countSpecialistsByProfessionAlias(alias: String): Int {
-        return repository.countSpecialistsByProfessionAlias(alias)
+    override fun countAllSpecialistsByProfessionAlias(alias: String): Int {
+        return repository.countAllSpecialistsByProfessionAlias(alias)
+    }
+
+    @Transactional(readOnly = true)
+    override fun countAvailableSpecialistsByProfessionId(professionId: Long): Int {
+        return repository.countOnlyVisibleAndFinishedSpecialistsByProfessionId(professionId)
+    }
+
+    @Transactional(readOnly = true)
+    override fun countAvailableSpecialistsByProfessionAlias(alias: String): Int {
+        return repository.countOnlyVisibleAndFinishedSpecialistsByProfessionAlias(alias)
     }
 }

@@ -81,8 +81,10 @@ class FilterEventAdapter: LocalUpdateAdapter {
     }
 
     private fun getOpenCurrentSpecialists(update: Update): MessageUpdateBunch<*> {
+        val separator = "_"
         val input = update.getCommandAlias()
-        val professionAlias = input.split('_').last()
+        val professionAlias = input.split(separator)
+            .toMutableList().apply { removeFirst() }.joinToString(separator)
         val event = OpenCurrentSpecialistsScreenEvent
         val info = BaseDataInfo.from(update, professionAlias)
 
@@ -117,14 +119,5 @@ class FilterEventAdapter: LocalUpdateAdapter {
         return startsWith(GET_SPECIALISTS_CONTACTS_COMMAND, ignoreCase = true)
     }
 
-    private val String.pageToOpen: Int
-    get() {
-        val separator = ':'
-        val separatorIndex = indexOf(separator)
-        if (separatorIndex == -1) {
-            return 1
-        }
 
-        return substring(separatorIndex + 1).toInt()
-    }
 }

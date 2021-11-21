@@ -30,11 +30,11 @@ interface SpecialistRepository: JpaRepository<Specialist, Long> {
 
     @Query(
         value = "SELECT * FROM specialist WHERE specialist.id = " +
-                "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = :profession_id)" +
+                "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = ?1)" +
                 "AND specialist.is_visible = true AND specialist.is_completely_filled = true",
 
         countQuery = "SELECT COUNT(*) FROM specialist WHERE specialist.id = " +
-                "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = :profession_id)" +
+                "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = ?1)" +
                 "AND specialist.is_visible = true AND specialist.is_completely_filled = true",
 
         nativeQuery = true
@@ -49,11 +49,11 @@ interface SpecialistRepository: JpaRepository<Specialist, Long> {
     @Query(
         value = "SELECT * FROM specialist WHERE specialist.id = " +
                 "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = " +
-                "ANY(SELECT id FROM profession WHERE profession.alias = :profession_alias))",
+                "ANY(SELECT id FROM profession WHERE profession.alias = ?1))",
 
         countQuery = "SELECT COUNT(*) FROM specialist WHERE specialist.id = " +
                 "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = " +
-                "ANY(SELECT id FROM profession WHERE profession.alias = :profession_alias))",
+                "ANY(SELECT id FROM profession WHERE profession.alias = ?1))",
 
         nativeQuery = true
     )
@@ -68,12 +68,12 @@ interface SpecialistRepository: JpaRepository<Specialist, Long> {
     @Query(
         value = "SELECT * FROM specialist WHERE specialist.id = " +
                 "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = " +
-                "ANY(SELECT id FROM profession WHERE profession.alias = :profession_alias))" +
+                "ANY(SELECT id FROM profession WHERE profession.alias = ?1))" +
                 "AND specialist.is_visible = true and specialist.is_completely_filled = true",
 
         countQuery = "SELECT COUNT(*) FROM specialist WHERE specialist.id = " +
                 "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = " +
-                "ANY(SELECT id FROM profession WHERE profession.alias = :profession_alias))" +
+                "ANY(SELECT id FROM profession WHERE profession.alias = ?1))" +
                 "AND specialist.is_visible = true and specialist.is_completely_filled = true",
 
         nativeQuery = true
@@ -88,11 +88,24 @@ interface SpecialistRepository: JpaRepository<Specialist, Long> {
 
     @Query(
         value = "SELECT COUNT(*) FROM specialist WHERE specialist.id = " +
-                "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = :profession_id)",
+                "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = ?1)",
 
         nativeQuery = true,
     )
-    fun countSpecialistsByProfessionId(
+    fun countAllSpecialistsByProfessionId(
+        @Param(value = "profession_id")
+        professionId: Long,
+    ): Int
+
+
+    @Query(
+        value = "SELECT COUNT(*) FROM specialist WHERE specialist.id = " +
+                "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = ?1)" +
+                "AND is_visible = true AND is_completely_filled = true",
+
+        nativeQuery = true,
+    )
+    fun countOnlyVisibleAndFinishedSpecialistsByProfessionId(
         @Param(value = "profession_id")
         professionId: Long,
     ): Int
@@ -101,11 +114,25 @@ interface SpecialistRepository: JpaRepository<Specialist, Long> {
     @Query(
         value = "SELECT COUNT(*) FROM specialist WHERE specialist.id = " +
                 "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = " +
-                "ANY(SELECT id FROM profession WHERE profession.alias = :profession_alias))",
+                "ANY(SELECT id FROM profession WHERE profession.alias = ?1))",
 
         nativeQuery = true,
     )
-    fun countSpecialistsByProfessionAlias(
+    fun countAllSpecialistsByProfessionAlias(
+        @Param(value = "profession_alias")
+        alias: String,
+    ): Int
+
+
+    @Query(
+        value = "SELECT COUNT(*) FROM specialist WHERE specialist.id = " +
+                "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = " +
+                "ANY(SELECT id FROM profession WHERE profession.alias = ?1))" +
+                "AND is_visible = true AND is_completely_filled = true",
+
+        nativeQuery = true,
+    )
+    fun countOnlyVisibleAndFinishedSpecialistsByProfessionAlias(
         @Param(value = "profession_alias")
         alias: String,
     ): Int

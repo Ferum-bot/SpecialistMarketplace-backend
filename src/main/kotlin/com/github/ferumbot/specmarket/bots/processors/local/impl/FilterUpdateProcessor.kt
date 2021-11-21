@@ -51,6 +51,7 @@ class FilterUpdateProcessor(
             .map { ProfessionDto.from(it) }
         val newState = FilterScreenState
         val newInfo = ProfessionsInfo.from(info, availableProfessions)
+        userService.setNewUserState(newState, info)
 
         return MessageUpdateResultBunch(newState, newInfo)
     }
@@ -59,7 +60,7 @@ class FilterUpdateProcessor(
         val firstPage = 1
         val professionAlias = info.simpleInput.removeFirstCharIf { it.first() == '/' }
         val specialists = specialistService.getAvailableSpecialistsByProfessionAlias(professionAlias, firstPage, SPECIALIST_PER_PAGE)
-        val specialistsCount = specialistService.countSpecialistsByProfessionAlias(professionAlias)
+        val specialistsCount = specialistService.countAvailableSpecialistsByProfessionAlias(professionAlias)
         val newState = CurrentSpecialistsScreenState
         userService.setNewUserState(newState, info)
 
@@ -74,7 +75,7 @@ class FilterUpdateProcessor(
         val currentPage = info.pageNumber
         val professionAlias = info.additionalData.orEmpty()
         val specialists = specialistService.getAvailableSpecialistsByProfessionAlias(professionAlias, currentPage, SPECIALIST_PER_PAGE)
-        val specialistsCount = specialistService.countSpecialistsByProfessionAlias(professionAlias)
+        val specialistsCount = specialistService.countAvailableSpecialistsByProfessionAlias(professionAlias)
         val state = CurrentSpecialistsScreenState
 
         val newInfo = SpecialistsPageInfo.from(

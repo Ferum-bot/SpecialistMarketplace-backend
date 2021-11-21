@@ -25,7 +25,11 @@ interface SpecialistService {
         alias: String, pageNumber: Int, pageSize: Int
     ): Collection<SpecialistDto>
 
-    fun countSpecialistsByProfessionId(professionId: Long): Int
+    fun countAllSpecialistsByProfessionId(professionId: Long): Int
 
-    fun countSpecialistsByProfessionAlias(alias: String): Int
+    fun countAllSpecialistsByProfessionAlias(alias: String): Int
+
+    fun countAvailableSpecialistsByProfessionId(professionId: Long): Int
+
+    fun countAvailableSpecialistsByProfessionAlias(alias: String): Int
 }

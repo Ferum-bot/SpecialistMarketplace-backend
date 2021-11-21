@@ -465,7 +465,7 @@ class DefaultMessageTextProvider: MessageTextProvider {
             .append("For example: tg: ..., vk: ...")
     }
 
-    private fun getProfileTemplate(specialist: SpecialistDto): StringBuilder {
+    private fun getProfileTemplate(specialist: SpecialistDto, ignoreContactLinks: Boolean = false): StringBuilder {
         return specialist.run {
             StringBuilder()
                 .append("1. Full Name:\n ${fullName ?: "-"} \n")
@@ -476,8 +476,13 @@ class DefaultMessageTextProvider: MessageTextProvider {
                 .append("6. About me:\n ${aboutMe ?: "-"} \n")
                 .append("7. Working conditions:\n ${workingConditions ?: "-"} \n")
                 .append("8. Education grade:\n ${educationGrade ?: "-"} \n")
-                .append("9. Contact links:\n ${contactLinks ?: "-"} \n")
+                .apply {
+                    if (!ignoreContactLinks) {
+                        append("9. Contact links:\n ${contactLinks ?: "-"} \n")
+                    }
+                }
                 .append("\n")
+
         }
     }
 }
