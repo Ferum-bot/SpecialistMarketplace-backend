@@ -62,7 +62,7 @@ class CreatingProfileCommonEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val event = RestartRegistrationFlowEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 
     private fun continueCreatingProfileFlow(update: Update): MessageUpdateBunch<*> {
@@ -70,7 +70,7 @@ class CreatingProfileCommonEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val event = ContinueCreatingProfileFlowEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 
     private fun registrationFlowFinished(update: Update): MessageUpdateBunch<*> {
@@ -78,7 +78,7 @@ class CreatingProfileCommonEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val event = OnUserRegistrationFinishedEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 
     private fun openHotItLooksNow(update: Update): MessageUpdateBunch<*> {
@@ -86,6 +86,6 @@ class CreatingProfileCommonEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val event = OpenHowItLooksLikeNowScreenEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 }

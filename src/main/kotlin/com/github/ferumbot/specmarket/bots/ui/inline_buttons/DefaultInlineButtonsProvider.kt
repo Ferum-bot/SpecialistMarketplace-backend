@@ -28,6 +28,9 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
 
         private val RESTART_REGISTRATION_FLOW_NAME = RestartRegistrationFlowEvent.friendlyName
         private val RESTART_REGISTRATION_FLOW_COMMAND = RestartRegistrationFlowEvent.commandAlias
+
+        private val GET_SPECIALISTS_CONTACTS_NAME = GetSpecialistsContactsEvent.friendlyName
+        private val GET_SPECIALISTS_CONTACTS_COMMAND = GetSpecialistsContactsEvent.commandAlias
     }
 
     override fun provideNotImplementedScreenButtons(): InlineKeyboardMarkup {
@@ -67,8 +70,9 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
     }
 
     override fun provideCurrentSpecialistsButton(
-        currentPage: Int, totalPageCount: Int, professionAlias: String
+        currentPage: Int, totalPageCount: Int, professionAlias: String, specialistId: Long,
     ): InlineKeyboardMarkup {
+        val getContactRow = getGetSpecialistsContactsRow(specialistId)
         val buttonProvider = object: ButtonProvider {
 
             override fun invoke(page: Int, selectedPage: Int)
@@ -79,9 +83,9 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
         }
 
         return if (totalPageCount <= 5) {
-            getPageSimpleButtons(currentPage, totalPageCount, buttonProvider)
+            getPageSimpleButtons(currentPage, totalPageCount, buttonProvider, getContactRow)
         } else {
-            getPageComplicatedButtons(currentPage, totalPageCount, buttonProvider)
+            getPageComplicatedButtons(currentPage, totalPageCount, buttonProvider, getContactRow)
         }
     }
 
@@ -110,17 +114,19 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
 
     private fun getPageSimpleButtons(
         selectedPage: Int, pageCount: Int, buttonProvider: ButtonProvider,
+        vararg extraRows: InlineRow
     ): InlineKeyboardMarkup {
         val buttons = (1).rangeTo(pageCount).map { page ->
             buttonProvider(page, selectedPage)
         }
         val row = getInlineRow(*buttons.toTypedArray())
 
-        return getInlineKeyboard(row)
+        return getInlineKeyboard(row, *extraRows)
     }
 
     private fun getPageComplicatedButtons(
         selectedPage: Int, pageCount: Int, buttonProvider: ButtonProvider,
+        vararg extraRows: InlineRow
     ): InlineKeyboardMarkup {
         val first = 1
 
@@ -153,7 +159,16 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
 
         val row = getInlineRow(firstButton, secondButton, thirdButton, forthButton)
 
-        return getInlineKeyboard(row)
+        return getInlineKeyboard(row, *extraRows)
+    }
+
+    private fun getGetSpecialistsContactsRow(specialistId: Long): InlineRow {
+        val button = InlineButton(
+            GET_SPECIALISTS_CONTACTS_NAME,
+            commandForGetSpecialistsContacts(specialistId)
+        )
+
+        return getInlineRow(button)
     }
 
     private fun getSingleInlineButton(alias: String, command: String): InlineKeyboardMarkup {
@@ -177,10 +192,6 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
     private fun getInlineRow(vararg buttons: InlineButton): InlineRow {
         return InlineRow(buttons.toList())
     }
-
-    private data class InlineButton(val alias: String, val command: String)
-
-    private data class InlineRow(val buttons: List<InlineButton>)
 
     private fun InlineRow.toApiRow(): List<InlineKeyboardButton> {
         return buttons.map { button ->
@@ -212,11 +223,18 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
         "$OPEN_REQUESTS_PAGE_COMMAND$page"
 
     private fun commandForPageSpecialistsButton(page: Int, alias: String) =
-        "$OPEN_SPECIALISTS_PAGE_COMMAND$page:$alias"
+        "$OPEN_SPECIALISTS_PAGE_COMMAND:$page:$alias"
+
+    private fun commandForGetSpecialistsContacts(specialistId: Long) =
+        "$GET_SPECIALISTS_CONTACTS_COMMAND:$specialistId"
 
     /**
      * @param First current page
      * @param Second selected page
      */
     private interface ButtonProvider: ((Int, Int) -> InlineButton)
+
+    private data class InlineButton(val alias: String, val command: String)
+
+    private data class InlineRow(val buttons: List<InlineButton>)
 }

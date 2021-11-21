@@ -27,6 +27,7 @@ interface SpecialistRepository: JpaRepository<Specialist, Long> {
         page: Pageable,
     ): Page<Specialist>
 
+
     @Query(
         value = "SELECT * FROM specialist WHERE specialist.id = " +
                 "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = " +
@@ -44,4 +45,29 @@ interface SpecialistRepository: JpaRepository<Specialist, Long> {
 
         page: Pageable,
     ): Page<Specialist>
+
+
+    @Query(
+        value = "SELECT COUNT(*) FROM specialist WHERE specialist.id = " +
+                "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = :profession_id)",
+
+        nativeQuery = true,
+    )
+    fun countSpecialistsByProfessionId(
+        @Param(value = "profession_id")
+        professionId: Long,
+    ): Int
+
+
+    @Query(
+        value = "SELECT COUNT(*) FROM specialist WHERE specialist.id = " +
+                "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = " +
+                "ANY(SELECT id FROM profession WHERE profession.alias = :profession_alias))",
+
+        nativeQuery = true,
+    )
+    fun countSpecialistsByProfessionAlias(
+        @Param(value = "profession_alias")
+        alias: String,
+    ): Int
 }

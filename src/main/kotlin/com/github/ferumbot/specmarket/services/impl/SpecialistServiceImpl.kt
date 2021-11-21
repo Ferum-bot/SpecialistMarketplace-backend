@@ -1,6 +1,7 @@
 package com.github.ferumbot.specmarket.services.impl
 
 import com.github.ferumbot.specmarket.models.dto.SpecialistDto
+import com.github.ferumbot.specmarket.models.entities.Specialist
 import com.github.ferumbot.specmarket.repositories.SpecialistRepository
 import com.github.ferumbot.specmarket.services.SpecialistService
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +24,12 @@ class SpecialistServiceImpl @Autowired constructor(
     }
 
     @Transactional(readOnly = true)
-    override fun getSpecialistByProfessionId(
+    override fun getSpecialistById(id: Long): Specialist? {
+        return repository.findById(id).orElseGet(null)
+    }
+
+    @Transactional(readOnly = true)
+    override fun getSpecialistsByProfessionId(
         professionId: Long, pageNumber: Int, pageSize: Int
     ): Collection<SpecialistDto> {
         val page = PageRequest.of(pageNumber - 1, pageSize)
@@ -33,7 +39,7 @@ class SpecialistServiceImpl @Autowired constructor(
     }
 
     @Transactional(readOnly = true)
-    override fun getSpecialistByProfessionAlias(
+    override fun getSpecialistsByProfessionAlias(
         alias: String, pageNumber: Int, pageSize: Int
     ): Collection<SpecialistDto> {
         val page = PageRequest.of(pageNumber - 1, pageSize)
@@ -44,11 +50,11 @@ class SpecialistServiceImpl @Autowired constructor(
 
     @Transactional(readOnly = true)
     override fun countSpecialistsByProfessionId(professionId: Long): Int {
-        TODO("Not yet implemented")
+        return repository.countSpecialistsByProfessionId(professionId)
     }
 
     @Transactional(readOnly = true)
     override fun countSpecialistsByProfessionAlias(alias: String): Int {
-        TODO("Not yet implemented")
+        return repository.countSpecialistsByProfessionAlias(alias)
     }
 }

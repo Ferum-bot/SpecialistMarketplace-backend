@@ -61,7 +61,7 @@ class MyProfileEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val event = OpenMyRequestsScreenEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 
     private fun openEditProfile(update: Update): MessageUpdateBunch<*> {
@@ -69,7 +69,7 @@ class MyProfileEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val event = OpenEditInfoScreenEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 
     private fun openContinueRegistration(update: Update): MessageUpdateBunch<*> {
@@ -77,7 +77,7 @@ class MyProfileEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val event = ContinueCreatingProfileFlowEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 
     private fun openStartRegistration(update: Update): MessageUpdateBunch<*> {
@@ -85,7 +85,7 @@ class MyProfileEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val event = StartRegistrationFlowEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 
     private fun openAnotherRequestsPage(update: Update): MessageUpdateBunch<*> {
@@ -105,7 +105,7 @@ class MyProfileEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val event = ChangeProfileSpecialistVisibilityScreenEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 
     private fun String.isOpenAnotherRequestsPageCommand(): Boolean {

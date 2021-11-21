@@ -48,7 +48,7 @@ class StartEventAdapter: LocalUpdateAdapter {
         val chatId = update.getChatId()
         val event = OpenContactWithUsScreenEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 
     private fun openIAmCustomer(update: Update): MessageUpdateBunch<*> {
@@ -56,7 +56,7 @@ class StartEventAdapter: LocalUpdateAdapter {
         val chatId = update.getChatId()
         val event = OpenIAmCustomerScreenEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 
     private fun openIAmSpecialist(update: Update): MessageUpdateBunch<*> {
@@ -64,7 +64,7 @@ class StartEventAdapter: LocalUpdateAdapter {
         val chatId = update.getChatId()
         val event = OpenIAmSpecialistScreenEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 
     private fun openAllSpecialists(update: Update): MessageUpdateBunch<*> {
@@ -72,7 +72,7 @@ class StartEventAdapter: LocalUpdateAdapter {
         val chatId = update.getChatId()
         val event = OpenAllSpecialistsScreenEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 
     private fun openMyProfile(update: Update): MessageUpdateBunch<*> {
@@ -80,6 +80,6 @@ class StartEventAdapter: LocalUpdateAdapter {
         val chatId = update.getChatId()
         val event = OpenMyProfileScreenEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 }

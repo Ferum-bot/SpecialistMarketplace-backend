@@ -4,7 +4,7 @@ import com.github.ferumbot.specmarket.bots.adapters.update.local.LocalUpdateAdap
 import com.github.ferumbot.specmarket.bots.core.getCommandAlias
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseInputInfo
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseDataInfo
 import com.github.ferumbot.specmarket.bots.services.TelegramUserService
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
@@ -26,13 +26,13 @@ class CreatingProfileInputEventAdapter(
     }
 
     override fun isFor(update: Update): Boolean {
-        val info = BaseUpdateInfo.get(update)
+        val info = BaseUpdateInfo.from(update)
         val currentState = userService.getUserCurrentState(info)
         return currentState.currentState in handlingStates
     }
 
     override fun adapt(update: Update): MessageUpdateBunch<*> {
-        val info = BaseUpdateInfo.get(update)
+        val info = BaseUpdateInfo.from(update)
         val currentState = userService.getUserCurrentState(info).currentState as CreatingProfileState
 
         return when(currentState) {
@@ -63,7 +63,7 @@ class CreatingProfileInputEventAdapter(
         info: BaseUpdateInfo, update: Update, event: CreatingProfileEvent
     ): MessageUpdateBunch<*> {
         val input = update.getCommandAlias()
-        val inputInfo = BaseInputInfo.from(info, input)
+        val inputInfo = BaseDataInfo.from(info, input)
 
         return MessageUpdateBunch(event, inputInfo)
     }
@@ -72,7 +72,7 @@ class CreatingProfileInputEventAdapter(
         info: BaseUpdateInfo, update: Update, event: CreatingProfileEvent
     ): MessageUpdateBunch<*> {
         val input = update.getCommandAlias().split(',', ignoreCase = true)
-        val inputInfo = BaseInputInfo.from(info, input)
+        val inputInfo = BaseDataInfo.from(info, input)
 
         return MessageUpdateBunch(event, inputInfo)
     }

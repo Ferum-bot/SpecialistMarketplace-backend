@@ -8,14 +8,14 @@ interface BaseUpdateInfo {
 
     companion object {
 
-        fun get(chatId: Long, userId: Long): BaseUpdateInfo {
+        fun from(chatId: Long, userId: Long): BaseUpdateInfo {
             return object: BaseUpdateInfo {
                 override val chatId: Long = chatId
                 override val userId: Long = userId
             }
         }
 
-        fun get(update: Update): BaseUpdateInfo {
+        fun from(update: Update): BaseUpdateInfo {
             return object: BaseUpdateInfo {
                 override val chatId: Long = update.getChatId()
                 override val userId: Long = update.getUserId()

@@ -44,7 +44,7 @@ class IAmCustomerEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val event = OpenIDoNotKnowWhatIWantScreenEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 
     private fun openAboutEachSpecialist(update: Update): MessageUpdateBunch<*> {
@@ -52,6 +52,6 @@ class IAmCustomerEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val event = OpenAboutEachSpecialistScreenEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 }

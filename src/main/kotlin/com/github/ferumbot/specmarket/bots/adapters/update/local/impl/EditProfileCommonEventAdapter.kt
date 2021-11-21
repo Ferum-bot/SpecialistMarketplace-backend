@@ -59,70 +59,70 @@ class EditProfileCommonEventAdapter: LocalUpdateAdapter {
 
     private fun changeFullName(update: Update): MessageUpdateBunch<*> {
         val event = ChangeFullNameEvent
-        val info = BaseUpdateInfo.get(update)
+        val info = BaseUpdateInfo.from(update)
 
         return MessageUpdateBunch(event, info)
     }
 
     private fun changeDepartment(update: Update): MessageUpdateBunch<*> {
         val event = ChangeDepartmentEvent
-        val info = BaseUpdateInfo.get(update)
+        val info = BaseUpdateInfo.from(update)
 
         return MessageUpdateBunch(event, info)
     }
 
     private fun changeProfession(update: Update): MessageUpdateBunch<*> {
         val event = ChangeProfessionEvent
-        val info = BaseUpdateInfo.get(update)
+        val info = BaseUpdateInfo.from(update)
 
         return MessageUpdateBunch(event, info)
     }
 
     private fun changeKeySkills(update: Update): MessageUpdateBunch<*> {
         val event = ChangeKeySkillsEvent
-        val info = BaseUpdateInfo.get(update)
+        val info = BaseUpdateInfo.from(update)
 
         return MessageUpdateBunch(event, info)
     }
 
     private fun changePortfolioLink(update: Update): MessageUpdateBunch<*> {
         val event = ChangePortfolioLinkEvent
-        val info = BaseUpdateInfo.get(update)
+        val info = BaseUpdateInfo.from(update)
 
         return MessageUpdateBunch(event, info)
     }
 
     private fun changeAboutMe(update: Update): MessageUpdateBunch<*> {
         val event = ChangeAboutMeEvent
-        val info = BaseUpdateInfo.get(update)
+        val info = BaseUpdateInfo.from(update)
 
         return MessageUpdateBunch(event, info)
     }
 
     private fun changeWorkingConditions(update: Update): MessageUpdateBunch<*> {
         val event = ChangeWorkingConditionsEvent
-        val info = BaseUpdateInfo.get(update)
+        val info = BaseUpdateInfo.from(update)
 
         return MessageUpdateBunch(event, info)
     }
 
     private fun changeEducationGrade(update: Update): MessageUpdateBunch<*> {
         val event = ChangeEducationGradeEvent
-        val info = BaseUpdateInfo.get(update)
+        val info = BaseUpdateInfo.from(update)
 
         return MessageUpdateBunch(event, info)
     }
 
     private fun changeContactLinks(update: Update): MessageUpdateBunch<*> {
         val event = ChangeContactLinksEvent
-        val info = BaseUpdateInfo.get(update)
+        val info = BaseUpdateInfo.from(update)
 
         return MessageUpdateBunch(event, info)
     }
 
     private fun finishProfileEditing(update: Update): MessageUpdateBunch<*> {
         val event = FinishProfileEditingEvent
-        val info = BaseUpdateInfo.get(update)
+        val info = BaseUpdateInfo.from(update)
 
         return MessageUpdateBunch(event, info)
     }

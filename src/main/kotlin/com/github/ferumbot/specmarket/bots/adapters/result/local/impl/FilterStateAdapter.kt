@@ -2,8 +2,10 @@ package com.github.ferumbot.specmarket.bots.adapters.result.local.impl
 
 import com.github.ferumbot.specmarket.bots.adapters.result.local.LocalUpdateResultAdapter
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseDataInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.ProfessionsInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.SpecialistsPageInfo
+import com.github.ferumbot.specmarket.bots.state_machine.state.CurrentSpecialistsContactsScreenState
 import com.github.ferumbot.specmarket.bots.state_machine.state.CurrentSpecialistsScreenState
 import com.github.ferumbot.specmarket.bots.state_machine.state.FilterScreenState
 import com.github.ferumbot.specmarket.bots.state_machine.state.FilterState
@@ -28,6 +30,7 @@ class FilterStateAdapter(
         return when(state) {
             is FilterScreenState -> getFilterScreen(info as ProfessionsInfo)
             is CurrentSpecialistsScreenState -> getCurrentSpecialistsScreen(info as SpecialistsPageInfo)
+            is CurrentSpecialistsContactsScreenState -> getCurrentSpecialistContactsScreen(info as BaseDataInfo)
             else -> LocalUpdateResultAdapter.unSupportedState(info)
         }
     }
@@ -42,15 +45,27 @@ class FilterStateAdapter(
 
     private fun getCurrentSpecialistsScreen(info: SpecialistsPageInfo): BotApiMethod<*> {
         val specialists = info.specialists
+        val specialistId = specialists.first().id!!
+        val professionAlias = info.additionalData!!
         val currentPage = info.currentPageNumber
         val pageCount = info.totalPageCount
         val text = textProvider.provideCurrentSpecialistsInfoMessage(specialists)
-        val buttons = inlineButtonsProvider.provideCurrentSpecialistsButton(currentPage, pageCount)
+        val buttons = inlineButtonsProvider.provideCurrentSpecialistsButton(
+            currentPage, pageCount, professionAlias, specialistId
+        )
         val chatId = info.chatId.toString()
         val sendMessage = SendMessage(chatId, text).apply {
             replyMarkup = buttons
         }
 
         return sendMessage
+    }
+
+    private fun getCurrentSpecialistContactsScreen(info: BaseDataInfo): BotApiMethod<*> {
+        val contacts = info.simpleInput
+        val text = textProvider.provideCurrentSpecialistContactsInfoMessage(contacts)
+        val chatId = info.chatId.toString()
+
+        return SendMessage(chatId, text)
     }
 }

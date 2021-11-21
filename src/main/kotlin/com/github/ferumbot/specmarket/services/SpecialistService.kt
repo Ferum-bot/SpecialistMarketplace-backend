@@ -7,9 +7,11 @@ interface SpecialistService {
 
     fun getAllSpecialists(pageNumber: Int, pageSize: Int): Collection<SpecialistDto>
 
-    fun getSpecialistByProfessionId(professionId: Long, pageNumber: Int, pageSize: Int): Collection<SpecialistDto>
+    fun getSpecialistById(id: Long): Specialist?
 
-    fun getSpecialistByProfessionAlias(alias: String, pageNumber: Int, pageSize: Int): Collection<SpecialistDto>
+    fun getSpecialistsByProfessionId(professionId: Long, pageNumber: Int, pageSize: Int): Collection<SpecialistDto>
+
+    fun getSpecialistsByProfessionAlias(alias: String, pageNumber: Int, pageSize: Int): Collection<SpecialistDto>
 
     fun countSpecialistsByProfessionId(professionId: Long): Int
 

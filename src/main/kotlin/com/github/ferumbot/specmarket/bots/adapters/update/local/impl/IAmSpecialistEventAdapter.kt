@@ -5,7 +5,6 @@ import com.github.ferumbot.specmarket.bots.core.*
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.state_machine.event.OpenIAmSpecialistScreenEvent
-import org.apache.tomcat.jni.Local
 import org.telegram.telegrambots.meta.api.objects.Update
 
 class IAmSpecialistEventAdapter: LocalUpdateAdapter {
@@ -40,6 +39,6 @@ class IAmSpecialistEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val event = OpenIAmSpecialistScreenEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 }

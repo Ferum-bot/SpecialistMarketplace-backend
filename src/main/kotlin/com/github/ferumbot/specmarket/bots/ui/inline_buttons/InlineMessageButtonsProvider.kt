@@ -15,7 +15,7 @@ interface InlineMessageButtonsProvider {
     fun provideSpecialistRequestsButtons(currentPage: Int, totalPageCount: Int): InlineKeyboardMarkup
 
     fun provideCurrentSpecialistsButton(
-        currentPage: Int, totalPageCount: Int, professionAlias: String
+        currentPage: Int, totalPageCount: Int, professionAlias: String, specialistId: Long
     ): InlineKeyboardMarkup
 
     fun provideCreatingProfileButtons(): InlineKeyboardMarkup

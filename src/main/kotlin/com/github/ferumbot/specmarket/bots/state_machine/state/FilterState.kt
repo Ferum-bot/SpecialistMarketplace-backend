@@ -15,3 +15,10 @@ object CurrentSpecialistsScreenState: FilterState {
 
     override val previousState: BotState = StartScreenState
 }
+
+object CurrentSpecialistsContactsScreenState: FilterState {
+
+    override val screenName: String = "Current specialists contacts screen state"
+
+    override val previousState: BotState = StartScreenState
+}

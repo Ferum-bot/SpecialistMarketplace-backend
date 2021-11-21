@@ -5,17 +5,14 @@ import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultB
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.*
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
 import com.github.ferumbot.specmarket.bots.services.TelegramUserService
-import com.github.ferumbot.specmarket.bots.state_machine.event.FilterEvent
-import com.github.ferumbot.specmarket.bots.state_machine.event.OpenAnotherSpecialistsPageScreenEvent
-import com.github.ferumbot.specmarket.bots.state_machine.event.OpenCurrentSpecialistsScreenEvent
-import com.github.ferumbot.specmarket.bots.state_machine.event.OpenFilterScreenEvent
+import com.github.ferumbot.specmarket.bots.state_machine.event.*
+import com.github.ferumbot.specmarket.bots.state_machine.state.CurrentSpecialistsContactsScreenState
 import com.github.ferumbot.specmarket.bots.state_machine.state.CurrentSpecialistsScreenState
 import com.github.ferumbot.specmarket.bots.state_machine.state.FilterScreenState
 import com.github.ferumbot.specmarket.core.extensions.removeFirstCharIf
 import com.github.ferumbot.specmarket.models.dto.ProfessionDto
 import com.github.ferumbot.specmarket.services.ProfessionService
 import com.github.ferumbot.specmarket.services.SpecialistService
-import org.springframework.data.domain.PageRequest
 
 class FilterUpdateProcessor(
     private val professionService: ProfessionService,
@@ -40,9 +37,11 @@ class FilterUpdateProcessor(
             is OpenFilterScreenEvent ->
                 processOpenFilterEvent(info)
             is OpenCurrentSpecialistsScreenEvent ->
-                processOpenCurrentSpecialistsEvent(info as BaseInputInfo)
+                processOpenCurrentSpecialistsEvent(info as BaseDataInfo)
             is OpenAnotherSpecialistsPageScreenEvent ->
                 processOpenAnotherSpecialistsPageEvent(info as OpenAnotherPageInfo)
+            is GetSpecialistsContactsEvent ->
+                processGetSpecialistsContactsEvent(info as GetSpecialistContactsInfo)
             else -> LocalUpdateProcessor.unSupportedEvent(info)
         }
     }
@@ -56,16 +55,16 @@ class FilterUpdateProcessor(
         return MessageUpdateResultBunch(newState, newInfo)
     }
 
-    private fun processOpenCurrentSpecialistsEvent(info: BaseInputInfo): MessageUpdateResultBunch<*> {
+    private fun processOpenCurrentSpecialistsEvent(info: BaseDataInfo): MessageUpdateResultBunch<*> {
         val firstPage = 1
         val professionAlias = info.simpleInput.removeFirstCharIf { it.first() == '/' }
-        val specialists = specialistService.getSpecialistByProfessionAlias(professionAlias, firstPage, SPECIALIST_PER_PAGE)
+        val specialists = specialistService.getSpecialistsByProfessionAlias(professionAlias, firstPage, SPECIALIST_PER_PAGE)
         val specialistsCount = specialistService.countSpecialistsByProfessionAlias(professionAlias)
         val newState = CurrentSpecialistsScreenState
         userService.setNewUserState(newState, info)
 
         val newInfo = SpecialistsPageInfo.from(
-            info, specialists, firstPage, specialistsCount
+            info, specialists, firstPage, specialistsCount, professionAlias
         )
 
         return MessageUpdateResultBunch(newState, newInfo)
@@ -74,13 +73,24 @@ class FilterUpdateProcessor(
     private fun processOpenAnotherSpecialistsPageEvent(info: OpenAnotherPageInfo): MessageUpdateResultBunch<*> {
         val currentPage = info.pageNumber
         val professionAlias = info.additionalData.orEmpty()
-        val specialists = specialistService.getSpecialistByProfessionAlias(professionAlias, currentPage, SPECIALIST_PER_PAGE)
+        val specialists = specialistService.getSpecialistsByProfessionAlias(professionAlias, currentPage, SPECIALIST_PER_PAGE)
         val specialistsCount = specialistService.countSpecialistsByProfessionAlias(professionAlias)
         val state = CurrentSpecialistsScreenState
 
         val newInfo = SpecialistsPageInfo.from(
             info, specialists, currentPage, specialistsCount
         )
+
+        return MessageUpdateResultBunch(state, newInfo)
+    }
+
+    private fun processGetSpecialistsContactsEvent(info: GetSpecialistContactsInfo): MessageUpdateResultBunch<*> {
+        val specialistId = info.specialistId
+        val contacts = specialistService.getSpecialistById(specialistId)?.contactLinks.orEmpty()
+        val state = CurrentSpecialistsContactsScreenState
+        userService.setNewUserState(state, info)
+
+        val newInfo = BaseDataInfo.from(info, contacts)
 
         return MessageUpdateResultBunch(state, newInfo)
     }

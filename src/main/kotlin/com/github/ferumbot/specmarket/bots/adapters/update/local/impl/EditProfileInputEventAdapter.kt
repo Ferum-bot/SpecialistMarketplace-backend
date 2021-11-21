@@ -4,7 +4,7 @@ import com.github.ferumbot.specmarket.bots.adapters.update.local.LocalUpdateAdap
 import com.github.ferumbot.specmarket.bots.core.getCommandAlias
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseInputInfo
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseDataInfo
 import com.github.ferumbot.specmarket.bots.services.TelegramUserService
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
@@ -26,13 +26,13 @@ class EditProfileInputEventAdapter(
     }
 
     override fun isFor(update: Update): Boolean {
-        val info = BaseUpdateInfo.get(update)
+        val info = BaseUpdateInfo.from(update)
         val state = userService.getUserCurrentState(info)
         return state.currentState in handlingStates
     }
 
     override fun adapt(update: Update): MessageUpdateBunch<*> {
-        val info = BaseUpdateInfo.get(update)
+        val info = BaseUpdateInfo.from(update)
         val state = userService.getUserCurrentState(info).currentState
 
         return when(state) {
@@ -62,7 +62,7 @@ class EditProfileInputEventAdapter(
         info: BaseUpdateInfo, update: Update, event: EditProfileEvent
     ): MessageUpdateBunch<*> {
         val input = update.getCommandAlias()
-        val inputInfo = BaseInputInfo.from(info, input)
+        val inputInfo = BaseDataInfo.from(info, input)
         return MessageUpdateBunch(event, inputInfo)
     }
 
@@ -70,7 +70,7 @@ class EditProfileInputEventAdapter(
         info: BaseUpdateInfo, update: Update, event: EditProfileEvent
     ): MessageUpdateBunch<*> {
         val input = update.getCommandAlias().split(',', ignoreCase = true)
-        val inputInfo = BaseInputInfo.from(info, input)
+        val inputInfo = BaseDataInfo.from(info, input)
         return MessageUpdateBunch(event, inputInfo)
     }
 }

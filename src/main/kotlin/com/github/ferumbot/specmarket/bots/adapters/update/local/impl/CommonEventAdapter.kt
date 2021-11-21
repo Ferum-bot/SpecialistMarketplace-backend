@@ -68,7 +68,7 @@ class CommonEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val chatId = update.getChatId()
 
-        val updateInfo = BaseUpdateInfo.get(chatId, userId)
+        val updateInfo = BaseUpdateInfo.from(chatId, userId)
 
         return MessageUpdateBunch(GoBackEvent, updateInfo)
     }
@@ -77,7 +77,7 @@ class CommonEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val chatId = update.getChatId()
 
-        val updateInfo = BaseUpdateInfo.get(chatId, userId)
+        val updateInfo = BaseUpdateInfo.from(chatId, userId)
 
         return MessageUpdateBunch(OpenStartScreenEvent, updateInfo)
     }
@@ -86,7 +86,7 @@ class CommonEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val chatId = update.getChatId()
 
-        val updateInfo = BaseUpdateInfo.get(chatId, userId)
+        val updateInfo = BaseUpdateInfo.from(chatId, userId)
 
         return MessageUpdateBunch(OpenContactWithUsScreenEvent, updateInfo)
     }

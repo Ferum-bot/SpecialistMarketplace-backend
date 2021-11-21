@@ -1,6 +1,7 @@
 package com.github.ferumbot.specmarket.bots.ui.text
 
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
+import com.github.ferumbot.specmarket.bots.state_machine.event.OpenCurrentSpecialistsScreenEvent
 import com.github.ferumbot.specmarket.core.wrappers.EmojiWrapper
 import com.github.ferumbot.specmarket.models.dto.ProfessionDto
 import com.github.ferumbot.specmarket.models.dto.SpecialistDto
@@ -145,13 +146,35 @@ class DefaultMessageTextProvider: MessageTextProvider {
     }
 
     override fun provideFilterScreenInfoMessage(professions: Collection<ProfessionDto>): String {
+        val command = OpenCurrentSpecialistsScreenEvent.commandAlias
         val professionsToFilter = professions.fold(StringBuilder()) { builder, profession ->
-            builder.append("")
+            builder.append("${profession.friendlyName}: ${profession.shortDescription}\n")
+            builder.append("Filter by profession /$command:${profession.alias}\n")
         }
 
         return StringBuilder()
             .append("You can filter specialists by professions!\n")
-            .append("Available professions to filter")
+            .append("Available professions to filter\n")
+            .append(professionsToFilter)
+            .toString()
+    }
+
+    override fun provideCurrentSpecialistsInfoMessage(specialists: Collection<SpecialistDto>): String {
+        val currentSpecialists = specialists.fold(StringBuilder()) { builder, specialist ->
+            builder.append(getProfileTemplate(specialist))
+        }
+
+       return StringBuilder()
+           .append("Available specialists!\n")
+           .append(currentSpecialists)
+           .append("You can get the contacts!\n")
+           .toString()
+    }
+
+    override fun provideCurrentSpecialistContactsInfoMessage(contacts: String): String {
+        return StringBuilder()
+            .append("Specialist left this contacts:\n")
+            .append(contacts)
             .toString()
     }
 

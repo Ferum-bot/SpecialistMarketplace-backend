@@ -30,6 +30,8 @@ interface MessageTextProvider {
 
     fun provideCurrentSpecialistsInfoMessage(specialists: Collection<SpecialistDto>): String
 
+    fun provideCurrentSpecialistContactsInfoMessage(contacts: String): String
+
     fun provideYouAreNotAuthorizedInfoMessage(): String
 
     fun provideYouArePartiallyAuthorizedInfoMessage(specialist: SpecialistDto): String

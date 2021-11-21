@@ -2,6 +2,7 @@ package com.github.ferumbot.specmarket.bots.services
 
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.RegisterNewUserInfo
+import com.github.ferumbot.specmarket.bots.models.entity.TelegramUser
 import com.github.ferumbot.specmarket.bots.models.entity.embeded.UserBotState
 import com.github.ferumbot.specmarket.bots.models.enums.TelegramUserSpecialistStatus
 import com.github.ferumbot.specmarket.bots.state_machine.state.BotState
@@ -12,9 +13,9 @@ interface TelegramUserService {
 
     fun userExists(info: BaseUpdateInfo): Boolean
 
-    fun registerNewUser(info: RegisterNewUserInfo)
+    fun registerNewUser(info: RegisterNewUserInfo): TelegramUser
 
-    fun updateUserInfo(info: RegisterNewUserInfo)
+    fun updateUserInfo(info: RegisterNewUserInfo): TelegramUser
 
     fun getAndSetUserPreviousState(info: BaseUpdateInfo): BotState
 
@@ -31,4 +32,6 @@ interface TelegramUserService {
     fun getUserSpecialistRequests(info: BaseUpdateInfo, pageNumber: Int, pageSize: Int): Collection<Specialist>
 
     fun countUserSpecialistRequests(info: BaseUpdateInfo): Int
+
+    fun addSpecialistToUserRequests(info: BaseUpdateInfo, specialistId: Long): TelegramUser
 }
