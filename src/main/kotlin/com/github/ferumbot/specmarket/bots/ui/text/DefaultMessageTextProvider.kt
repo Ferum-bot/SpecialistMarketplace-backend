@@ -149,7 +149,7 @@ class DefaultMessageTextProvider: MessageTextProvider {
         val command = OpenCurrentSpecialistsScreenEvent.commandAlias
         val professionsToFilter = professions.fold(StringBuilder()) { builder, profession ->
             builder.append("${profession.friendlyName}: ${profession.shortDescription}\n")
-            builder.append("Filter by profession /$command:${profession.alias}\n")
+            builder.append("Filter by profession ${command}_${profession.alias}\n")
         }
 
         return StringBuilder()

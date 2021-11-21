@@ -82,7 +82,7 @@ class FilterEventAdapter: LocalUpdateAdapter {
 
     private fun getOpenCurrentSpecialists(update: Update): MessageUpdateBunch<*> {
         val input = update.getCommandAlias()
-        val professionAlias = input.split(':').last()
+        val professionAlias = input.split('_').last()
         val event = OpenCurrentSpecialistsScreenEvent
         val info = BaseDataInfo.from(update, professionAlias)
 

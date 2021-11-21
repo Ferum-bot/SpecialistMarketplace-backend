@@ -15,7 +15,7 @@ object OpenCurrentSpecialistsScreenEvent: FilterEvent {
 
     override val eventName: String = "Open current specialist screen event"
 
-    override val commandAlias: String = "/filter_by"
+    override val commandAlias: String = "/filterBy"
 
     override val friendlyName: String = "Open current specialists"
 }

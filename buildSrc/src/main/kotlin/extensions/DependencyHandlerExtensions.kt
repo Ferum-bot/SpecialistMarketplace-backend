@@ -70,3 +70,7 @@ fun DependencyHandler.addBotsApi() {
 fun DependencyHandler.addJavaEmoji() {
     implementation(Dependencies.EMOJI_JAVA)
 }
+
+fun DependencyHandler.addPrometheus() {
+    implementation(Dependencies.MICROMETER_PROMETHEUS)
+}

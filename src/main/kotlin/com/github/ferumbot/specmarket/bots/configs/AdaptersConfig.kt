@@ -42,6 +42,7 @@ class AdaptersConfig @Autowired constructor(
             provideAllSpecialistsEventAdapter(),
             provideIAmCustomerEventAdapter(),
             provideIAmSpecialistEventAdapter(),
+            provideFilterEventAdapter(),
             provideMyProfileEventAdapter(),
             provideCreatingProfileCommonEventAdapter(),
             provideEditProfileCommonEventAdapter(),
@@ -119,6 +120,11 @@ class AdaptersConfig @Autowired constructor(
         return EditProfileCommonEventAdapter()
     }
 
+    @Bean
+    fun provideFilterEventAdapter(): LocalUpdateAdapter {
+        return FilterEventAdapter()
+    }
+
     /**
      * Out coming state adapters
      */
@@ -129,6 +135,7 @@ class AdaptersConfig @Autowired constructor(
             provideAllSpecialistStateAdapter(),
             provideIAmCustomerStateAdapter(),
             provideIAmSpecialistStateAdapter(),
+            provideFilterStateAdapter(),
             provideMyProfileStateAdapter(),
             provideCreatingProfileStateAdapter(),
             provideEditProfileStateAdapter(),
@@ -182,6 +189,11 @@ class AdaptersConfig @Autowired constructor(
         return EditProfileStateAdapter(
             messageTextProvider, messageInlineButtonsProvider
         )
+    }
+
+    @Bean
+    fun provideFilterStateAdapter(): LocalUpdateResultAdapter {
+        return FilterStateAdapter(messageTextProvider, messageInlineButtonsProvider)
     }
 
     /**

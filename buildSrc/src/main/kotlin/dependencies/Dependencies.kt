@@ -18,4 +18,6 @@ object Dependencies {
     const val TELEGRAM_BOTS = "org.telegram:telegrambots:${Versions.TELEGRAM_BOT}"
 
     const val EMOJI_JAVA = "com.vdurmont:emoji-java:${Versions.EMOJI_JAVA}"
+
+    const val MICROMETER_PROMETHEUS = "io.micrometer:micrometer-registry-prometheus"
 }
