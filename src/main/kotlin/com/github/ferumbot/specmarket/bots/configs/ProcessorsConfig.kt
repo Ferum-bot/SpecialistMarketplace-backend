@@ -6,7 +6,8 @@ import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
 import com.github.ferumbot.specmarket.bots.processors.local.impl.*
 import com.github.ferumbot.specmarket.bots.services.TelegramUserService
 import com.github.ferumbot.specmarket.bots.services.TelegramUserSpecialistService
-import org.apache.tomcat.jni.Local
+import com.github.ferumbot.specmarket.services.ProfessionService
+import com.github.ferumbot.specmarket.services.SpecialistService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -18,7 +19,13 @@ class ProcessorsConfig {
     private lateinit var userService: TelegramUserService
 
     @Autowired
-    private lateinit var specialistService: TelegramUserSpecialistService
+    private lateinit var userSpecialistService: TelegramUserSpecialistService
+
+    @Autowired
+    private lateinit var professionService: ProfessionService
+
+    @Autowired
+    private lateinit var specialistService: SpecialistService
 
     @Bean
     fun provideFacadeProcessor(): BotUpdateProcessor {
@@ -29,7 +36,11 @@ class ProcessorsConfig {
             provideIAmCustomerProcessor(),
             provideIAmSpecialistProcessor(),
             provideStartProcessor(),
+            provideIDoNotKnowWhatINeedProcessor(),
+            provideMyProfileProcessor(),
+            provideFilterProcessor(),
             provideCreatingProfileProcessor(),
+            provideEditProfileProcessor(),
         )
 
         /**
@@ -78,7 +89,27 @@ class ProcessorsConfig {
     }
 
     @Bean
+    fun provideMyProfileProcessor(): LocalUpdateProcessor {
+        return MyProfileUpdateProcessor(userService, userSpecialistService)
+    }
+
+    @Bean
     fun provideCreatingProfileProcessor(): LocalUpdateProcessor {
-        return CreatingProfileUpdateProcessor(userService, specialistService)
+        return CreatingProfileUpdateProcessor(userService, userSpecialistService, professionService)
+    }
+
+    @Bean
+    fun provideEditProfileProcessor(): LocalUpdateProcessor {
+        return EditProfileUpdateProcessor(userService, userSpecialistService, professionService)
+    }
+
+    @Bean
+    fun provideFilterProcessor(): LocalUpdateProcessor {
+        return FilterUpdateProcessor(professionService, specialistService, userService)
+    }
+
+    @Bean
+    fun provideIDoNotKnowWhatINeedProcessor(): LocalUpdateProcessor {
+        return IDoNotKnowWhatINeedUpdateProcessor(professionService, userService)
     }
 }

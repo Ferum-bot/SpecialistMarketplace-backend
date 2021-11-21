@@ -8,28 +8,28 @@ import com.github.ferumbot.specmarket.bots.models.enums.TelegramUserSpecialistSt
 import com.github.ferumbot.specmarket.bots.models.enums.TelegramUserSpecialistStatus.*
 import com.github.ferumbot.specmarket.bots.repositories.TelegramUserRepository
 import com.github.ferumbot.specmarket.bots.services.TelegramUserService
-import com.github.ferumbot.specmarket.bots.state_machine.machine.StateMachine
 import com.github.ferumbot.specmarket.bots.state_machine.state.BotState
-import com.github.ferumbot.specmarket.bots.state_machine.state.UnSupportedScreenState
+import com.github.ferumbot.specmarket.exceptions.SpecialistNotExists
 import com.github.ferumbot.specmarket.models.entities.Specialist
+import com.github.ferumbot.specmarket.repositories.SpecialistRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
 class TelegramUserServiceImpl @Autowired constructor(
-    private val repository: TelegramUserRepository
+    private val userRepository: TelegramUserRepository,
+    private val specialistRepository: SpecialistRepository,
 ): TelegramUserService {
 
     @Transactional(readOnly = true)
     override fun userExists(info: BaseUpdateInfo): Boolean {
         val userId = info.userId
-        return repository.existsTelegramUserByTelegramUserId(userId)
+        return userRepository.existsTelegramUserByTelegramUserId(userId)
     }
 
-    override fun registerNewUser(info: RegisterNewUserInfo) {
+    override fun registerNewUser(info: RegisterNewUserInfo): TelegramUser {
         val user = TelegramUser(
             isBot = info.isBot,
             languageCode = info.languageCode,
@@ -40,42 +40,42 @@ class TelegramUserServiceImpl @Autowired constructor(
             userName = info.userName,
         )
 
-        repository.saveAndFlush(user)
+        return userRepository.saveAndFlush(user)
     }
 
-    override fun updateUserInfo(info: RegisterNewUserInfo) {
-        val foundUser = repository.findByTelegramUserId(info.userId)
+    override fun updateUserInfo(info: RegisterNewUserInfo): TelegramUser {
+        val foundUser = userRepository.findByTelegramUserId(info.userId)
+            ?: registerNewUser(info)
 
-        foundUser?.let { user ->
+        return foundUser.let { user ->
             user.isBot = info.isBot
             user.languageCode = info.languageCode
             user.firstName = info.firstName
             user.lastName = info.lastName
             user.userName = info.userName
-            repository.saveAndFlush(user)
+            userRepository.saveAndFlush(user)
         }
     }
 
     override fun getAndSetUserPreviousState(info: BaseUpdateInfo): BotState {
-        val entity = repository.findByTelegramUserId(info.userId)
-            ?: return UnSupportedScreenState
+        val entity = userRepository.findByTelegramUserId(info.userId)
+            ?: registerNewUser(info)
         val currentState = entity.currentBotState.currentState
         val prevState = currentState.previousState
         entity.currentBotState.currentState = prevState
-        repository.saveAndFlush(entity)
+        userRepository.saveAndFlush(entity)
         return prevState
     }
 
-    @Transactional(readOnly = true)
     override fun getUserCurrentState(info: BaseUpdateInfo): UserBotState {
-        val entity = repository.findByTelegramUserId(info.userId)
-            ?: return UserBotState.unSupported()
+        val entity = userRepository.findByTelegramUserId(info.userId)
+            ?: registerNewUser(info)
         return entity.currentBotState
     }
 
     override fun setNewUserState(newState: BotState, info: BaseUpdateInfo, currentPage: Int?, pageCount: Int?) {
-        val entity = repository.findByTelegramUserId(info.userId)
-            ?: return
+        val entity = userRepository.findByTelegramUserId(info.userId)
+            ?: registerNewUser(info)
 
         entity.currentBotState.apply {
             currentState = newState
@@ -83,13 +83,12 @@ class TelegramUserServiceImpl @Autowired constructor(
             totalAvailablePages = pageCount
         }
 
-        repository.saveAndFlush(entity)
+        userRepository.saveAndFlush(entity)
     }
 
-    @Transactional(readOnly = true)
     override fun getUserSpecialistStatus(info: BaseUpdateInfo): TelegramUserSpecialistStatus {
-        val userEntity = repository.findByTelegramUserId(info.userId)
-            ?: return NOT_AUTHORIZED
+        val userEntity = userRepository.findByTelegramUserId(info.userId)
+            ?: registerNewUser(info)
         val specialistEntity = userEntity.specialist
             ?: return NOT_AUTHORIZED
 
@@ -100,20 +99,40 @@ class TelegramUserServiceImpl @Autowired constructor(
         }
     }
 
-    @Transactional(readOnly = true)
     override fun getUserSpecialist(info: BaseUpdateInfo): Specialist? {
-        val user = repository.findByTelegramUserId(info.userId)
-        return user?.specialist
+        val user = userRepository.findByTelegramUserId(info.userId)
+            ?: registerNewUser(info)
+        return user.specialist
     }
 
-    @Transactional(readOnly = true)
-    override fun getUserSpecialistRequests(info: BaseUpdateInfo, page: Pageable): Collection<Specialist> {
-        val user = repository.findByTelegramUserId(info.userId)
-        return user?.specialistsRequests ?: emptyList()
+    override fun getUserSpecialistRequests(info: BaseUpdateInfo, pageNumber: Int, pageSize: Int): Collection<Specialist> {
+        val user = userRepository.findByTelegramUserId(info.userId)
+            ?: registerNewUser(info)
+        return user.specialistsRequests
     }
 
     @Transactional(readOnly = true)
     override fun countUserSpecialistRequests(info: BaseUpdateInfo): Int {
-        return repository.countUserSpecialistRequests(info.userId)
+        return userRepository.countUserSpecialistRequests(info.userId)
+    }
+
+    override fun addSpecialistToUserRequests(info: BaseUpdateInfo, specialistId: Long): TelegramUser {
+        val specialist = specialistRepository.findById(specialistId).orElseGet {
+            throw SpecialistNotExists(specialistId)
+        }
+        val user = userRepository.findByTelegramUserId(info.userId)
+            ?: registerNewUser(info)
+
+        user.specialistsRequests.add(specialist)
+        return userRepository.saveAndFlush(user)
+    }
+
+    private fun registerNewUser(info: BaseUpdateInfo): TelegramUser {
+        val entity = TelegramUser(
+            telegramUserId = info.userId,
+            personalTelegramChatId = info.chatId,
+            isBot = false,
+        )
+        return userRepository.save(entity)
     }
 }

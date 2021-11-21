@@ -15,7 +15,6 @@ import com.github.ferumbot.specmarket.bots.ui.inline_buttons.InlineMessageButton
 import com.github.ferumbot.specmarket.bots.ui.keyboard_buttons.KeyboardMessageButtonsProvider
 import com.github.ferumbot.specmarket.bots.ui.text.MessageTextProvider
 import com.github.ferumbot.specmarket.services.ProfessionService
-import org.apache.tomcat.jni.Local
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -31,9 +30,6 @@ class AdaptersConfig @Autowired constructor(
     @Autowired
     private lateinit var userService: TelegramUserService
 
-    @Autowired
-    private lateinit var professionService: ProfessionService
-
     /**
      *  Incoming event adapters
      */
@@ -46,9 +42,12 @@ class AdaptersConfig @Autowired constructor(
             provideAllSpecialistsEventAdapter(),
             provideIAmCustomerEventAdapter(),
             provideIAmSpecialistEventAdapter(),
+            provideFilterEventAdapter(),
             provideMyProfileEventAdapter(),
             provideCreatingProfileCommonEventAdapter(),
+            provideEditProfileCommonEventAdapter(),
             provideCreatingProfileInputEventAdapter(),
+            provideEditProfileInputEventAdapter(),
         )
 
         /**
@@ -102,13 +101,28 @@ class AdaptersConfig @Autowired constructor(
     }
 
     @Bean
+    fun provideCreatingProfileCommonEventAdapter(): LocalUpdateAdapter {
+        return CreatingProfileCommonEventAdapter()
+    }
+
+    @Bean
     fun provideCreatingProfileInputEventAdapter(): LocalUpdateAdapter {
         return CreatingProfileInputEventAdapter(userService)
     }
 
     @Bean
-    fun provideCreatingProfileCommonEventAdapter(): LocalUpdateAdapter {
-        return CreatingProfileCommonEventAdapter()
+    fun provideEditProfileInputEventAdapter(): LocalUpdateAdapter {
+        return EditProfileInputEventAdapter(userService)
+    }
+
+    @Bean
+    fun provideEditProfileCommonEventAdapter(): LocalUpdateAdapter {
+        return EditProfileCommonEventAdapter()
+    }
+
+    @Bean
+    fun provideFilterEventAdapter(): LocalUpdateAdapter {
+        return FilterEventAdapter()
     }
 
     /**
@@ -121,9 +135,11 @@ class AdaptersConfig @Autowired constructor(
             provideAllSpecialistStateAdapter(),
             provideIAmCustomerStateAdapter(),
             provideIAmSpecialistStateAdapter(),
-            provideNotAvailableStateAdapter(),
+            provideFilterStateAdapter(),
             provideMyProfileStateAdapter(),
             provideCreatingProfileStateAdapter(),
+            provideEditProfileStateAdapter(),
+            provideNotAvailableStateAdapter(),
         )
 
         return FacadeResultUpdateAdapter(adapters)
@@ -146,7 +162,7 @@ class AdaptersConfig @Autowired constructor(
 
     @Bean
     fun provideIAmSpecialistStateAdapter(): LocalUpdateResultAdapter {
-        return IAmSpecialistStateAdapter(messageTextProvider, messageInlineButtonsProvider)
+        return IAmSpecialistStateAdapter(messageTextProvider, messageKeyboardButtonsProvider)
     }
 
     @Bean
@@ -161,10 +177,23 @@ class AdaptersConfig @Autowired constructor(
         )
     }
 
+    @Bean
     fun provideCreatingProfileStateAdapter(): LocalUpdateResultAdapter {
         return CreatingProfileStateAdapter(
-            professionService, messageTextProvider, messageInlineButtonsProvider, messageKeyboardButtonsProvider
+            messageTextProvider, messageInlineButtonsProvider, messageKeyboardButtonsProvider
         )
+    }
+
+    @Bean
+    fun provideEditProfileStateAdapter(): LocalUpdateResultAdapter {
+        return EditProfileStateAdapter(
+            messageTextProvider, messageInlineButtonsProvider
+        )
+    }
+
+    @Bean
+    fun provideFilterStateAdapter(): LocalUpdateResultAdapter {
+        return FilterStateAdapter(messageTextProvider, messageInlineButtonsProvider)
     }
 
     /**

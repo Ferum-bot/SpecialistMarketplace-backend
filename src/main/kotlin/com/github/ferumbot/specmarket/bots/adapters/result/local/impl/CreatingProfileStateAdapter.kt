@@ -3,6 +3,7 @@ package com.github.ferumbot.specmarket.bots.adapters.result.local.impl
 import com.github.ferumbot.specmarket.bots.adapters.result.local.LocalUpdateResultAdapter
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.ProfessionsInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
 import com.github.ferumbot.specmarket.bots.ui.inline_buttons.DefaultInlineButtonsProvider
@@ -15,7 +16,6 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 
 class CreatingProfileStateAdapter(
-    private val professionService: ProfessionService,
     private val textProvider: MessageTextProvider,
     private val inlineButtonsProvider: InlineMessageButtonsProvider,
     private val keyboardButtonsProvider: KeyboardMessageButtonsProvider,
@@ -33,7 +33,7 @@ class CreatingProfileStateAdapter(
             is UserInputInvalidDataScreenState -> getUserInputInvalidData(info)
             is UserInputFullNameScreenState -> getUserInputFullName(info)
             is UserInputDepartmentScreenState -> getUserInputDepartment(info)
-            is UserInputProfessionScreenState -> getUserInputProfession(info)
+            is UserInputProfessionScreenState -> getUserInputProfession(info as ProfessionsInfo)
             is UserInputKeySkillsScreenState -> getUserInputKeySkills(info)
             is UserInputPortfolioLinkScreenState -> getUserInputPortfolioLink(info)
             is UserInputAboutMeScreenState -> getUserInputAboutMe(info)
@@ -79,10 +79,8 @@ class CreatingProfileStateAdapter(
         return sendMessage
     }
 
-    private fun getUserInputProfession(info: BaseUpdateInfo): BotApiMethod<*> {
-        val availableProfessions = professionService.getAllAvailableProfessions().map {
-            ProfessionDto.from(it)
-        }
+    private fun getUserInputProfession(info: ProfessionsInfo): BotApiMethod<*> {
+        val availableProfessions = info.professions
         val text = textProvider.provideUserInputProfessionsInfoMessage(availableProfessions)
         val buttons = inlineButtonsProvider.provideCreatingProfileButtons()
         val chatId = info.chatId.toString()

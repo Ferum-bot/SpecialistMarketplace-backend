@@ -27,7 +27,7 @@ class ChatMemberEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val event = BotsChatMemberUpdateEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 
     private fun chatMember(update: Update): MessageUpdateBunch<*> {
@@ -35,6 +35,6 @@ class ChatMemberEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val event = BotsChatMemberUpdateEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 }

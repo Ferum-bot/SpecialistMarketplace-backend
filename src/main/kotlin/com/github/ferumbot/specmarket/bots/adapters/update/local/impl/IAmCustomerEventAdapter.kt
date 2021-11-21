@@ -6,6 +6,7 @@ import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.state_machine.event.OpenAboutEachSpecialistScreenEvent
 import com.github.ferumbot.specmarket.bots.state_machine.event.OpenIDoNotKnowWhatIWantScreenEvent
+import com.github.ferumbot.specmarket.bots.state_machine.event.OpenLeaveBidScreenEvent
 import org.telegram.telegrambots.meta.api.objects.Update
 
 class IAmCustomerEventAdapter: LocalUpdateAdapter {
@@ -15,10 +16,13 @@ class IAmCustomerEventAdapter: LocalUpdateAdapter {
         private val OPEN_I_DO_NOT_KNOW_WHAT_I_WANT_NAME = OpenIDoNotKnowWhatIWantScreenEvent.friendlyName
         private val OPEN_ABOUT_EACH_SPECIALIST_NAME = OpenAboutEachSpecialistScreenEvent.friendlyName
         private val OPEN_ABOUT_EACH_SPECIALIST_COMMAND = OpenAboutEachSpecialistScreenEvent.commandAlias
+        private val OPEN_LEAVE_BID_NAME = OpenLeaveBidScreenEvent.friendlyName
+        private val OPEN_LEAVE_BID_COMMAND = OpenLeaveBidScreenEvent.commandAlias
 
         private val handlingEvents = listOf(
             OPEN_I_DO_NOT_KNOW_WHAT_I_WANT_NAME, OPEN_ABOUT_EACH_SPECIALIST_NAME,
-            OPEN_ABOUT_EACH_SPECIALIST_COMMAND
+            OPEN_LEAVE_BID_NAME, OPEN_LEAVE_BID_COMMAND,
+            OPEN_ABOUT_EACH_SPECIALIST_COMMAND,
         )
     }
 
@@ -33,8 +37,12 @@ class IAmCustomerEventAdapter: LocalUpdateAdapter {
         val commandName = update.getCommandAlias()
 
         return when(commandName) {
-            OPEN_I_DO_NOT_KNOW_WHAT_I_WANT_NAME -> openIDoNotKnowWhatIWant(update)
-            OPEN_ABOUT_EACH_SPECIALIST_NAME, OPEN_ABOUT_EACH_SPECIALIST_COMMAND -> openAboutEachSpecialist(update)
+            OPEN_ABOUT_EACH_SPECIALIST_NAME, OPEN_ABOUT_EACH_SPECIALIST_COMMAND ->
+                openAboutEachSpecialist(update)
+            OPEN_LEAVE_BID_NAME, OPEN_LEAVE_BID_COMMAND ->
+                openLeaveBid(update)
+            OPEN_I_DO_NOT_KNOW_WHAT_I_WANT_NAME ->
+                openIDoNotKnowWhatIWant(update)
             else -> LocalUpdateAdapter.unSupportedUpdate(update)
         }
     }
@@ -44,7 +52,7 @@ class IAmCustomerEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val event = OpenIDoNotKnowWhatIWantScreenEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 
     private fun openAboutEachSpecialist(update: Update): MessageUpdateBunch<*> {
@@ -52,6 +60,13 @@ class IAmCustomerEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val event = OpenAboutEachSpecialistScreenEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
+    }
+
+    private fun openLeaveBid(update: Update): MessageUpdateBunch<*> {
+        val info = BaseUpdateInfo.from(update)
+        val event = OpenLeaveBidScreenEvent
+
+        return MessageUpdateBunch(event, info)
     }
 }

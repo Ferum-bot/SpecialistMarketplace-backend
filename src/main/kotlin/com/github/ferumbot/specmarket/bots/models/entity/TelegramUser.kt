@@ -56,7 +56,7 @@ data class TelegramUser(
         joinColumns = [ JoinColumn(name = "telegram_user_id", referencedColumnName = "id") ],
         inverseJoinColumns = [ JoinColumn(name = "specialist_id", referencedColumnName = "id") ]
     )
-    var specialistsRequests: Collection<Specialist> = listOf(),
+    var specialistsRequests: MutableCollection<Specialist> = mutableListOf(),
 
     @Column(name = "created_date", updatable = false)
     var createdDate: LocalDateTime = LocalDateTime.now(),

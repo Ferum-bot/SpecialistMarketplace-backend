@@ -31,6 +31,8 @@ dependencies {
 	addBotsApi()
 
 	addJavaEmoji()
+
+	addPrometheus()
 }
 
 springBoot {

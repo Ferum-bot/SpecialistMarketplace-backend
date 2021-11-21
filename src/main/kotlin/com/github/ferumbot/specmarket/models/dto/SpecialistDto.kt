@@ -6,6 +6,9 @@ import com.github.ferumbot.specmarket.models.entities.Specialist
 data class SpecialistDto(
 
     @JsonInclude(JsonInclude.Include.ALWAYS)
+    val id: Long? = null,
+
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     val fullName: String? = null,
 
     @JsonInclude(JsonInclude.Include.ALWAYS)
@@ -35,12 +38,16 @@ data class SpecialistDto(
     val isVisible: Boolean = false,
 
     val isCompletelyFilled: Boolean = false,
+
+    @JsonInclude(JsonInclude.Include.ALWAYS)
+    val telegramId: Long? = null,
 ) {
 
     companion object {
 
         fun from(specialist: Specialist): SpecialistDto {
             return SpecialistDto(
+                id = specialist.id,
                 fullName = specialist.fullName,
                 department = specialist.department,
                 professions = specialist.professions.map { it.friendlyName },
@@ -51,7 +58,8 @@ data class SpecialistDto(
                 educationGrade = specialist.educationGrade,
                 contactLinks = specialist.contactLinks,
                 isVisible = specialist.isVisible,
-                isCompletelyFilled = specialist.isCompletelyFilled
+                isCompletelyFilled = specialist.isCompletelyFilled,
+                telegramId = specialist.telegramUser?.id
             )
         }
     }

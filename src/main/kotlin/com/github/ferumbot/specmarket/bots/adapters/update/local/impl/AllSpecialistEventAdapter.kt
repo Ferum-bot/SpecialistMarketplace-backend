@@ -42,7 +42,7 @@ class AllSpecialistEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val event = OpenFilterScreenEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 
     private fun openIDoNotKnowWhoISearch(update: Update): MessageUpdateBunch<*> {
@@ -50,6 +50,6 @@ class AllSpecialistEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val event = OpenIDoNotKnowWhoISearchScreenEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 }

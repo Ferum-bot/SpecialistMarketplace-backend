@@ -3,6 +3,7 @@ package com.github.ferumbot.specmarket.bots.adapters.result.local.impl
 import com.github.ferumbot.specmarket.bots.adapters.result.local.LocalUpdateResultAdapter
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.ProfessionsInfo
 import com.github.ferumbot.specmarket.bots.state_machine.state.AboutEachSpecialistScreenState
 import com.github.ferumbot.specmarket.bots.state_machine.state.IAmCustomerInfoScreenState
 import com.github.ferumbot.specmarket.bots.state_machine.state.IAmCustomerState
@@ -30,7 +31,7 @@ class IAmCustomerStateAdapter(
         return when(state) {
             is IAmCustomerInfoScreenState -> getIAmCustomerInfoMethod(info)
             is IDoNotKnowWhatIWantScreenState -> getIDoNotKnowWhatIWantMethod(info)
-            is AboutEachSpecialistScreenState -> getAboutEachSpecialistMethod(info)
+            is AboutEachSpecialistScreenState -> getAboutEachSpecialistMethod(info as ProfessionsInfo)
             else -> LocalUpdateResultAdapter.unSupportedState(info)
         }
     }
@@ -57,14 +58,11 @@ class IAmCustomerStateAdapter(
         return sendMessage
     }
 
-    private fun getAboutEachSpecialistMethod(info: BaseUpdateInfo): BotApiMethod<*> {
-        val text = textProvider.provideAboutEachSpecialistMessage()
-        val buttons = keyboardButtonsProvider.provideAboutEachSpecialistInfoScreenButtons()
+    private fun getAboutEachSpecialistMethod(info: ProfessionsInfo): BotApiMethod<*> {
+        val professions = info.professions
+        val text = textProvider.provideAboutEachSpecialistMessage(professions)
         val chatId = info.chatId.toString()
-        val sendMessage = SendMessage(chatId, text).apply {
-            replyMarkup = buttons
-        }
 
-        return sendMessage
+        return SendMessage(chatId, text)
     }
 }

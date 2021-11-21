@@ -15,16 +15,7 @@ class DefaultKeyboardButtonsProvider: KeyboardMessageButtonsProvider {
         private val MY_PROFILE_NAME = OpenMyProfileScreenEvent.friendlyName
         private val CONTACT_WITH_US_NAME = OpenContactWithUsScreenEvent.friendlyName
 
-        private const val FIRST_SPECIALIST_NAME = "Specialist 1"
-        private const val SECOND_SPECIALIST_NAME = "Specialist 2"
-        private const val THIRD_SPECIALIST_NAME = "Specialist 3"
-        private const val FORTH_SPECIALIST_NAME = "Specialist 4"
-        private const val FIVES_SPECIALIST_NAME = "Specialist 5"
-        private const val SIX_SPECIALIST_NAME = "Specialist 6"
-        private const val SEVENTH_SPECIALIST_NAME = "Specialist 7"
-        private const val EIGHT_SPECIALIST_NAME = "Specialist 8"
-        private const val NINES_SPECIALIST_NAME = "Specialist 9"
-        private const val TEN_SPECIALIST_NAME = "Specialist 10"
+        private val SUBMIT_MY_CV_NAME = SubmitYourCVEvent.friendlyName
 
         private val OPEN_FILTER_NAME = OpenFilterScreenEvent.friendlyName
         private val OPEN_I_DO_NOT_WHO_I_SEARCH_NAME = OpenIDoNotKnowWhoISearchScreenEvent.friendlyName
@@ -38,18 +29,22 @@ class DefaultKeyboardButtonsProvider: KeyboardMessageButtonsProvider {
         private val EDIT_PROFILE = OpenEditInfoScreenEvent.friendlyName
         private val CHANGE_VISIBILITY = ChangeProfileSpecialistVisibilityScreenEvent.friendlyName
 
-        private const val CHANGE_FULL_NAME = "Change full name"
-        private const val CHANGE_DEPARTMENT = "Change department"
-        private const val CHANGE_PROFESSIONS = "Change professions"
-        private const val CHANGE_KEY_SKILLS = "Change key skills"
-        private const val CHANGE_PORTFOLIO_LINK = "Change portfolio link"
-        private const val CHANGE_ABOUT_ME = "Change about me"
-        private const val CHANGE_WORKING_CONDITIONS = "Change working conditions"
-        private const val CHANGE_EDUCATION_GRADE = "Change education grades"
-        private const val CHANGE_CONTACT_LINKS = "Change contact links"
+        private val CHANGE_FULL_NAME = ChangeFullNameEvent.friendlyName
+        private val CHANGE_DEPARTMENT = ChangeDepartmentEvent.friendlyName
+        private val CHANGE_PROFESSIONS = ChangeProfessionEvent.friendlyName
+        private val CHANGE_KEY_SKILLS = ChangeKeySkillsEvent.friendlyName
+        private val CHANGE_PORTFOLIO_LINK = ChangePortfolioLinkEvent.friendlyName
+        private val CHANGE_ABOUT_ME = ChangeAboutMeEvent.friendlyName
+        private val CHANGE_WORKING_CONDITIONS = ChangeWorkingConditionsEvent.friendlyName
+        private val CHANGE_EDUCATION_GRADE = ChangeEducationGradeEvent.friendlyName
+        private val CHANGE_CONTACT_LINKS = ChangeContactLinksEvent.friendlyName
+
+        private val FINISH_EDITING_PROFILE = FinishProfileEditingEvent.friendlyName
 
         private val RESTART_REGISTRATION = RestartRegistrationFlowEvent.friendlyName
         private val FINISH_REGISTRATION = OnUserRegistrationFinishedEvent.friendlyName
+
+        private val LEAVE_BID_NAME = OpenLeaveBidScreenEvent.friendlyName
     }
 
     override fun provideStartScreenButtons(): ReplyKeyboardMarkup {
@@ -75,14 +70,24 @@ class DefaultKeyboardButtonsProvider: KeyboardMessageButtonsProvider {
         return getKeyBoardWithRows(firstRow, secondRow)
     }
 
-    override fun provideAboutEachSpecialistInfoScreenButtons(): ReplyKeyboardMarkup {
-        val firstRow = getRowWithButtons(FIRST_SPECIALIST_NAME, SECOND_SPECIALIST_NAME)
-        val secondRow = getRowWithButtons(THIRD_SPECIALIST_NAME, FORTH_SPECIALIST_NAME)
-        val thirdRow = getRowWithButtons(FIVES_SPECIALIST_NAME, SIX_SPECIALIST_NAME)
-        val forthRow = getRowWithButtons(SEVENTH_SPECIALIST_NAME, EIGHT_SPECIALIST_NAME)
-        val fivesRow = getRowWithButtons(NINES_SPECIALIST_NAME, TEN_SPECIALIST_NAME)
+    override fun provideIAmSpecialistInfoScreenButtons(): ReplyKeyboardMarkup {
+        val firstRow = getRowWithButtons(MY_PROFILE_NAME)
+        val secondRow = getRowWithButtons(SUBMIT_MY_CV_NAME)
 
-        return getKeyBoardWithRows(firstRow, secondRow, thirdRow, forthRow, fivesRow)
+        return getKeyBoardWithRows(firstRow, secondRow)
+    }
+
+    override fun provideMyCVInfoScreenButtons(): ReplyKeyboardMarkup {
+        val firstRow = getRowWithButtons(MY_PROFILE_NAME)
+
+        return getKeyBoardWithRows(firstRow)
+    }
+
+    override fun provideIDoNotKnowWhoISearchButtons(): ReplyKeyboardMarkup {
+        val firstRow = getRowWithButtons(LEAVE_BID_NAME)
+        val secondRow = getRowWithButtons(OPEN_FILTER_NAME)
+
+        return getKeyBoardWithRows(firstRow, secondRow)
     }
 
     override fun provideNotAuthorizedInfoScreenButtons(): ReplyKeyboardMarkup {
@@ -113,8 +118,9 @@ class DefaultKeyboardButtonsProvider: KeyboardMessageButtonsProvider {
         val thirdRow = getRowWithButtons(CHANGE_PORTFOLIO_LINK, CHANGE_ABOUT_ME)
         val forthRow = getRowWithButtons(CHANGE_WORKING_CONDITIONS, CHANGE_EDUCATION_GRADE)
         val fivesRow = getRowWithButtons(CHANGE_CONTACT_LINKS)
+        val sixRow = getRowWithButtons(FINISH_EDITING_PROFILE)
 
-        return getKeyBoardWithRows(firstRow, secondRow, thirdRow, forthRow, fivesRow)
+        return getKeyBoardWithRows(firstRow, secondRow, thirdRow, forthRow, fivesRow, sixRow)
     }
 
     override fun provideShowProfileButtons(): ReplyKeyboardMarkup {

@@ -10,7 +10,11 @@ interface KeyboardMessageButtonsProvider {
 
     fun provideIAmCustomerInfoScreenButtons(): ReplyKeyboardMarkup
 
-    fun provideAboutEachSpecialistInfoScreenButtons(): ReplyKeyboardMarkup
+    fun provideIAmSpecialistInfoScreenButtons(): ReplyKeyboardMarkup
+
+    fun provideMyCVInfoScreenButtons(): ReplyKeyboardMarkup
+
+    fun provideIDoNotKnowWhoISearchButtons(): ReplyKeyboardMarkup
 
     fun provideNotAuthorizedInfoScreenButtons(): ReplyKeyboardMarkup
 

@@ -17,6 +17,6 @@ class UnSupportedEventAdapter: LocalUpdateAdapter {
         val userId = update.getUserId()
         val event = UnSupportedEvent
 
-        return MessageUpdateBunch(event, BaseUpdateInfo.get(chatId, userId))
+        return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }
 }
