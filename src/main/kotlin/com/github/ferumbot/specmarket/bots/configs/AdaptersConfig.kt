@@ -162,7 +162,7 @@ class AdaptersConfig @Autowired constructor(
 
     @Bean
     fun provideIAmSpecialistStateAdapter(): LocalUpdateResultAdapter {
-        return IAmSpecialistStateAdapter(messageTextProvider, messageInlineButtonsProvider)
+        return IAmSpecialistStateAdapter(messageTextProvider, messageKeyboardButtonsProvider)
     }
 
     @Bean

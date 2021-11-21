@@ -31,6 +31,9 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
 
         private val GET_SPECIALISTS_CONTACTS_NAME = GetSpecialistsContactsEvent.friendlyName
         private val GET_SPECIALISTS_CONTACTS_COMMAND = GetSpecialistsContactsEvent.commandAlias
+
+        private val LEAVE_BID_NAME = OpenLeaveBidScreenEvent.friendlyName
+        private val LEAVE_BID_COMMAND = OpenLeaveBidScreenEvent.commandAlias
     }
 
     override fun provideNotImplementedScreenButtons(): InlineKeyboardMarkup {
@@ -47,7 +50,7 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
 
     override fun provideIDoNotKnowWhatIWantScreenButtons(): InlineKeyboardMarkup {
         val firstRow = getInlineRow(InlineButton(ABOUT_EACH_SPECIALIST_NAME, ABOUT_EACH_SPECIALIST_COMMAND))
-        val secondRow = getInlineRow(InlineButton(BACK_SCREEN_NAME, BACK_SCREEN_COMMAND))
+        val secondRow = getInlineRow(InlineButton(LEAVE_BID_NAME, LEAVE_BID_COMMAND))
 
         return getInlineKeyboard(firstRow, secondRow)
     }

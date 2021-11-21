@@ -44,7 +44,13 @@ class FilterStateAdapter(
     }
 
     private fun getCurrentSpecialistsScreen(info: SpecialistsPageInfo): BotApiMethod<*> {
+        val chatId = info.chatId.toString()
         val specialists = info.specialists
+        if (specialists.isEmpty()) {
+            val text = textProvider.provideCurrentSpecialistsEmptyInfoMessage()
+            return SendMessage(chatId, text)
+        }
+
         val specialistId = specialists.first().id!!
         val professionAlias = info.additionalData!!
         val currentPage = info.currentPageNumber
@@ -53,7 +59,6 @@ class FilterStateAdapter(
         val buttons = inlineButtonsProvider.provideCurrentSpecialistsButton(
             currentPage, pageCount, professionAlias, specialistId
         )
-        val chatId = info.chatId.toString()
         val sendMessage = SendMessage(chatId, text).apply {
             replyMarkup = buttons
         }

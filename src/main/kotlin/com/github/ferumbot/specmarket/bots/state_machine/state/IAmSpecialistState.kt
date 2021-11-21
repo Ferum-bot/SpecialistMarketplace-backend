@@ -8,3 +8,10 @@ object IAmSpecialistInfoScreenState: IAmSpecialistState {
 
     override val previousState: BotState = StartScreenState
 }
+
+object MyCVInfoScreenState: IAmSpecialistState {
+
+    override val screenName: String = "My cv information screen state"
+
+    override val previousState: BotState = IAmSpecialistInfoScreenState
+}

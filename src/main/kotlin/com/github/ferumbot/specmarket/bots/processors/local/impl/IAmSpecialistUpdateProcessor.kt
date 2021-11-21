@@ -6,7 +6,8 @@ import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
 import com.github.ferumbot.specmarket.bots.services.TelegramUserService
 import com.github.ferumbot.specmarket.bots.state_machine.event.IAmSpecialistEvent
-import com.github.ferumbot.specmarket.bots.state_machine.event.SubmitYourApplicationEvent
+import com.github.ferumbot.specmarket.bots.state_machine.event.SubmitYourCVEvent
+import com.github.ferumbot.specmarket.bots.state_machine.state.MyCVInfoScreenState
 import com.github.ferumbot.specmarket.bots.state_machine.state.NotImplementedScreenState
 
 class IAmSpecialistUpdateProcessor(
@@ -22,13 +23,13 @@ class IAmSpecialistUpdateProcessor(
         val info = bunch.extraInformation
 
         return when(event) {
-            is SubmitYourApplicationEvent -> processSubmitYourApplicationEvent(info)
+            is SubmitYourCVEvent -> processSubmitYourApplicationEvent(info)
             else -> LocalUpdateProcessor.unSupportedEvent(info)
         }
     }
 
     private fun processSubmitYourApplicationEvent(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
-        val newState = NotImplementedScreenState
+        val newState = MyCVInfoScreenState
         userService.setNewUserState(newState, info)
         return MessageUpdateResultBunch(newState, info)
     }

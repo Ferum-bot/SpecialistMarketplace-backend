@@ -30,6 +30,24 @@ interface SpecialistRepository: JpaRepository<Specialist, Long> {
 
     @Query(
         value = "SELECT * FROM specialist WHERE specialist.id = " +
+                "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = :profession_id)" +
+                "AND specialist.is_visible = true AND specialist.is_completely_filled = true",
+
+        countQuery = "SELECT COUNT(*) FROM specialist WHERE specialist.id = " +
+                "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = :profession_id)" +
+                "AND specialist.is_visible = true AND specialist.is_completely_filled = true",
+
+        nativeQuery = true
+    )
+    fun findOnlyVisibleAndFinishedByProfessionId(
+        @Param(value = "profession_id")
+        professionId: Long,
+
+        page: Pageable,
+    ): Page<Specialist>
+
+    @Query(
+        value = "SELECT * FROM specialist WHERE specialist.id = " +
                 "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = " +
                 "ANY(SELECT id FROM profession WHERE profession.alias = :profession_alias))",
 
@@ -44,6 +62,27 @@ interface SpecialistRepository: JpaRepository<Specialist, Long> {
         alias: String,
 
         page: Pageable,
+    ): Page<Specialist>
+
+
+    @Query(
+        value = "SELECT * FROM specialist WHERE specialist.id = " +
+                "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = " +
+                "ANY(SELECT id FROM profession WHERE profession.alias = :profession_alias))" +
+                "AND specialist.is_visible = true and specialist.is_completely_filled = true",
+
+        countQuery = "SELECT COUNT(*) FROM specialist WHERE specialist.id = " +
+                "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = " +
+                "ANY(SELECT id FROM profession WHERE profession.alias = :profession_alias))" +
+                "AND specialist.is_visible = true and specialist.is_completely_filled = true",
+
+        nativeQuery = true
+    )
+    fun findOnlyVisibleAndFinishedByProfessionAlias(
+        @Param(value = "profession_alias")
+        alias: String,
+
+        page: Pageable
     ): Page<Specialist>
 
 

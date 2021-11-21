@@ -48,7 +48,7 @@ class AllSpecialistStateAdapter(
 
     private fun getIDoNotKnowWhoISearchMethod(info: BaseUpdateInfo): BotApiMethod<*> {
         val text = textProvider.provideIDoNotKnowWhoISearchMessage()
-        val buttons = inlineButtonsProvider.provideBackButton()
+        val buttons = keyboardButtonsProvider.provideIDoNotKnowWhoISearchButtons()
         val chatId = info.chatId.toString()
         val sendMessage = SendMessage(chatId, text).apply {
             replyMarkup = buttons
@@ -58,7 +58,7 @@ class AllSpecialistStateAdapter(
     }
 
     private fun getLeaveBidInfoMethod(info: BaseUpdateInfo): BotApiMethod<*> {
-        val text = textProvider.provideNotImplementedMessage()
+        val text = textProvider.provideLeaveBidInfoMessage()
         val buttons = inlineButtonsProvider.provideBackButton()
         val chatId = info.chatId.toString()
         val sendMessage = SendMessage(chatId, text).apply {

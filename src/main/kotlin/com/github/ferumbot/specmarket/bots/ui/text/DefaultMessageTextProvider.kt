@@ -101,17 +101,25 @@ class DefaultMessageTextProvider: MessageTextProvider {
             .toString()
     }
 
-    override fun provideAboutEachSpecialistMessage(): String {
+    override fun provideLeaveBidInfoMessage(): String {
+        return StringBuilder()
+            .append("Leave bid screen title!\n")
+            .append("To leave bid write to @dr_matjo and @owinowaa\n")
+            .append("Created and powered by @dr_matjo\n")
+            .toString()
+    }
+
+    override fun provideAboutEachSpecialistMessage(professions: Collection<ProfessionDto>): String {
+        val command = OpenCurrentSpecialistsScreenEvent.commandAlias
+        val professionsToShow = professions.fold(StringBuilder()) { builder, profession ->
+            builder.append("*${profession.friendlyName} - ${profession.longDescription ?: profession.shortDescription}\n")
+            builder.append("Open specialist ${command}_${profession.alias}\n")
+        }
+
         return StringBuilder()
             .append("About each specialist screen title\n")
             .append("About each specialist screen subtitle\n")
-            .append("Multiline long long long long long long long long long long long text ")
-            .append("Multiline long long long long long long long long long long long text ")
-            .append("Multiline long long long long long long long long long long long text ")
-            .append("Multiline long long long long long long long long long long long text ")
-            .append("Multiline long long long long long long long long long long long text ")
-            .append("\n\n")
-            .append(EmojiWrapper.getRandomEmojies(3))
+            .append(professionsToShow)
             .toString()
     }
 
@@ -119,13 +127,16 @@ class DefaultMessageTextProvider: MessageTextProvider {
         return StringBuilder()
             .append("I am specialist information screen title\n")
             .append("I am specialist information screen subtitle\n")
-            .append("Multiline long long long long long long long long long long long text ")
-            .append("Multiline long long long long long long long long long long long text ")
-            .append("Multiline long long long long long long long long long long long text ")
-            .append("Multiline long long long long long long long long long long long text ")
-            .append("Multiline long long long long long long long long long long long text ")
+            .append("You can open you CV to the world or create your profile!\n")
             .append("\n\n")
             .append(EmojiWrapper.getRandomEmojies(2))
+            .toString()
+    }
+
+    override fun provideMyCVInfoMessage(): String {
+        return StringBuilder()
+            .append("To submit your CV first authorizate as a specialist\n")
+            .append("Than change your profile visibility to visible!\n")
             .toString()
     }
 
@@ -134,12 +145,11 @@ class DefaultMessageTextProvider: MessageTextProvider {
             .append("This is all available specialists title!\n")
             .append("This is all available specialists subtitle!\n")
             .append("\n")
-            .append("Specialist1 -> some information 1\n")
-            .append("Specialist2 -> some information 2\n")
-            .append("Specialist3 -> some information 3\n")
-            .append("Specialist4 -> some information 4\n")
-            .append("Specialist5 -> some information 5\n")
-            .append("Specialist6 -> some information 6\n")
+            .append("Multiline long long long long long long long long long long long text ")
+            .append("Multiline long long long long long long long long long long long text ")
+            .append("Multiline long long long long long long long long long long long text ")
+            .append("Multiline long long long long long long long long long long long text ")
+            .append("Multiline long long long long long long long long long long long text ")
             .append("\n\n")
             .append(EmojiWrapper.getRandomEmojies(10))
             .toString()
@@ -169,6 +179,14 @@ class DefaultMessageTextProvider: MessageTextProvider {
            .append(currentSpecialists)
            .append("You can get the contacts!\n")
            .toString()
+    }
+
+    override fun provideCurrentSpecialistsEmptyInfoMessage(): String {
+        return StringBuilder()
+            .append("Ohh no...\n")
+            .append("We don't have these specialists yet..\n")
+            .append("Please, try later!")
+            .toString()
     }
 
     override fun provideCurrentSpecialistContactsInfoMessage(contacts: String): String {

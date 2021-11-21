@@ -58,7 +58,7 @@ class FilterUpdateProcessor(
     private fun processOpenCurrentSpecialistsEvent(info: BaseDataInfo): MessageUpdateResultBunch<*> {
         val firstPage = 1
         val professionAlias = info.simpleInput.removeFirstCharIf { it.first() == '/' }
-        val specialists = specialistService.getSpecialistsByProfessionAlias(professionAlias, firstPage, SPECIALIST_PER_PAGE)
+        val specialists = specialistService.getAvailableSpecialistsByProfessionAlias(professionAlias, firstPage, SPECIALIST_PER_PAGE)
         val specialistsCount = specialistService.countSpecialistsByProfessionAlias(professionAlias)
         val newState = CurrentSpecialistsScreenState
         userService.setNewUserState(newState, info)
@@ -73,7 +73,7 @@ class FilterUpdateProcessor(
     private fun processOpenAnotherSpecialistsPageEvent(info: OpenAnotherPageInfo): MessageUpdateResultBunch<*> {
         val currentPage = info.pageNumber
         val professionAlias = info.additionalData.orEmpty()
-        val specialists = specialistService.getSpecialistsByProfessionAlias(professionAlias, currentPage, SPECIALIST_PER_PAGE)
+        val specialists = specialistService.getAvailableSpecialistsByProfessionAlias(professionAlias, currentPage, SPECIALIST_PER_PAGE)
         val specialistsCount = specialistService.countSpecialistsByProfessionAlias(professionAlias)
         val state = CurrentSpecialistsScreenState
 

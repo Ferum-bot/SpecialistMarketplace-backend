@@ -10,6 +10,8 @@ import java.lang.StringBuilder
 class DebugExceptionInterceptor: ExceptionInterceptor {
 
     override fun intercept(error: Exception, causedUpdate: Update, currentApiMethod: ApiMethodHolder) {
+        error.printStackTrace()
+
         val chatId = causedUpdate.getChatId().toString()
         val text = StringBuilder()
             .append("An exception raised!\n")

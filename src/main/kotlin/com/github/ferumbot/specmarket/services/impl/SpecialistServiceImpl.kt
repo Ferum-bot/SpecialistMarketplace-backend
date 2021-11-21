@@ -29,7 +29,7 @@ class SpecialistServiceImpl @Autowired constructor(
     }
 
     @Transactional(readOnly = true)
-    override fun getSpecialistsByProfessionId(
+    override fun getAllSpecialistsByProfessionId(
         professionId: Long, pageNumber: Int, pageSize: Int
     ): Collection<SpecialistDto> {
         val page = PageRequest.of(pageNumber - 1, pageSize)
@@ -39,11 +39,31 @@ class SpecialistServiceImpl @Autowired constructor(
     }
 
     @Transactional(readOnly = true)
-    override fun getSpecialistsByProfessionAlias(
+    override fun getAllSpecialistsByProfessionAlias(
         alias: String, pageNumber: Int, pageSize: Int
     ): Collection<SpecialistDto> {
         val page = PageRequest.of(pageNumber - 1, pageSize)
         val result = repository.findAllByProfessionAlias(alias, page)
+
+        return result.content.map { SpecialistDto.from(it) }
+    }
+
+    @Transactional(readOnly = true)
+    override fun getAvailableSpecialistsByProfessionId(
+        professionId: Long, pageNumber: Int, pageSize: Int
+    ): Collection<SpecialistDto> {
+        val page = PageRequest.of(pageNumber - 1, pageSize)
+        val result = repository.findOnlyVisibleAndFinishedByProfessionId(professionId, page)
+
+        return result.content.map { SpecialistDto.from(it) }
+    }
+
+    @Transactional(readOnly = true)
+    override fun getAvailableSpecialistsByProfessionAlias(
+        alias: String, pageNumber: Int, pageSize: Int
+    ): Collection<SpecialistDto> {
+        val page = PageRequest.of(pageNumber - 1, pageSize)
+        val result = repository.findOnlyVisibleAndFinishedByProfessionAlias(alias, page)
 
         return result.content.map { SpecialistDto.from(it) }
     }

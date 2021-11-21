@@ -36,6 +36,7 @@ class ProcessorsConfig {
             provideIAmCustomerProcessor(),
             provideIAmSpecialistProcessor(),
             provideStartProcessor(),
+            provideIDoNotKnowWhatINeedProcessor(),
             provideMyProfileProcessor(),
             provideFilterProcessor(),
             provideCreatingProfileProcessor(),
@@ -105,5 +106,10 @@ class ProcessorsConfig {
     @Bean
     fun provideFilterProcessor(): LocalUpdateProcessor {
         return FilterUpdateProcessor(professionService, specialistService, userService)
+    }
+
+    @Bean
+    fun provideIDoNotKnowWhatINeedProcessor(): LocalUpdateProcessor {
+        return IDoNotKnowWhatINeedUpdateProcessor(professionService, userService)
     }
 }
