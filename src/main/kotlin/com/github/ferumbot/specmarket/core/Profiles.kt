@@ -2,9 +2,9 @@ package com.github.ferumbot.specmarket.core
 
 object Profiles {
 
-    const val PRODUCTION = "production"
+    const val PROD = "prod"
 
-    const val DEVELOPMENT = "development"
+    const val DEV = "dev"
 
-    const val TEST = "test"
+    const val QA = "qa"
 }
