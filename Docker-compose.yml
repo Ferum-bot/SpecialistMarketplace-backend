@@ -12,8 +12,9 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     networks:
       monitoring:
-        - aliases:
-            - grafana
+        aliases:
+          - grafana
+    container_name: grafana
 
   prometheus:
     image: prom/prometheus
@@ -24,8 +25,9 @@ services:
       - ./prometheus/data:/prometheus
     networks:
       monitoring:
-        - aliases:
-            - prometheus
+        aliases:
+          - prometheus
+    container_name: prometheus
 
   postgres:
     build: './dataBase'
@@ -33,12 +35,23 @@ services:
       - '8999:5432'
     volumes:
       - ./dataBase/data:/var/lib/postgresql/data
+    networks:
+      backend-db:
+        aliases:
+          - postgres
+    container_name: postgres
 
   backend:
     build: './'
     ports:
-      - "8888:5000"
+      - '8888:5000'
+    networks:
+      backend-db:
+        aliases:
+          - backend
+    container_name: backend
 
 
 networks:
   monitoring:
+  backend-db:
