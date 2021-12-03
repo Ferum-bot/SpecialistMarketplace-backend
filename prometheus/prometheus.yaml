@@ -1,6 +1,14 @@
+global:
+  scrape_interval:     15s
+
 scrape_configs:
-  - job_name: 'sample_monitoring'
+  - job_name: 'prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'spring-actuator'
     scrape_interval: 5s
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['host.docker.internal:8888']
+      - targets: ['backend:5000']

@@ -11,7 +11,7 @@ services:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
     networks:
-      monitoring:
+      service_network:
         aliases:
           - grafana
     container_name: grafana
@@ -24,7 +24,7 @@ services:
       - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
       - ./prometheus/data:/prometheus
     networks:
-      monitoring:
+      service_network:
         aliases:
           - prometheus
     container_name: prometheus
@@ -36,7 +36,7 @@ services:
     volumes:
       - ./dataBase/data:/var/lib/postgresql/data
     networks:
-      backend-db:
+      service_network:
         aliases:
           - postgres
     container_name: postgres
@@ -46,12 +46,11 @@ services:
     ports:
       - '8888:5000'
     networks:
-      backend-db:
+      service_network:
         aliases:
           - backend
     container_name: backend
 
 
 networks:
-  monitoring:
-  backend-db:
+  service_network:
