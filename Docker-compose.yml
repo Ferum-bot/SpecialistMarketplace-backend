@@ -2,9 +2,55 @@ version: '3.7'
 
 services:
   grafana:
+    build: './grafana'
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      service_network:
+        aliases:
+          - grafana
+    container_name: grafana
 
   prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
+      - ./prometheus/data:/prometheus
+    networks:
+      service_network:
+        aliases:
+          - prometheus
+    container_name: prometheus
+
+  postgres:
+    build: './dataBase'
+    ports:
+      - '8999:5432'
+    volumes:
+      - ./dataBase/data:/var/lib/postgresql/data
+    networks:
+      service_network:
+        aliases:
+          - postgres
+    container_name: postgres
+
+  backend:
+    build: './'
+    ports:
+      - '8888:5000'
+    networks:
+      service_network:
+        aliases:
+          - backend
+    container_name: backend
 
 
 networks:
-  monitoring:
+  service_network:
