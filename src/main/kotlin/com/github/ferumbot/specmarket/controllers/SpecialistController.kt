@@ -22,12 +22,12 @@ class SpecialistController {
 
     @GetMapping("/all")
     fun getAllSpecialists(
-        @Min(1)
+        @Min(value = 1, message = "Page number must be greater than 0")
         @RequestParam(value = "page_number", required = true)
         pageNumber: Int,
 
-        @Min(1)
-        @Max(50)
+        @Min(value = 1, message = "Size must be greater than 0")
+        @Max(value = 50, message = "Size must be not greater than 50")
         @RequestParam(value = "page_size", required = true)
         pageSize: Int,
     ): ApiResponse<*> {
@@ -54,12 +54,12 @@ class SpecialistController {
         @RequestParam(value = "id", required = true)
         id: Long,
 
-        @Min(1)
+        @Min(value = 1, message = "Page number must be greater than 0")
         @RequestParam(value = "page_number", required = true)
         pageNumber: Int,
 
-        @Min(1)
-        @Max(50)
+        @Min(value = 1, message = "Size must be greater than 0")
+        @Max(value = 50, message = "Size must be not greater than 50")
         @RequestParam(value = "page_size", required = true)
         pageSize: Int,
     ): ApiResponse<*> {
@@ -72,12 +72,12 @@ class SpecialistController {
         @RequestParam(value = "alias", required = true)
         alias: String,
 
-        @Min(1)
+        @Min(value = 1, message = "Page number must be greater than 0")
         @RequestParam(value = "page_number", required = true)
         pageNumber: Int,
 
-        @Min(1)
-        @Max(50)
+        @Min(value = 1, message = "Size must be greater than 0")
+        @Max(value = 50, message = "Size must be not greater than 50")
         @RequestParam(value = "page_size", required = true)
         pageSize: Int,
     ): ApiResponse<*> {

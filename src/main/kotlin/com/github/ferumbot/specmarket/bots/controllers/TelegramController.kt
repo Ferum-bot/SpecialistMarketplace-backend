@@ -28,12 +28,12 @@ class TelegramController @Autowired constructor(
 
     @GetMapping("/users/all")
     fun getAllUsers(
-        @Min(1)
+        @Min(value = 1, message = "Page number must be greater than 1")
         @RequestParam(value = "page_number", required = true)
         pageNumber: Int,
 
-        @Min(1)
-        @Max(50)
+        @Min(value = 1, message = "Page size must be greater than 1")
+        @Max(value = 50, message = "Page size must be not greater than 50")
         @RequestParam(value = "page_size", required = true)
         pageSize: Int,
     ): ApiResponse<*> {

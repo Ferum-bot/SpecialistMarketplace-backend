@@ -29,11 +29,13 @@ class TelegramUsersServiceImpl(
 
     @Transactional(readOnly = true)
     override fun getUserByTelegramUserId(id: Long): TelegramUserDto? {
-        TODO("Not yet implemented")
+        val user = repository.findByTelegramUserId(id)
+        return user?.run { TelegramUserDto.from(this) }
     }
 
     @Transactional(readOnly = true)
     override fun getUserByTelegramChatId(id: Long): TelegramUserDto? {
-        TODO("Not yet implemented")
+        val user = repository.findByPersonalTelegramChatId(id)
+        return user?.run { TelegramUserDto.from(this) }
     }
 }

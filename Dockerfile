@@ -8,4 +8,4 @@ RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/spec-market-0.0.1.jar /app/
 WORKDIR /app
 EXPOSE 5000
-ENTRYPOINT ["java", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","spec-market-0.0.1.jar"]
+ENTRYPOINT ["java", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Xmx4096m", "-Djava.security.egd=file:/dev/./urandom","-jar","spec-market-0.0.1.jar"]
