@@ -9,7 +9,7 @@ import com.github.ferumbot.specmarket.bots.state_machine.state.BotState
 import com.github.ferumbot.specmarket.models.entities.Specialist
 import org.springframework.data.domain.Pageable
 
-interface TelegramUserService {
+interface TelegramBotUserService {
 
     fun userExists(info: BaseUpdateInfo): Boolean
 

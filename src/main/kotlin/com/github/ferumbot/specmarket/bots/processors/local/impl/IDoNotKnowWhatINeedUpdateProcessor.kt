@@ -5,7 +5,7 @@ import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultB
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.ProfessionsInfo
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
-import com.github.ferumbot.specmarket.bots.services.TelegramUserService
+import com.github.ferumbot.specmarket.bots.services.TelegramBotUserService
 import com.github.ferumbot.specmarket.bots.state_machine.event.IDoNotKnowWhatINeedEvent
 import com.github.ferumbot.specmarket.bots.state_machine.event.OpenAboutEachSpecialistScreenEvent
 import com.github.ferumbot.specmarket.bots.state_machine.event.OpenLeaveBidScreenEvent
@@ -16,7 +16,7 @@ import com.github.ferumbot.specmarket.services.ProfessionService
 
 class IDoNotKnowWhatINeedUpdateProcessor(
     private val professionService: ProfessionService,
-    private val userService: TelegramUserService,
+    private val userService: TelegramBotUserService,
 ): LocalUpdateProcessor {
 
     override fun canProcess(bunch: MessageUpdateBunch<*>): Boolean {

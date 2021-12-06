@@ -4,7 +4,7 @@ import com.github.ferumbot.specmarket.bots.processors.BotUpdateProcessor
 import com.github.ferumbot.specmarket.bots.processors.FacadeBotUpdateProcessor
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
 import com.github.ferumbot.specmarket.bots.processors.local.impl.*
-import com.github.ferumbot.specmarket.bots.services.TelegramUserService
+import com.github.ferumbot.specmarket.bots.services.TelegramBotUserService
 import com.github.ferumbot.specmarket.bots.services.TelegramUserSpecialistService
 import com.github.ferumbot.specmarket.services.ProfessionService
 import com.github.ferumbot.specmarket.services.SpecialistService
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration
 class ProcessorsConfig {
 
     @Autowired
-    private lateinit var userService: TelegramUserService
+    private lateinit var userService: TelegramBotUserService
 
     @Autowired
     private lateinit var userSpecialistService: TelegramUserSpecialistService

@@ -12,7 +12,7 @@ import javax.validation.Valid
 
 @Validated
 @RestController
-@RequestMapping("api/professions/")
+@RequestMapping("api/professions")
 class ProfessionController {
 
     @Autowired

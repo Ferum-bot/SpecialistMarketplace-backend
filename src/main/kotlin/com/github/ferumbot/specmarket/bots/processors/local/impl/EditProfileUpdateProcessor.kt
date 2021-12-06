@@ -7,7 +7,7 @@ import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseDataInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.ProfessionsInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
-import com.github.ferumbot.specmarket.bots.services.TelegramUserService
+import com.github.ferumbot.specmarket.bots.services.TelegramBotUserService
 import com.github.ferumbot.specmarket.bots.services.TelegramUserSpecialistService
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
@@ -17,7 +17,7 @@ import com.github.ferumbot.specmarket.models.entities.Specialist
 import com.github.ferumbot.specmarket.services.ProfessionService
 
 class EditProfileUpdateProcessor(
-    private val userService: TelegramUserService,
+    private val userService: TelegramBotUserService,
     private val specialistService: TelegramUserSpecialistService,
     private val professionService: ProfessionService,
 ): LocalUpdateProcessor {

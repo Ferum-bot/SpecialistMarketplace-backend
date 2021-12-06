@@ -7,7 +7,7 @@ import com.github.ferumbot.specmarket.bots.models.entity.embeded.UserBotState
 import com.github.ferumbot.specmarket.bots.models.enums.TelegramUserSpecialistStatus
 import com.github.ferumbot.specmarket.bots.models.enums.TelegramUserSpecialistStatus.*
 import com.github.ferumbot.specmarket.bots.repositories.TelegramUserRepository
-import com.github.ferumbot.specmarket.bots.services.TelegramUserService
+import com.github.ferumbot.specmarket.bots.services.TelegramBotUserService
 import com.github.ferumbot.specmarket.bots.state_machine.state.BotState
 import com.github.ferumbot.specmarket.exceptions.SpecialistNotExists
 import com.github.ferumbot.specmarket.models.entities.Specialist
@@ -18,10 +18,10 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class TelegramUserServiceImpl @Autowired constructor(
+class TelegramBotUserServiceImpl @Autowired constructor(
     private val userRepository: TelegramUserRepository,
     private val specialistRepository: SpecialistRepository,
-): TelegramUserService {
+): TelegramBotUserService {
 
     @Transactional(readOnly = true)
     override fun userExists(info: BaseUpdateInfo): Boolean {

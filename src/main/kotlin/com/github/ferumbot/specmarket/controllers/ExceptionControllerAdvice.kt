@@ -1,5 +1,6 @@
 package com.github.ferumbot.specmarket.controllers
 
+import com.github.ferumbot.specmarket.exceptions.ProfessionNotExists
 import com.github.ferumbot.specmarket.exceptions.ProfessionWasNotDeleted
 import com.github.ferumbot.specmarket.models.response.ApiResponse
 import com.github.ferumbot.specmarket.models.response.ErrorResponse
@@ -23,6 +24,23 @@ class ExceptionControllerAdvice {
             additionalMessage = "Error arose",
             errorMessage = ex.localizedMessage,
             data = errorResponse
+        )
+
+        return ResponseEntity.ok(response)
+    }
+
+    @ExceptionHandler(ProfessionNotExists::class)
+    fun professionNotExists(ex: ProfessionNotExists): ResponseEntity<ApiResponse<*>> {
+        val errorResponse = ErrorResponse(
+            cause = ex.reason,
+            totalExceptions = ex.suppressed.map { it.toString() }
+        )
+        val response = ApiResponse(
+            statusCode = HttpStatus.NOT_FOUND.value(),
+            statusMessage = "Not found",
+            additionalMessage = "Not exists",
+            errorMessage = ex.localizedMessage,
+            data = errorResponse,
         )
 
         return ResponseEntity.ok(response)

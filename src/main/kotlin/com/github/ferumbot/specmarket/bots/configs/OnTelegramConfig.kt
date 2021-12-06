@@ -1,6 +1,7 @@
 package com.github.ferumbot.specmarket.bots.configs
 
 import com.github.ferumbot.specmarket.bots.TelegramBot
+import com.github.ferumbot.specmarket.bots.configs.properties.TelegramBotProperties
 import com.github.ferumbot.specmarket.bots.controllers.TelegramController
 import com.github.ferumbot.specmarket.bots.interactors.impl.BotUpdateToAdapterInteractor
 import com.github.ferumbot.specmarket.bots.interceptors.ExceptionInterceptor
@@ -38,8 +39,8 @@ class OnTelegramConfig {
     @Autowired
     private lateinit var exceptionInterceptor: ExceptionInterceptorFacade
 
-    @Value("\${bots.telegram.api.path}")
-    private lateinit var path: String
+    @Autowired
+    private lateinit var telegramProperties: TelegramBotProperties
 
     @EventListener
     fun onContextStarted(event: ContextRefreshedEvent) {
@@ -52,12 +53,14 @@ class OnTelegramConfig {
     @Scope("singleton")
     fun provideTelegramBot(): TelegramBot {
         val options = DefaultBotOptions()
-        return TelegramBot(options, interactor, exceptionInterceptor)
+        return TelegramBot(options, interactor, exceptionInterceptor, telegramProperties)
     }
 
     @Bean
-    fun provideWebhook(): SetWebhook {
-        return SetWebhook.builder().url(path).build()
+    fun provideWebhook(
+        telegramProperties: TelegramBotProperties,
+    ): SetWebhook {
+        return SetWebhook.builder().url(telegramProperties.webhookPath).build()
     }
 
     @Bean
@@ -67,7 +70,7 @@ class OnTelegramConfig {
 
     private fun initTelegramApi() {
         val bot = provideTelegramBot()
-        val webhook = provideWebhook()
+        val webhook = provideWebhook(telegramProperties)
 
         val telegramBotApi = TelegramBotsApi(DefaultBotSession::class.java)
         telegramBotApi.registerBot(bot, webhook)
