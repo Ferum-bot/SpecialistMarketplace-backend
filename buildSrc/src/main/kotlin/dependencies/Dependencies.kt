@@ -20,4 +20,7 @@ object Dependencies {
     const val EMOJI_JAVA = "com.vdurmont:emoji-java:${Versions.EMOJI_JAVA}"
 
     const val MICROMETER_PROMETHEUS = "io.micrometer:micrometer-registry-prometheus"
+
+    const val SPRING_FOX_STARTER = "io.springfox:springfox-boot-starter:${Versions.SWAGGER}"
+    const val SPRING_FOX_UI = "io.springfox:springfox-swagger-ui:${Versions.SWAGGER}"
 }

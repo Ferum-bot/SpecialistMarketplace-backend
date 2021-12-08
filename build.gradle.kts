@@ -33,6 +33,8 @@ dependencies {
 	addJavaEmoji()
 
 	addPrometheus()
+
+	addSwagger()
 }
 
 springBoot {

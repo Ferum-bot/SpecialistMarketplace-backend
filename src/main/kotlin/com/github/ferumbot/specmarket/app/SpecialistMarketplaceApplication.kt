@@ -5,6 +5,7 @@ import com.github.ferumbot.specmarket.bots.configs.properties.TelegramBotPropert
 import com.github.ferumbot.specmarket.configs.ControllerConfig
 import com.github.ferumbot.specmarket.configs.RepositoryConfig
 import com.github.ferumbot.specmarket.configs.ServiceConfig
+import com.github.ferumbot.specmarket.configs.SwaggerConfig
 import com.github.ferumbot.specmarket.security.SecurityConfig
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan
@@ -21,6 +22,7 @@ import org.springframework.context.annotation.ComponentScan
 		RepositoryConfig::class,
 		ServiceConfig::class,
 		SecurityConfig::class,
+		SwaggerConfig::class,
 	],
 	basePackages = [
 		"com.github.ferumbot.specmarket"

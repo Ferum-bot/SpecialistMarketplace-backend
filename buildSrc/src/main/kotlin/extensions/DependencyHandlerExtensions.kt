@@ -74,3 +74,8 @@ fun DependencyHandler.addJavaEmoji() {
 fun DependencyHandler.addPrometheus() {
     implementation(Dependencies.MICROMETER_PROMETHEUS)
 }
+
+fun DependencyHandler.addSwagger() {
+    implementation(Dependencies.SPRING_FOX_STARTER)
+    implementation(Dependencies.SPRING_FOX_UI)
+}
