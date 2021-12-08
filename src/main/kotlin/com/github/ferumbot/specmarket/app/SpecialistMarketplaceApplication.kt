@@ -2,10 +2,8 @@ package com.github.ferumbot.specmarket.app
 
 import com.github.ferumbot.specmarket.bots.configs.*
 import com.github.ferumbot.specmarket.bots.configs.properties.TelegramBotProperties
-import com.github.ferumbot.specmarket.configs.ControllerConfig
-import com.github.ferumbot.specmarket.configs.RepositoryConfig
-import com.github.ferumbot.specmarket.configs.ServiceConfig
-import com.github.ferumbot.specmarket.configs.SwaggerConfig
+import com.github.ferumbot.specmarket.configs.*
+import com.github.ferumbot.specmarket.configs.properties.PostgresProperties
 import com.github.ferumbot.specmarket.security.SecurityConfig
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan
@@ -23,6 +21,7 @@ import org.springframework.context.annotation.ComponentScan
 		ServiceConfig::class,
 		SecurityConfig::class,
 		SwaggerConfig::class,
+		DataSourceConfig::class,
 	],
 	basePackages = [
 		"com.github.ferumbot.specmarket"
@@ -31,6 +30,7 @@ import org.springframework.context.annotation.ComponentScan
 @ConfigurationPropertiesScan(
 	basePackageClasses = [
 		TelegramBotProperties::class,
+		PostgresProperties::class,
 	],
 	basePackages = [
 		"com.github.ferumbot.specmarket.configs.properties",

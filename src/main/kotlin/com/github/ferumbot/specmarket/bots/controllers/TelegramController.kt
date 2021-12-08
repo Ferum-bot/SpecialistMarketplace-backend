@@ -2,8 +2,13 @@ package com.github.ferumbot.specmarket.bots.controllers
 
 import com.github.ferumbot.specmarket.bots.TelegramBot
 import com.github.ferumbot.specmarket.bots.services.TelegramUsersService
+import com.github.ferumbot.specmarket.configs.SwaggerConfig
+import com.github.ferumbot.specmarket.configs.SwaggerConfig.Companion.TELEGRAM_CONTROLLER_DESCRIPTION
+import com.github.ferumbot.specmarket.configs.SwaggerConfig.Companion.TELEGRAM_CONTROLLER_TAG
 import com.github.ferumbot.specmarket.core.extensions.ifNull
 import com.github.ferumbot.specmarket.models.response.ApiResponse
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod
@@ -13,12 +18,14 @@ import javax.validation.constraints.Min
 
 @RestController
 @RequestMapping("telegram")
+@Tag(name = TELEGRAM_CONTROLLER_TAG, description = TELEGRAM_CONTROLLER_DESCRIPTION)
 class TelegramController @Autowired constructor(
     private val telegramBot: TelegramBot,
     private val service: TelegramUsersService,
 ) {
 
     @PostMapping("/webhook")
+    @Operation(summary = "Webhook for telegram API")
     fun onWebhookUpdateReceived(
         @RequestBody
         update: Update
@@ -27,6 +34,7 @@ class TelegramController @Autowired constructor(
     }
 
     @GetMapping("/users/all")
+    @Operation(summary = "Find all service telegram user")
     fun getAllUsers(
         @Min(value = 1, message = "Page number must be greater than 1")
         @RequestParam(value = "page_number", required = true)
@@ -42,6 +50,7 @@ class TelegramController @Autowired constructor(
     }
 
     @GetMapping("/user/id")
+    @Operation(summary = "Find service telegram user by internal id")
     fun getUserById(
         @RequestParam(value = "id", required = true)
         id: Long,
@@ -56,6 +65,7 @@ class TelegramController @Autowired constructor(
     }
 
     @GetMapping("/user/telegramId")
+    @Operation(summary = "Find service telegram user by external telegram id")
     fun getUserByTelegramId(
         @RequestParam(value = "id", required = true)
         id: Long,
@@ -70,6 +80,7 @@ class TelegramController @Autowired constructor(
     }
 
     @GetMapping("/user/chatId")
+    @Operation(summary = "Find service telegram user by external telegram chat id")
     fun getUserByChatId(
         @RequestParam(value = "id", required = true)
         id: Long,

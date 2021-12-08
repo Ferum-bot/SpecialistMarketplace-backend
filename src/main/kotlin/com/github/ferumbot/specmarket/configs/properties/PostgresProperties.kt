@@ -4,7 +4,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component
 
 @Component
-@ConfigurationProperties(prefix = "")
+@ConfigurationProperties(prefix = "postgres")
 data class PostgresProperties(
 
+    var databaseUrl: String = "",
+
+    var userName: String = "",
+
+    var password: String = "",
 )

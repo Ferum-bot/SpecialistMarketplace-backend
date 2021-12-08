@@ -1,8 +1,12 @@
 package com.github.ferumbot.specmarket.controllers
 
+import com.github.ferumbot.specmarket.configs.SwaggerConfig.Companion.SPECIALIST_CONTROLLER_DESCRIPTION
+import com.github.ferumbot.specmarket.configs.SwaggerConfig.Companion.SPECIALIST_CONTROLLER_TAG
 import com.github.ferumbot.specmarket.core.extensions.ifNull
 import com.github.ferumbot.specmarket.models.response.ApiResponse
 import com.github.ferumbot.specmarket.services.SpecialistService
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
@@ -15,12 +19,14 @@ import javax.validation.constraints.Min
 @Validated
 @RestController
 @RequestMapping("api/specialists")
+@Tag(name = SPECIALIST_CONTROLLER_TAG, description = SPECIALIST_CONTROLLER_DESCRIPTION)
 class SpecialistController {
 
     @Autowired
     private lateinit var service: SpecialistService
 
     @GetMapping("/all")
+    @Operation(summary = "Get all service specialists")
     fun getAllSpecialists(
         @Min(value = 1, message = "Page number must be greater than 0")
         @RequestParam(value = "page_number", required = true)
@@ -36,6 +42,7 @@ class SpecialistController {
     }
 
     @GetMapping("/byId")
+    @Operation(summary = "Get specialist by it internal id")
     fun getSpecialistById(
         @RequestParam(value = "id", required = true)
         id: Long,
@@ -50,6 +57,7 @@ class SpecialistController {
     }
 
     @GetMapping("/all/byProfessionId")
+    @Operation(summary = "Get all specialists with this profession by it id")
     fun getAllSpecialistsByProfessionId(
         @RequestParam(value = "id", required = true)
         id: Long,
@@ -68,6 +76,7 @@ class SpecialistController {
     }
 
     @GetMapping("/all/byProfessionAlias")
+    @Operation(summary = "Get all specialists with this profession by it alias")
     fun getAllSpecialistsByProfessionAlias(
         @RequestParam(value = "alias", required = true)
         alias: String,

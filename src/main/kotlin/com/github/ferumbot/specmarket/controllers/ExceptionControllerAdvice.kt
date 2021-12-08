@@ -6,14 +6,14 @@ import com.github.ferumbot.specmarket.models.response.ApiResponse
 import com.github.ferumbot.specmarket.models.response.ErrorResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.RestControllerAdvice
 
-@ControllerAdvice
+@RestControllerAdvice
 class ExceptionControllerAdvice {
 
     @ExceptionHandler(ProfessionWasNotDeleted::class)
-    fun professionWasNotDeleted(ex: ProfessionWasNotDeleted): ResponseEntity<ApiResponse<*>> {
+    fun professionWasNotDeleted(ex: ProfessionWasNotDeleted): ResponseEntity<ApiResponse<ErrorResponse>> {
         val errorResponse = ErrorResponse(
             cause = ex.reason,
             totalExceptions = ex.suppressed.map { it.toString() }
@@ -30,7 +30,7 @@ class ExceptionControllerAdvice {
     }
 
     @ExceptionHandler(ProfessionNotExists::class)
-    fun professionNotExists(ex: ProfessionNotExists): ResponseEntity<ApiResponse<*>> {
+    fun professionNotExists(ex: ProfessionNotExists): ResponseEntity<ApiResponse<ErrorResponse>> {
         val errorResponse = ErrorResponse(
             cause = ex.reason,
             totalExceptions = ex.suppressed.map { it.toString() }
@@ -47,7 +47,7 @@ class ExceptionControllerAdvice {
     }
 
     @ExceptionHandler(Exception::class)
-    fun onExceptionRaised(ex: Exception): ResponseEntity<ApiResponse<*>> {
+    fun onExceptionRaised(ex: Exception): ResponseEntity<ApiResponse<ErrorResponse>> {
         val errorResponse = ErrorResponse(
             cause = ex.cause?.toString(),
             totalExceptions = ex.suppressed?.map { it.toString() }
