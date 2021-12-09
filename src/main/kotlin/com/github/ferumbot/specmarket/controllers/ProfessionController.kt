@@ -1,12 +1,13 @@
 package com.github.ferumbot.specmarket.controllers
 
 import com.github.ferumbot.specmarket.configs.SwaggerConfig
-import com.github.ferumbot.specmarket.configs.SwaggerConfig.Companion.PROFESSION_CONTROLLER_DESCRIPTION
-import com.github.ferumbot.specmarket.configs.SwaggerConfig.Companion.PROFESSION_CONTROLLER_TAG
+import com.github.ferumbot.specmarket.core.annotations.SwaggerVisible
 import com.github.ferumbot.specmarket.models.dto.ProfessionDto
 import com.github.ferumbot.specmarket.models.dto.UpdateProfessionDto
+import com.github.ferumbot.specmarket.models.entities.Profession
 import com.github.ferumbot.specmarket.models.response.ApiResponse
 import com.github.ferumbot.specmarket.services.ProfessionService
+import io.swagger.annotations.Api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,8 +18,9 @@ import javax.validation.Valid
 
 @Validated
 @RestController
+@SwaggerVisible
 @RequestMapping("api/professions")
-@Tag(name = PROFESSION_CONTROLLER_TAG, description = PROFESSION_CONTROLLER_DESCRIPTION)
+@Api(description = SwaggerConfig.PROFESSION_CONTROLLER_DESCRIPTION)
 class ProfessionController {
 
     @Autowired
@@ -26,7 +28,7 @@ class ProfessionController {
 
     @GetMapping("/all")
     @Operation(summary = "Get all current available professions")
-    fun getAllAvailableProfessions(): ResponseEntity<ApiResponse<*>> {
+    fun getAllAvailableProfessions(): ResponseEntity<ApiResponse<Collection<Profession>>> {
         val professions = service.getAllAvailableProfessions()
 
         val response = ApiResponse.success(professions)
@@ -39,7 +41,7 @@ class ProfessionController {
     fun searchProfessionsByFriendlyName(
         @RequestParam(value = "friendly_name", required = true)
         friendlyName: String,
-    ): ResponseEntity<ApiResponse<*>> {
+    ): ResponseEntity<ApiResponse<Collection<Profession>>> {
         val professions = service.searchProfessionsByFriendlyName(friendlyName)
 
         val response = ApiResponse.success(professions)
@@ -86,7 +88,7 @@ class ProfessionController {
         @Valid
         @RequestBody
         profession: ProfessionDto
-    ): ResponseEntity<ApiResponse<*>> {
+    ): ResponseEntity<ApiResponse<Profession>> {
         val result = service.createNewProfession(profession)
 
         val response = ApiResponse.success(result)

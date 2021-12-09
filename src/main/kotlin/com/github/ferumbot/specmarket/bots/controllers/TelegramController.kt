@@ -1,12 +1,13 @@
 package com.github.ferumbot.specmarket.bots.controllers
 
 import com.github.ferumbot.specmarket.bots.TelegramBot
+import com.github.ferumbot.specmarket.bots.models.dto.TelegramUserDto
 import com.github.ferumbot.specmarket.bots.services.TelegramUsersService
 import com.github.ferumbot.specmarket.configs.SwaggerConfig
-import com.github.ferumbot.specmarket.configs.SwaggerConfig.Companion.TELEGRAM_CONTROLLER_DESCRIPTION
-import com.github.ferumbot.specmarket.configs.SwaggerConfig.Companion.TELEGRAM_CONTROLLER_TAG
+import com.github.ferumbot.specmarket.core.annotations.SwaggerVisible
 import com.github.ferumbot.specmarket.core.extensions.ifNull
 import com.github.ferumbot.specmarket.models.response.ApiResponse
+import io.swagger.annotations.Api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,8 +18,9 @@ import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 
 @RestController
+@SwaggerVisible
 @RequestMapping("telegram")
-@Tag(name = TELEGRAM_CONTROLLER_TAG, description = TELEGRAM_CONTROLLER_DESCRIPTION)
+@Api(description = SwaggerConfig.TELEGRAM_CONTROLLER_DESCRIPTION)
 class TelegramController @Autowired constructor(
     private val telegramBot: TelegramBot,
     private val service: TelegramUsersService,
@@ -44,7 +46,7 @@ class TelegramController @Autowired constructor(
         @Max(value = 50, message = "Page size must be not greater than 50")
         @RequestParam(value = "page_size", required = true)
         pageSize: Int,
-    ): ApiResponse<*> {
+    ): ApiResponse<Collection<TelegramUserDto>> {
         val users = service.getAllUsers(pageNumber, pageSize)
         return ApiResponse.success(users)
     }

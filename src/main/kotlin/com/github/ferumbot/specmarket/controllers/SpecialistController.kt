@@ -1,10 +1,12 @@
 package com.github.ferumbot.specmarket.controllers
 
-import com.github.ferumbot.specmarket.configs.SwaggerConfig.Companion.SPECIALIST_CONTROLLER_DESCRIPTION
-import com.github.ferumbot.specmarket.configs.SwaggerConfig.Companion.SPECIALIST_CONTROLLER_TAG
+import com.github.ferumbot.specmarket.configs.SwaggerConfig
+import com.github.ferumbot.specmarket.core.annotations.SwaggerVisible
 import com.github.ferumbot.specmarket.core.extensions.ifNull
+import com.github.ferumbot.specmarket.models.dto.SpecialistDto
 import com.github.ferumbot.specmarket.models.response.ApiResponse
 import com.github.ferumbot.specmarket.services.SpecialistService
+import io.swagger.annotations.Api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,8 +20,9 @@ import javax.validation.constraints.Min
 
 @Validated
 @RestController
+@SwaggerVisible
 @RequestMapping("api/specialists")
-@Tag(name = SPECIALIST_CONTROLLER_TAG, description = SPECIALIST_CONTROLLER_DESCRIPTION)
+@Api(description = SwaggerConfig.SPECIALIST_CONTROLLER_DESCRIPTION)
 class SpecialistController {
 
     @Autowired
@@ -36,7 +39,7 @@ class SpecialistController {
         @Max(value = 50, message = "Size must be not greater than 50")
         @RequestParam(value = "page_size", required = true)
         pageSize: Int,
-    ): ApiResponse<*> {
+    ): ApiResponse<Collection<SpecialistDto>> {
         val specialists = service.getAllSpecialists(pageNumber, pageSize)
         return ApiResponse.success(specialists)
     }
@@ -70,7 +73,7 @@ class SpecialistController {
         @Max(value = 50, message = "Size must be not greater than 50")
         @RequestParam(value = "page_size", required = true)
         pageSize: Int,
-    ): ApiResponse<*> {
+    ): ApiResponse<Collection<SpecialistDto>> {
         val specialists = service.getAllSpecialistsByProfessionId(id, pageNumber, pageSize)
         return ApiResponse.success(specialists)
     }
@@ -89,7 +92,7 @@ class SpecialistController {
         @Max(value = 50, message = "Size must be not greater than 50")
         @RequestParam(value = "page_size", required = true)
         pageSize: Int,
-    ): ApiResponse<*> {
+    ): ApiResponse<Collection<SpecialistDto>> {
         val specialists = service.getAllSpecialistsByProfessionAlias(alias, pageNumber, pageSize)
         return ApiResponse.success(specialists)
     }
