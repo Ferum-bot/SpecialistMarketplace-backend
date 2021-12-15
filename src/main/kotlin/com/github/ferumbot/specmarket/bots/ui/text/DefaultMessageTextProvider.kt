@@ -11,16 +11,9 @@ class DefaultMessageTextProvider: MessageTextProvider {
 
     override fun provideStartScreenMessage(): String {
         return StringBuilder()
-            .append("Start Screen message Title\n")
-            .append("Start Screen message Subtitle\n")
-            .append("\n\n")
-            .append("Multiline long long long long long long long long long long long text ")
-            .append("Multiline long long long long long long long long long long long text ")
-            .append("Multiline long long long long long long long long long long long text ")
-            .append("Multiline long long long long long long long long long long long text ")
-            .append("Multiline long long long long long long long long long long long text ")
-            .append("\n\n")
-            .append(EmojiWrapper.getRandomEmojies(5))
+            .append("Привет! Этот бот поможет тебе найти подрядчика на любой твой проект.\n")
+            .append("Если ты хочешь найти подрядчика, нажимай \"я заказчик\".\n")
+            .append("Если ты хочешь стать подрядчиком и получать заказы, нажимай \"я специалист\".")
             .toString()
     }
 
