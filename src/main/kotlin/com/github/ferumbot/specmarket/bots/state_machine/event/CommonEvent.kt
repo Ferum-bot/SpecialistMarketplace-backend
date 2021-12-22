@@ -8,7 +8,7 @@ object GoBackEvent: CommonEvent {
 
     override val commandAlias: String = "/back"
 
-    override val friendlyName: String = "Back"
+    override val friendlyName: String = "Назад"
 }
 
 object OpenStartScreenEvent: CommonEvent {
@@ -17,7 +17,7 @@ object OpenStartScreenEvent: CommonEvent {
 
     override val commandAlias: String = "/main_page"
 
-    override val friendlyName: String = "Open main page"
+    override val friendlyName: String = "Открыть главную страницу"
 }
 
 object RegisterNewUserEvent: CommonEvent {
@@ -26,7 +26,7 @@ object RegisterNewUserEvent: CommonEvent {
 
     override val commandAlias: String = "/start"
 
-    override val friendlyName: String = "Register new user"
+    override val friendlyName: String = "Зарегистрироваться"
 }
 
 object UnSupportedEvent: CommonEvent {

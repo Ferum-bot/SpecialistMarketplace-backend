@@ -8,5 +8,5 @@ object OpenIDoNotKnowWhoISearchScreenEvent: AllSpecialistsEvent {
 
     override val commandAlias: String = "/open_i_do_not_know_who_i_search"
 
-    override val friendlyName: String = "I don't know who I search"
+    override val friendlyName: String = "Я не знаю, кого ищу"
 }

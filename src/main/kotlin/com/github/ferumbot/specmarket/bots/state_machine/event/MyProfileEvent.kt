@@ -8,7 +8,7 @@ object OpenMyRequestsScreenEvent: MyProfileEvent {
 
     override val commandAlias: String = "/open_my_requests"
 
-    override val friendlyName: String = "Open my requests"
+    override val friendlyName: String = "Мои заказы"
 }
 
 object OpenAnotherMyRequestsPageScreenEvent: MyProfileEvent {
@@ -17,7 +17,7 @@ object OpenAnotherMyRequestsPageScreenEvent: MyProfileEvent {
 
     override val commandAlias: String = "/open_my_requests_page:"
 
-    override val friendlyName: String = "Open my requests page: "
+    override val friendlyName: String = "Мои заказы (другая страница)"
 }
 
 object DeleteMyRequestFromHistoryScreenEvent: MyProfileEvent {
@@ -26,7 +26,7 @@ object DeleteMyRequestFromHistoryScreenEvent: MyProfileEvent {
 
     override val commandAlias: String = "/delete_my_request_number:"
 
-    override val friendlyName: String = "Delete request from history: "
+    override val friendlyName: String = "Удалить заявку из истории"
 }
 
 object OpenEditInfoScreenEvent: MyProfileEvent {
@@ -35,7 +35,7 @@ object OpenEditInfoScreenEvent: MyProfileEvent {
 
     override val commandAlias: String = "/open_edit_information"
 
-    override val friendlyName: String = "Open edit information"
+    override val friendlyName: String = "Редактировать информацию"
 }
 
 object ChangeProfileSpecialistVisibilityScreenEvent: MyProfileEvent {
@@ -44,5 +44,5 @@ object ChangeProfileSpecialistVisibilityScreenEvent: MyProfileEvent {
 
     override val commandAlias: String = "/change_profile_visibility"
 
-    override val friendlyName: String = "Change profile visibility"
+    override val friendlyName: String = "Поменять видимость профиля"
 }
