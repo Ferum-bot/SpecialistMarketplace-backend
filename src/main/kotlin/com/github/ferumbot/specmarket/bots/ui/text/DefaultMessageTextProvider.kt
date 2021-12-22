@@ -20,7 +20,7 @@ class DefaultMessageTextProvider: MessageTextProvider {
     override fun provideContactWithUsMessage(): String {
         return StringBuilder()
             .append("Contact With us Screen message Title\n")
-            .append("Contact With us Screen Subtitle\n")
+            .append("Contact With us Screen Subtitlee§\n")
             .append("\n\n")
             .append("Created and powered by @dr_matjo! ")
             .append("Created and powered by @dr_matjo! ")
