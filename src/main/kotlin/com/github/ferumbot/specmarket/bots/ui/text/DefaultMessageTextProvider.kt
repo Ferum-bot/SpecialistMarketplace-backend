@@ -22,7 +22,7 @@ class DefaultMessageTextProvider: MessageTextProvider {
     override fun provideContactWithUsMessage(): String {
         return StringBuilder()
             .append("Вопросы по работе бота и баги: @dr_matjo\n")
-            .append("Если возникли трудности с исполнителем или заказчиком: @Danverrr\n")
+            .append("Если возникли трудности с исполнителем или заказчиком: @ma_popovv\n")
             .toString()
     }
 
