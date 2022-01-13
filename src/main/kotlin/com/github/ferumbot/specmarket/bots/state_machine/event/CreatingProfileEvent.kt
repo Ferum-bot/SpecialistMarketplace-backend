@@ -8,7 +8,7 @@ object StartRegistrationFlowEvent: CreatingProfileEvent {
 
     override val commandAlias: String = "/start_registration_flow"
 
-    override val friendlyName: String = "Start registration flow"
+    override val friendlyName: String = "Начать регистрацию"
 }
 
 object RestartRegistrationFlowEvent: CreatingProfileEvent {
@@ -17,7 +17,7 @@ object RestartRegistrationFlowEvent: CreatingProfileEvent {
 
     override val commandAlias: String = "/restart_registration_flow"
 
-    override val friendlyName: String = "Restart registration flow"
+    override val friendlyName: String = "Зарегистрироваться заново"
 }
 
 object OnUserInputFullNameEvent: CreatingProfileEvent {
@@ -107,7 +107,7 @@ object OpenHowItLooksLikeNowScreenEvent: CreatingProfileEvent {
 
     override val commandAlias: String = "/open_how_it_looks_like_now"
 
-    override val friendlyName: String = "How it looks now"
+    override val friendlyName: String = "Как выглядит профиль сейчас"
 }
 
 object ContinueCreatingProfileFlowEvent: CreatingProfileEvent {
@@ -116,7 +116,7 @@ object ContinueCreatingProfileFlowEvent: CreatingProfileEvent {
 
     override val commandAlias: String = "/continue_creating_profile"
 
-    override val friendlyName: String = "Continue creating profile"
+    override val friendlyName: String = "Продолжить создание профиля"
 }
 
 object OnUserRegistrationFinishedEvent: CreatingProfileEvent {
@@ -125,6 +125,6 @@ object OnUserRegistrationFinishedEvent: CreatingProfileEvent {
 
     override val commandAlias: String = "/finish_registration"
 
-    override val friendlyName: String = "Finish registration"
+    override val friendlyName: String = "Закончить регистрацию"
 }
 
