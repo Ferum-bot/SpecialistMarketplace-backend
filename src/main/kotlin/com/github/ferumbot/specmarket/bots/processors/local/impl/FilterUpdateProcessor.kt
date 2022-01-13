@@ -4,7 +4,7 @@ import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.*
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
-import com.github.ferumbot.specmarket.bots.services.TelegramUserService
+import com.github.ferumbot.specmarket.bots.services.TelegramBotUserService
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import com.github.ferumbot.specmarket.bots.state_machine.state.CurrentSpecialistsContactsScreenState
 import com.github.ferumbot.specmarket.bots.state_machine.state.CurrentSpecialistsScreenState
@@ -17,7 +17,7 @@ import com.github.ferumbot.specmarket.services.SpecialistService
 class FilterUpdateProcessor(
     private val professionService: ProfessionService,
     private val specialistService: SpecialistService,
-    private val userService: TelegramUserService,
+    private val userService: TelegramBotUserService,
 ): LocalUpdateProcessor {
 
     companion object {

@@ -10,11 +10,10 @@ import com.github.ferumbot.specmarket.bots.adapters.update.local.LocalUpdateAdap
 import com.github.ferumbot.specmarket.bots.adapters.update.local.impl.*
 import com.github.ferumbot.specmarket.bots.interactors.impl.BotAdapterToProcessorInteractor
 import com.github.ferumbot.specmarket.bots.processors.BotUpdateProcessor
-import com.github.ferumbot.specmarket.bots.services.TelegramUserService
+import com.github.ferumbot.specmarket.bots.services.TelegramBotUserService
 import com.github.ferumbot.specmarket.bots.ui.inline_buttons.InlineMessageButtonsProvider
 import com.github.ferumbot.specmarket.bots.ui.keyboard_buttons.KeyboardMessageButtonsProvider
 import com.github.ferumbot.specmarket.bots.ui.text.MessageTextProvider
-import com.github.ferumbot.specmarket.services.ProfessionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -28,7 +27,7 @@ class AdaptersConfig @Autowired constructor(
 ) {
 
     @Autowired
-    private lateinit var userService: TelegramUserService
+    private lateinit var userService: TelegramBotUserService
 
     /**
      *  Incoming event adapters

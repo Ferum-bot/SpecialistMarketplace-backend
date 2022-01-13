@@ -13,6 +13,8 @@ interface TelegramUserRepository: JpaRepository<TelegramUser, Long> {
 
     fun existsTelegramUserByTelegramUserId(telegramUserId: Long): Boolean
 
+    fun findByPersonalTelegramChatId(personalTelegramCharId: Long): TelegramUser?
+
     @Query(
         value = "SELECT COUNT(specialist_id) FROM telegram_user_to_specialist_requests WHERE telegram_user_id = :telegram_user_id",
         nativeQuery = true,

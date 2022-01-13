@@ -8,7 +8,7 @@ object OpenFilterScreenEvent: FilterEvent {
 
     override val commandAlias: String = "/open_filter"
 
-    override val friendlyName: String = "Open filter"
+    override val friendlyName: String = "Фильтр"
 }
 
 object OpenCurrentSpecialistsScreenEvent: FilterEvent {
@@ -17,7 +17,7 @@ object OpenCurrentSpecialistsScreenEvent: FilterEvent {
 
     override val commandAlias: String = "/filterBy"
 
-    override val friendlyName: String = "Open current specialists"
+    override val friendlyName: String = "Найденные специалисты"
 }
 
 object OpenAnotherSpecialistsPageScreenEvent: FilterEvent {
@@ -26,7 +26,7 @@ object OpenAnotherSpecialistsPageScreenEvent: FilterEvent {
 
     override val commandAlias: String = "/open_another_specialists_page"
 
-    override val friendlyName: String = "Open another specialists page"
+    override val friendlyName: String = "Следующая страница"
 }
 
 object GetSpecialistsContactsEvent: FilterEvent {
@@ -35,5 +35,5 @@ object GetSpecialistsContactsEvent: FilterEvent {
 
     override val commandAlias: String = "/get_specialists_contacts"
 
-    override val friendlyName: String = "Get specialists contacts"
+    override val friendlyName: String = "Получить контакты"
 }

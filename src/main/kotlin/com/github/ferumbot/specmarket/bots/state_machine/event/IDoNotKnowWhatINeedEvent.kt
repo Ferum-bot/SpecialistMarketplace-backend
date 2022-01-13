@@ -8,7 +8,7 @@ object OpenLeaveBidScreenEvent: IDoNotKnowWhatINeedEvent{
 
     override val commandAlias: String = "/open_leave_bid"
 
-    override val friendlyName: String = "Leave bid"
+    override val friendlyName: String = "Оставить заявку"
 }
 
 object OpenAboutEachSpecialistScreenEvent: IDoNotKnowWhatINeedEvent {
@@ -17,5 +17,5 @@ object OpenAboutEachSpecialistScreenEvent: IDoNotKnowWhatINeedEvent {
 
     override val commandAlias: String = "/open_about_each_specialist"
 
-    override val friendlyName: String = "About each specialist"
+    override val friendlyName: String = "Открыть справку"
 }

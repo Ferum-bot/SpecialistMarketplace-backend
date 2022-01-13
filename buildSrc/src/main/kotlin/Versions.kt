@@ -5,4 +5,6 @@ object Versions {
     const val TELEGRAM_BOT = "5.3.0"
 
     const val EMOJI_JAVA = "5.1.1"
+
+    const val SWAGGER = "3.0.0"
 }

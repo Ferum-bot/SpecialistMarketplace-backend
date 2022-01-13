@@ -5,13 +5,13 @@ import com.github.ferumbot.specmarket.bots.core.getCommandAlias
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseDataInfo
-import com.github.ferumbot.specmarket.bots.services.TelegramUserService
+import com.github.ferumbot.specmarket.bots.services.TelegramBotUserService
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
 import org.telegram.telegrambots.meta.api.objects.Update
 
 class CreatingProfileInputEventAdapter(
-    private val userService: TelegramUserService
+    private val userService: TelegramBotUserService
 ): LocalUpdateAdapter {
 
     companion object {
