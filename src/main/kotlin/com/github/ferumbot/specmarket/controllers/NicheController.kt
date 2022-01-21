@@ -22,7 +22,7 @@ class NicheController  {
     @GetMapping("/all")
     @Operation(summary = "Get all current available niches")
     fun getAllAvailableNiches(): ResponseEntity<ApiResponse<Collection<Niche>>> {
-
+        TODO("Not implemented yet")
     }
 
     @GetMapping("/byId")
@@ -31,7 +31,7 @@ class NicheController  {
         @RequestParam(value = "id", required = true)
         id: Long,
     ): ResponseEntity<ApiResponse<*>> {
-
+        TODO("Not implemented yet")
     }
 
     @GetMapping("/byAlias")
@@ -40,7 +40,7 @@ class NicheController  {
         @RequestParam(value = "alias", required = true)
         alias: String,
     ): ResponseEntity<ApiResponse<*>> {
-
+        TODO("Not implemented yet")
     }
 
     @PatchMapping("/create")
@@ -49,6 +49,6 @@ class NicheController  {
         @RequestBody
         newNiche: NicheDto
     ): ResponseEntity<ApiResponse<Niche>> {
-
+        TODO("Not implemented yet")
     }
 }
