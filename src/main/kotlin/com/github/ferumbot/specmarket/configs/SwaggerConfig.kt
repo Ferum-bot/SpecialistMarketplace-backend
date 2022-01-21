@@ -23,11 +23,17 @@ class SwaggerConfig {
         const val PROFESSION_CONTROLLER_DESCRIPTION = """
             API for interaction with professions. Creating and editing professions.
         """
+
         const val SPECIALIST_CONTROLLER_DESCRIPTION = """
             API for interaction with specialists. Viewing and analysis of specialists
         """
+
         const val TELEGRAM_CONTROLLER_DESCRIPTION = """
             API for interaction with telegram api. Viewing service users interacting via a telegram bot.
+        """
+
+        const val NICHE_CONTROLLER_DESCRIPTION = """
+            API for interaction with niches. Viewing, creating and editing niches.
         """
     }
 

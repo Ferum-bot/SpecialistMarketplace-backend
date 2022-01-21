@@ -1,4 +1,4 @@
-package com.github.ferumbot.specmarket.controllers
+package com.github.ferumbot.specmarket.controllers.advice
 
 import com.github.ferumbot.specmarket.exceptions.ProfessionNotExists
 import com.github.ferumbot.specmarket.exceptions.ProfessionWasNotDeleted
