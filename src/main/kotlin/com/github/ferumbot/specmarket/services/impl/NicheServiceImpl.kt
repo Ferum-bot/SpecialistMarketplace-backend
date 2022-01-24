@@ -15,21 +15,33 @@ class NicheServiceImpl @Autowired constructor(
 
     @Transactional(readOnly = true)
     override fun getAllAvailableNiches(): Collection<Niche> {
-        TODO("Not yet implemented")
+        return repository.findAll()
     }
 
     @Transactional(readOnly = true)
     override fun getNicheById(id: Long): Niche? {
-        TODO("Not yet implemented")
+        val result = repository.findById(id)
+        return if (result.isPresent) {
+            result.get()
+        } else {
+            null
+        }
     }
 
     @Transactional(readOnly = true)
     override fun getNicheByAlias(alias: String): Niche? {
-        TODO("Not yet implemented")
+        return repository.getByAlias(alias)
     }
 
     @Transactional
     override fun createNewNiche(niche: NicheDto): Niche {
-        TODO("Not yet implemented")
+        val newNiche = Niche(
+            friendlyName = niche.friendlyName,
+            alias = niche.alias,
+            shortDescription = niche.shortDescription,
+            longDescription = niche.longDescription,
+        )
+
+        return repository.save(newNiche)
     }
 }

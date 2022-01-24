@@ -5,15 +5,15 @@ import com.github.ferumbot.specmarket.models.dto.NicheDto
 import com.github.ferumbot.specmarket.models.entities.Niche
 import com.github.ferumbot.specmarket.models.response.ApiResponse
 import com.github.ferumbot.specmarket.services.NicheService
-import io.swagger.annotations.Api
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("api/niche")
-@Api(description = SwaggerConfig.NICHE_CONTROLLER_DESCRIPTION)
+@Tag(name = "Niche", description = SwaggerConfig.NICHE_CONTROLLER_DESCRIPTION)
 class NicheController  {
 
     @Autowired
@@ -22,7 +22,9 @@ class NicheController  {
     @GetMapping("/all")
     @Operation(summary = "Get all current available niches")
     fun getAllAvailableNiches(): ResponseEntity<ApiResponse<Collection<Niche>>> {
-        TODO("Not implemented yet")
+        val result = service.getAllAvailableNiches()
+        val response = ApiResponse.success(result)
+        return ResponseEntity.ok(response)
     }
 
     @GetMapping("/byId")
@@ -31,7 +33,11 @@ class NicheController  {
         @RequestParam(value = "id", required = true)
         id: Long,
     ): ResponseEntity<ApiResponse<*>> {
-        TODO("Not implemented yet")
+        val result = service.getNicheById(id)
+        val response = result?.run { ApiResponse.success(this) }
+            ?: ApiResponse.notFound { "Niche with id: $id not found!" }
+
+        return ResponseEntity.ok(response)
     }
 
     @GetMapping("/byAlias")
@@ -40,7 +46,11 @@ class NicheController  {
         @RequestParam(value = "alias", required = true)
         alias: String,
     ): ResponseEntity<ApiResponse<*>> {
-        TODO("Not implemented yet")
+        val result = service.getNicheByAlias(alias)
+        val response = result?.run { ApiResponse.success(this) }
+            ?: ApiResponse.notFound { "Niche with alias: $alias not found!" }
+
+        return ResponseEntity.ok(response)
     }
 
     @PatchMapping("/create")
@@ -49,6 +59,8 @@ class NicheController  {
         @RequestBody
         newNiche: NicheDto
     ): ResponseEntity<ApiResponse<Niche>> {
-        TODO("Not implemented yet")
+        val result = service.createNewNiche(newNiche)
+        val response = ApiResponse.success(result)
+        return ResponseEntity.ok(response)
     }
 }

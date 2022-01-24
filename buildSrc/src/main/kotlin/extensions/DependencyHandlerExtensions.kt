@@ -76,6 +76,7 @@ fun DependencyHandler.addPrometheus() {
 }
 
 fun DependencyHandler.addSwagger() {
-    implementation(Dependencies.SPRING_FOX_STARTER)
-    implementation(Dependencies.SPRING_FOX_UI)
+    implementation(Dependencies.SPRING_OPEN_API)
+    //implementation(Dependencies.SPRING_OPEN_API_SECURITY)
+    implementation(Dependencies.SPRING_OPEN_API_KOTLIN)
 }

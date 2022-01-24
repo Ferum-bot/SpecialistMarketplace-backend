@@ -6,5 +6,7 @@ object Versions {
 
     const val EMOJI_JAVA = "5.1.1"
 
-    const val SWAGGER = "3.0.0"
+    const val SWAGGER_FOX = "3.0.0"
+
+    const val SWAGGER_DOC = "1.6.4"
 }

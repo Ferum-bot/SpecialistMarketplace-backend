@@ -7,7 +7,6 @@ import com.github.ferumbot.specmarket.configs.SwaggerConfig
 import com.github.ferumbot.specmarket.core.annotations.SwaggerVisible
 import com.github.ferumbot.specmarket.core.extensions.ifNull
 import com.github.ferumbot.specmarket.models.response.ApiResponse
-import io.swagger.annotations.Api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +19,7 @@ import javax.validation.constraints.Min
 @RestController
 @SwaggerVisible
 @RequestMapping("telegram")
-@Api(description = SwaggerConfig.TELEGRAM_CONTROLLER_DESCRIPTION)
+@Tag(name = "Telegram", description = SwaggerConfig.TELEGRAM_CONTROLLER_DESCRIPTION)
 class TelegramController @Autowired constructor(
     private val telegramBot: TelegramBot,
     private val service: TelegramUsersService,
