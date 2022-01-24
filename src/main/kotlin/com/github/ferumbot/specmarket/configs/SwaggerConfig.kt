@@ -1,21 +1,14 @@
 package com.github.ferumbot.specmarket.configs
 
 import com.github.ferumbot.specmarket.core.annotations.SwaggerVisible
+import io.swagger.v3.oas.models.OpenAPI
+import io.swagger.v3.oas.models.info.Contact
+import io.swagger.v3.oas.models.info.Info
+import org.springdoc.core.GroupedOpenApi
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.web.servlet.config.annotation.EnableWebMvc
-import springfox.documentation.RequestHandler
-import springfox.documentation.builders.ApiInfoBuilder
-import springfox.documentation.builders.PathSelectors
-import springfox.documentation.builders.RequestHandlerSelectors
-import springfox.documentation.oas.annotations.EnableOpenApi
-import springfox.documentation.service.ApiInfo
-import springfox.documentation.service.Contact
-import springfox.documentation.spi.DocumentationType
-import springfox.documentation.spring.web.plugins.Docket
 
 @Configuration
-@EnableOpenApi
 class SwaggerConfig {
 
     companion object {
@@ -23,28 +16,33 @@ class SwaggerConfig {
         const val PROFESSION_CONTROLLER_DESCRIPTION = """
             API for interaction with professions. Creating and editing professions.
         """
+
         const val SPECIALIST_CONTROLLER_DESCRIPTION = """
             API for interaction with specialists. Viewing and analysis of specialists
         """
+
         const val TELEGRAM_CONTROLLER_DESCRIPTION = """
             API for interaction with telegram api. Viewing service users interacting via a telegram bot.
+        """
+
+        const val NICHE_CONTROLLER_DESCRIPTION = """
+            API for interaction with niches. Viewing, creating and editing niches.
         """
     }
 
     @Bean
-    fun configureApi(): Docket = Docket(DocumentationType.OAS_30)
-        .select()
-        .apis(RequestHandlerSelectors.withClassAnnotation(SwaggerVisible::class.java))
-        .paths(PathSelectors.any())
-        .build()
-        .apiInfo(apiInfo())
+    fun configureApi(): OpenAPI {
+        return OpenAPI()
+            .info(Info().apply {
+                title = "Swagger for SMM marketplace API"
+                description = "Allows to manage, create or delete entities from SMM marketplace application"
+                contact = Contact().apply {
+                    name = "Matvey Popov"
+                    url = "https://t.me/ma_popovv"
+                    email = "ma.popovv@gmail.com"
+                }
+                version = "1.0.0"
 
-
-    @Bean
-    fun apiInfo(): ApiInfo = ApiInfoBuilder()
-        .title("Specialists marketplace API")
-        .description("The api used to communicate with marketplace application")
-        .contact(Contact("Matvey", "https://t-do.ru/dr_matjo", "ghfdhuf85429532@gmail.com"))
-        .version("1.0.0")
-        .build()
+            })
+    }
 }

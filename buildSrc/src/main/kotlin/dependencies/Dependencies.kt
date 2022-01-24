@@ -21,6 +21,10 @@ object Dependencies {
 
     const val MICROMETER_PROMETHEUS = "io.micrometer:micrometer-registry-prometheus"
 
-    const val SPRING_FOX_STARTER = "io.springfox:springfox-boot-starter:${Versions.SWAGGER}"
-    const val SPRING_FOX_UI = "io.springfox:springfox-swagger-ui:${Versions.SWAGGER}"
+    const val SPRING_FOX_STARTER = "io.springfox:springfox-boot-starter:${Versions.SWAGGER_FOX}"
+    const val SPRING_FOX_UI = "io.springfox:springfox-swagger-ui:${Versions.SWAGGER_FOX}"
+
+    const val SPRING_OPEN_API = "org.springdoc:springdoc-openapi-ui:${Versions.SWAGGER_DOC}"
+    const val SPRING_OPEN_API_SECURITY = "org.springdoc:springdoc-openapi-security:${Versions.SWAGGER_DOC}"
+    const val SPRING_OPEN_API_KOTLIN = "org.springdoc:springdoc-openapi-kotlin:${Versions.SWAGGER_DOC}"
 }

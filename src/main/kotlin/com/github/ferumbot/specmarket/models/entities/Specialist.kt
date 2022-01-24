@@ -30,6 +30,17 @@ data class Specialist(
     )
     var professions: MutableCollection<Profession> = mutableListOf(),
 
+    @ManyToMany(
+        cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH],
+        fetch = FetchType.LAZY
+    )
+    @JoinTable(
+        name = "specialists_to_niches",
+        joinColumns = [JoinColumn(name = "specialist_id", referencedColumnName = "id")],
+        inverseJoinColumns = [JoinColumn(name = "niche_id", referencedColumnName = "id")]
+    )
+    var niches: MutableCollection<Niche> = mutableListOf(),
+
     @OneToMany(
         cascade = [CascadeType.ALL], orphanRemoval = true,
         fetch = FetchType.LAZY,

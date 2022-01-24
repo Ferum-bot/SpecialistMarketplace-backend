@@ -7,7 +7,6 @@ import com.github.ferumbot.specmarket.models.dto.UpdateProfessionDto
 import com.github.ferumbot.specmarket.models.entities.Profession
 import com.github.ferumbot.specmarket.models.response.ApiResponse
 import com.github.ferumbot.specmarket.services.ProfessionService
-import io.swagger.annotations.Api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +19,7 @@ import javax.validation.Valid
 @RestController
 @SwaggerVisible
 @RequestMapping("api/professions")
-@Api(description = SwaggerConfig.PROFESSION_CONTROLLER_DESCRIPTION)
+@Tag(name = "Profession", description = SwaggerConfig.PROFESSION_CONTROLLER_DESCRIPTION)
 class ProfessionController {
 
     @Autowired

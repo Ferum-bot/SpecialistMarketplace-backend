@@ -31,8 +31,6 @@ services:
 
   postgres:
     build: './dataBase'
-    ports:
-      - '8999:5432'
     volumes:
       - ./dataBase/data:/var/lib/postgresql/data
     networks:

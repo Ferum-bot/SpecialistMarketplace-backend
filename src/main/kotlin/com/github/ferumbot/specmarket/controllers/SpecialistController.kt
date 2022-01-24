@@ -6,7 +6,6 @@ import com.github.ferumbot.specmarket.core.extensions.ifNull
 import com.github.ferumbot.specmarket.models.dto.SpecialistDto
 import com.github.ferumbot.specmarket.models.response.ApiResponse
 import com.github.ferumbot.specmarket.services.SpecialistService
-import io.swagger.annotations.Api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,7 +21,7 @@ import javax.validation.constraints.Min
 @RestController
 @SwaggerVisible
 @RequestMapping("api/specialists")
-@Api(description = SwaggerConfig.SPECIALIST_CONTROLLER_DESCRIPTION)
+@Tag(name = "Specialist", description = SwaggerConfig.SPECIALIST_CONTROLLER_DESCRIPTION)
 class SpecialistController {
 
     @Autowired
