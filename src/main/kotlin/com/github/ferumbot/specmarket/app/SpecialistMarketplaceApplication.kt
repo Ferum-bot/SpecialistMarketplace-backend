@@ -10,13 +10,12 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.ComponentScan
-import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
 @SpringBootApplication
 @EnableConfigurationProperties
 @ComponentScan(
 	basePackageClasses = [
-		OnTelegramConfig::class,
+		TelegramConfig::class,
 		ControllerConfig::class,
 		RepositoryConfig::class,
 		ServiceConfig::class,

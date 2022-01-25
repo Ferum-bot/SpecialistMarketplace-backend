@@ -17,8 +17,7 @@ import org.telegram.telegrambots.meta.api.objects.Update
 @Configuration
 class InteractorsConfig @Autowired constructor(
     private val updateAdapter: BotUpdateAdapter,
-    private val resultAdapter: BotUpdateResultAdapter,
-    private val processor: BotUpdateProcessor
+    private val resultAdapter: BotUpdateResultAdapter
 ) {
 
     @Bean

@@ -9,7 +9,6 @@ import com.github.ferumbot.specmarket.bots.interceptors.ExceptionInterceptorFaca
 import com.github.ferumbot.specmarket.bots.interceptors.impl.DebugExceptionInterceptor
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.*
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.context.event.EventListener
@@ -19,19 +18,21 @@ import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession
 
 @Configuration
-@ComponentScan(basePackageClasses = [
-    TelegramController::class,
-    AdaptersConfig::class,
-    InteractorsConfig::class,
-    ProcessorsConfig::class,
-    RepositoriesConfig::class,
-    ServicesConfig::class,
-    UIConfig::class,
-    ExceptionInterceptorFacade::class,
-])
-class OnTelegramConfig {
+@ComponentScan(
+    basePackageClasses = [
+        TelegramController::class,
+        AdaptersConfig::class,
+        InteractorsConfig::class,
+        ProcessorsConfig::class,
+        RepositoriesConfig::class,
+        ServicesConfig::class,
+        UIConfig::class,
+        ExceptionInterceptorFacade::class,
+    ],
+)
+class TelegramConfig {
 
-    private val logger = LoggerFactory.getLogger(OnTelegramConfig::class.java)
+    private val logger = LoggerFactory.getLogger(TelegramConfig::class.java)
 
     @Autowired
     private lateinit var interactor: BotUpdateToAdapterInteractor
