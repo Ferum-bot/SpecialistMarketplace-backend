@@ -64,11 +64,6 @@ class TelegramConfig {
         return SetWebhook.builder().url(telegramProperties.webhookPath).build()
     }
 
-    @Bean
-    fun provideDebugExceptionInterceptor(): ExceptionInterceptor {
-        return DebugExceptionInterceptor()
-    }
-
     private fun initTelegramApi() {
         val bot = provideTelegramBot()
         val webhook = provideWebhook(telegramProperties)
