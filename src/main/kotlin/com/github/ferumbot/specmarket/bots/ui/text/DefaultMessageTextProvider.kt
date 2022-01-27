@@ -3,8 +3,11 @@ package com.github.ferumbot.specmarket.bots.ui.text
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
 import com.github.ferumbot.specmarket.bots.state_machine.event.OpenCurrentSpecialistsScreenEvent
 import com.github.ferumbot.specmarket.core.wrappers.EmojiWrapper
+import com.github.ferumbot.specmarket.models.dto.NicheDto
 import com.github.ferumbot.specmarket.models.dto.ProfessionDto
 import com.github.ferumbot.specmarket.models.dto.SpecialistDto
+import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses
+import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses.*
 import kotlin.text.StringBuilder
 
 class DefaultMessageTextProvider: MessageTextProvider {
@@ -181,16 +184,24 @@ class DefaultMessageTextProvider: MessageTextProvider {
     }
 
     override fun provideYouAreAuthorizedInfoMessage(specialist: SpecialistDto): String {
-        val isVisible = StringBuilder()
-        if (specialist.isVisible) {
-            isVisible.append("Ваш профиль виден заказчикам!\n")
-        } else {
-            isVisible.append("Ваш профиль НЕ виден заказчикам!\n")
+        val status = specialist.profileStatus.alias
+        val statusMessage = when (status) {
+            NOT_FILLED.alias -> {
+                StringBuilder()
+            }
+            AWAITING_CONFIRMATION.alias -> {
+                StringBuilder()
+            }
+            REJECTED.alias -> {
+                StringBuilder()
+            }
+            APPROVED.alias -> {
+                StringBuilder()
+            }
         }
 
         return StringBuilder()
-            .append("Профиль\n")
-            .append("\n")
+            .append("Вот так выглядит ваш профиль: \n")
             .append(getProfileTemplate(specialist))
             .append("Вы можете просматривать ваши заказы!\n")
             .append(isVisible)
@@ -200,19 +211,18 @@ class DefaultMessageTextProvider: MessageTextProvider {
     override fun provideSpecialistRequestInfoMessage(specialists: Collection<SpecialistDto>): String {
         if (specialists.isEmpty()) {
             return StringBuilder()
-                .append("На данный момент вы не оставили ни одной заявки")
+                .append("На данный момент вы не брали контакты ни у одного специалиста!")
                 .toString()
         }
 
         val specialistsString = specialists.fold(StringBuilder()) { builder, specialist ->
-            builder
-                .append(getProfileTemplate(specialist))
-                .append("\n")
+            builder.append(getProfileTemplate(specialist))
         }
+
         return StringBuilder()
             .append("Ваши заявки:\n")
-            .append("\n")
             .append(specialistsString)
+            .append("Вы можете выбрать какую страницу смотреть, для этого нужно просто нажать на кнопку снизу!")
             .toString()
     }
 
@@ -233,225 +243,255 @@ class DefaultMessageTextProvider: MessageTextProvider {
 
     override fun provideUserInputFullNameInfoMessage(): String {
         return StringBuilder()
-            .append("Начнем с имени. Как вас зовут?\n")
-            .append(userInputFullNameTemplate())
-            .toString()
-    }
-
-    override fun provideUserInputDepartmentInfoMessage(): String {
-        return StringBuilder()
-            .append("Введите ваш отдел\n")
-            .append(userInputDepartmentTemplate())
+            .append("Сначала введите ваше имя.\n")
+            .append("Постарайтесь указать полное имя и/или фамилию. Так больше шансов, что заказчики")
+            .append("обратят на вас внимание.\n")
+            .append("Пример: Максим Иванов")
             .toString()
     }
 
     override fun provideUserInputProfessionsInfoMessage(availableProfessions: Collection<ProfessionDto>): String {
         return StringBuilder()
-            .append("Выберите свою профессию\n")
+            .append("Теперь укажите чем вы занимаетесь.")
+            .append("На данный момент наш сервис поддерживает ${availableProfessions.count()} профессий.\n")
+            .append("Вы можете выбрать несколько актуальных для вас профессий, после каждого выбора вам будет приходить сообщение")
+            .append("c доступными профессиями. После того, как вы выберите актуальные для вас профессии, нажмите кнопку продожить.\n")
+            .append("Пожалуйста, не указывайте больше 3-х профессий. Выберете 1-2 основных видов деятельнсоти.\n")
             .append(userInputProfessionTemplate(availableProfessions))
+            .toString()
+    }
+
+    override fun provideUserInputAnotherProfessionsInfoMessage(availableProfessions: Collection<ProfessionDto>): String {
+        return StringBuilder()
+            .append("Отлично! Вы можете выбрать ещё одну профессию или продолжить регистрацию.\n")
+            .append(userInputProfessionTemplate(availableProfessions))
+            .toString()
+    }
+
+    override fun provideUserInputNichesInfoMessage(availableNiches: Collection<NicheDto>): String {
+        return StringBuilder()
+            .append("Теперь укажите в какой нише вы работаете или у вас был опыт работы.\n")
+            .append("Вы можете выбрать несколько ниш. После каждого выбора вам будет приходить сообщение")
+            .append("c доступными нишами. После того, как вы выберите актуалтые для вас профессии, нажмите продолжить.\n")
+            .append("Советуем указывать не более 5 ниш, так как иначе заказчикам будет сложнее вас заметить.\n")
+            .append(userInputNicheTemplate(availableNiches))
+            .toString()
+    }
+
+    override fun provideUserInputAnotherNicheInfoMessage(availableNiches: Collection<NicheDto>): String {
+        return StringBuilder()
+            .append("Отлично! Вы можете выбрать ещё одну нишу или продолжить регистрацию.\n")
+            .append(userInputNicheTemplate(availableNiches))
             .toString()
     }
 
     override fun provideUserInputKeySkillsInfoMessage(): String {
         return StringBuilder()
-            .append("Опишите ваши умения\n")
+            .append("Теперь вы можете указать ваши ключевые навыки или умения.\n")
+            .append("Перечислите их через запятую.\n")
             .append(userInputKeySkillsTemplate())
             .toString()
     }
-
+x
     override fun provideUserInputPortfolioLinkInfoMessage(): String {
         return StringBuilder()
-            .append("Отправьте ссылку на ваше портфолио\n")
-            .append(userInputPortfolioLinkTemplate())
+            .append("Теперь нам необходимо ваше портфолио.\n")
+            .append("Вы можете указать ссылки на ваши кейсы, прикрепить профиль на различных площадках.\n")
+            .append("Можете кратко рассказть про кейсы и опыт работы.\n")
             .toString()
     }
 
     override fun provideUserInputAboutMeInfoMessage(): String {
         return StringBuilder()
-            .append("Напишите немного о себе\n")
+            .append("Сейчас вы можете написать немного о себе.\n")
+            .append("Стоит поподробнее описать ваш опыт работы, чем вы гордитесь, подходы в решении задач.\n")
             .append(userInputAboutMeTemplate())
             .toString()
     }
 
     override fun provideUserInputWorkingConditionsInfoMessage(): String {
         return StringBuilder()
-            .append("Опишите ваши условия работы\n")
+            .append("Теперь нужно указать ваши условия работы.\n")
             .append(userInputWorkingConditionsTemplate())
             .toString()
     }
 
     override fun provideUserInputEducationGradeInfoMessage(): String {
         return StringBuilder()
-            .append("Опишите ваше образование\n")
+            .append("Опишите ваше образование. Расскажите какие куры проходили.\n")
+            .append("Стоит указать как можно больше информации.\n")
             .append(userInputEducationGradeTemplate())
             .toString()
     }
 
     override fun provideUserInputContactLinksInfoMessage(): String {
         return StringBuilder()
-            .append("Напишите свои контакты для связи\n")
+            .append("Напишите свои контакты для связи.\n")
             .append(userInputContactLinksTemplate())
             .toString()
     }
 
     override fun provideHowProfileLooksNowMessage(profile: SpecialistDto): String {
         return StringBuilder()
-            .append("Теперь ваш профиль выглядит так:\n")
-            .append("\n")
+            .append("На данный момент ваш профиль специалиста выглядит так:\n")
             .append(getProfileTemplate(profile))
-            .append("Продолжить регистрацию?")
+            .append("Вы можете продожить или вернуться на главный экран.")
             .toString()
     }
 
     override fun provideProfilePreviewMessage(profile: SpecialistDto): String {
         return StringBuilder()
-            .append("Отлично! Вы ввели всю необходимую информацию.\n")
-            .append("Это ваш профиль:\n")
+            .append("Отлично! Вы почти завершили регистрацию.\n")
+            .append("Ваш профиль выглядит так:\n")
             .append("\n")
             .append(getProfileTemplate(profile))
-            .append("If you finish registration, you profile will automatically become visible to all customers\n")
-            .append("Когда вы закончите регистрацию, ваш профиль автоматически будет виден всем заказчикам.\n")
-            .append("Вы можете поменять видимость профиля и информацию о себе в любое время!\n")
+            .append("Когда вы закончите регистрацию, ваш профиль проверят наши специалисты.\n")
+            .append("Мы оповестим вас о результате проверки, вам придет сообщение от бота.\n")
+            .append("Вы можете в любой момент редактировать информацию о вашем профиле, изменять его видимость для заказчиков и")
+            .append("попросить перепроверить в случае если профиль будет откланен.")
             .toString()
     }
 
     override fun provideUserChangeFullNameInfoMessage(): String {
         return StringBuilder()
-            .append("Введите имя и фамилию\n")
-            .append(userInputFullNameTemplate())
+            .append("Введите ваше имя. Постарайтесь указать полное имя.\n")
+            .append("Пример: Максим Иванов")
             .toString()
     }
 
-    override fun provideUserChangeDepartmentInfoMessage(): String {
+    override fun provideUserChangeNicheInfoMessage(niches: Collection<NicheDto>): String {
         return StringBuilder()
-            .append("Введите ваш отдел\n")
-            .append(userInputDepartmentTemplate())
+            .append("Выберете вашу нишу.\n")
+            .append("Вы можете выбрать несколько ниш, после каждого выбора вы сможете выбрать еще или закончить редактирование.")
+            .toString()
+    }
+
+    override fun provideUserChangeAnotherNicheInfoMessage(niches: Collection<NicheDto>): String {
+        return StringBuilder()
+            .append("Отлично! Вы можете выбрать еще нишу или закончить редактирование. Советуем выбирать не больше 5 ниш.\n")
             .toString()
     }
 
     override fun provideUserChangeProfessionsInfoMessage(professions: Collection<ProfessionDto>): String {
         return StringBuilder()
-            .append("Введите вашу профессию\n")
+            .append("Выберите вашу профессию.\n")
+            .append("Вы можете выбрать несколько профессий, после каждого выбора вы сможете выбрать еще или закончить редактирование.\n")
             .append(userInputProfessionTemplate(professions))
+            .toString()
+    }
+
+    override fun provideUserChangeAnotherProfessionsInfoMessage(professions: Collection<ProfessionDto>): String {
+        return StringBuilder()
+            .append("Олично! Вы можете выбрать еще профессию или закончить редактирование. Советуем не выбирать больше 3-x.\n")
             .toString()
     }
 
     override fun provideUserChangeKeySkillsInfoMessage(): String {
         return StringBuilder()
-            .append("Введите ваши навыки\n")
+            .append("Введите ваши ключевые навыки и способности.\n")
             .append(userInputKeySkillsTemplate())
             .toString()
     }
 
     override fun provideUserChangePortfolioLinkInfoMessage(): String {
         return StringBuilder()
-            .append("Укажите ссылку на ваше портфолио\n")
-            .append(userInputPortfolioLinkTemplate())
+            .append("Укажите ссылку на ваше портфолио, кратко опишите кейсы и опыт работы.\n")
             .toString()
     }
 
     override fun provideUserChangeAboutMeInfoMessage(): String {
         return StringBuilder()
-            .append("Введите информацию о себе\n")
+            .append("Введите информацию о себе. Подробно распишите ваш опыт работы и подходы к решению задач.\n")
             .append(userInputAboutMeTemplate())
             .toString()
     }
 
     override fun provideUserChangeWorkingConditionsInfoMessage(): String {
         return StringBuilder()
-            .append("Введите ваши условия работы\n")
+            .append("Введите ваши условия работы.\n")
             .append(userInputWorkingConditionsTemplate())
             .toString()
     }
 
     override fun provideUserChangeEducationGradeInfoMessage(): String {
         return StringBuilder()
-            .append("Введите ваше образование\n")
+            .append("Введите ваше образование.\n")
             .append(userInputEducationGradeTemplate())
             .toString()
     }
 
     override fun provideUserChangeContactLinksInfoMessage(): String {
         return StringBuilder()
-            .append("Введите вашу контактную информацию\n")
+            .append("Введите вашу контактную информацию.\n")
             .append(userInputContactLinksTemplate())
             .toString()
     }
 
-    private fun userInputFullNameTemplate(): StringBuilder {
-        return StringBuilder()
-            .append("Введите имя и фамилию\n")
-            .append("Пример: Иван Иванов")
-    }
-
-    private fun userInputDepartmentTemplate(): StringBuilder {
-        return StringBuilder()
-            .append("Пример: Автомобили, Инстаграм")
-    }
-
     private fun userInputProfessionTemplate(professions: Collection<ProfessionDto>): StringBuilder {
-        val professionsInfo = professions.fold(StringBuilder()) { builder, profession ->
-            builder.append("${profession.friendlyName}: ${profession.shortDescription}\n")
-            builder.append("Выберите /${profession.alias} \n")
+        return professions.fold(StringBuilder()) { builder, profession ->
+            builder.append("${profession.friendlyName}: ")
+            builder.append("Нажмите /${profession.alias}\n")
         }
+    }
 
-        return StringBuilder()
-            .append("Вам доступны ${professions.count()} профессий!\n")
-            .append(professionsInfo)
-            .append("Выберите нужную вам!\n")
+    private fun userInputNicheTemplate(niches: Collection<NicheDto>): StringBuilder {
+        return niches.fold(StringBuilder()) { builder, niche ->
+            builder.append("${niche.friendlyName}: ")
+            builder.append("Нажмите /${niche.alias}\n")
+        }
     }
 
     private fun userInputKeySkillsTemplate(): StringBuilder {
         return StringBuilder()
-            .append("Например: упорство, креатив\n")
-    }
-
-    private fun userInputPortfolioLinkTemplate(): StringBuilder {
-        return StringBuilder()
-            .append("Опишите ваши кейсы, опыт работы и т.д.")
+            .append("Например: Пунктуальность, Упорство, Креатив.\n")
     }
 
     private fun userInputAboutMeTemplate(): StringBuilder {
         return StringBuilder()
             .append("Это очень важно для ваших будущих заказчиков!\n")
-            .append("Наример: Я работаю в этой индустрии более трех лет")
+            .append("Наример:\n")
+            .append("Я работаю в этой индустрии более трех лет. У меня больше миллиона кейсов, месяц назад я привлек больше 1млн новых подписчиков в инстарграмм,")
+            .append(" месяц назад я привлек больше 1млн новых подписчиков в инстарграмм.")
     }
 
     private fun userInputWorkingConditionsTemplate(): StringBuilder {
         return StringBuilder()
-            .append("Например: от 500$ + процент")
+            .append("Стоит указать вашу стоймость за конкретную услугу/услуги и дополнительные условия оплаты труда.\n")
+            .append("Например:\n")
+            .append("Делаю 10 сторис за 50$. Беру 5% от рекламного бюджета.")
     }
 
     private fun userInputEducationGradeTemplate(): StringBuilder {
         return StringBuilder()
-            .append("Например: Закончил курсы по SMM")
+            .append("Например:\n")
+            .append("1. Окончил курс InstaBoss в 2021 году.\n")
+            .append("2. Прошел марафон по SMM.")
     }
 
     private fun userInputContactLinksTemplate(): StringBuilder {
         return StringBuilder()
-            .append("Укажите как можно больше ссылок\n")
-            .append("Мы покажем это вашим потенциальным заказчикам\n")
+            .append("Укажите как можно больше ссылок.\n")
+            .append("Мы покажем это вашим потенциальным заказчикам.\n")
             .append("Например: TG: ..., VK: ...")
     }
 
     private fun getProfileTemplate(specialist: SpecialistDto, ignoreContactLinks: Boolean = false): StringBuilder {
         return specialist.run {
             StringBuilder()
-                .append("1. Имя и фамилия:\n ${fullName ?: "-"} \n")
-                .append("2. Отдел:\n ${department ?: "-"} \n")
-                .append("3. Профессии:\n ${professions.joinToString().ifEmpty { "-" }} \n")
+                .append("1. Имя:\n ${fullName ?: "-"} \n")
+                .append("2. Чем занимается:\n ${professions.joinToString().ifEmpty { "-" }} \n")
+                .append("3. Нишы: ${professions.joinToString().ifEmpty { "-" }} \n")
                 .append("4. Навыки:\n ${keySkills.joinToString().ifEmpty { "-" }} \n")
-                .append("5. Ссылка на портфолио:\n ${portfolioLink ?: "-"} \n")
-                .append("6. Обо мне:\n ${aboutMe ?: "-"} \n")
-                .append("7. Условия работы:\n ${workingConditions ?: "-"} \n")
-                .append("8. Образование:\n ${educationGrade ?: "-"} \n")
+                .append("5. Образование:\n ${educationGrade ?: "-"} \n")
+                .append("6. Портфолио:\n ${portfolioLink ?: "-"} \n")
+                .append("7. Обо мне:\n ${aboutMe ?: "-"} \n")
+                .append("8. Условия работы:\n ${workingConditions ?: "-"} \n")
                 .apply {
                     if (!ignoreContactLinks) {
                         append("9. Контакты:\n ${contactLinks ?: "-"} \n")
                     }
                 }
                 .append("\n")
-
         }
     }
 }

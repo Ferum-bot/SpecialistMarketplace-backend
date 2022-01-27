@@ -1,10 +1,8 @@
 package com.github.ferumbot.specmarket.models.dto
 
-import com.github.ferumbot.specmarket.models.entities.Profession
-import javax.annotation.Nullable
+import com.github.ferumbot.specmarket.models.entities.specifications.Profession
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
-import javax.validation.constraints.Null
 
 data class ProfessionDto(
 

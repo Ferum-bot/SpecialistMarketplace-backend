@@ -12,10 +12,10 @@ data class SpecialistDto(
     val fullName: String? = null,
 
     @JsonInclude(JsonInclude.Include.ALWAYS)
-    val department: String? = null,
+    val professions: Collection<String> = emptyList(),
 
     @JsonInclude(JsonInclude.Include.ALWAYS)
-    val professions: Collection<String> = emptyList(),
+    val niches: Collection<String> = emptyList(),
 
     @JsonInclude(JsonInclude.Include.ALWAYS)
     val keySkills: Collection<String> = emptyList(),
@@ -37,7 +37,8 @@ data class SpecialistDto(
 
     val isVisible: Boolean = false,
 
-    val isCompletelyFilled: Boolean = false,
+    @JsonInclude(JsonInclude.Include.ALWAYS)
+    val profileStatus: SpecialistStatusDto,
 
     @JsonInclude(JsonInclude.Include.ALWAYS)
     val telegramId: Long? = null,
@@ -46,19 +47,20 @@ data class SpecialistDto(
     companion object {
 
         fun from(specialist: SpecialistProfile): SpecialistDto {
+            val statusDto = SpecialistStatusDto.from(specialist.status)
             return SpecialistDto(
                 id = specialist.id,
                 fullName = specialist.fullName,
-                department = specialist.department,
                 professions = specialist.professions.map { it.friendlyName },
-                keySkills = specialist.keySkills.map { it.alias },
+                niches = specialist.niches.map { it.friendlyName },
+                keySkills = specialist.keySkills.map { it.value },
                 portfolioLink = specialist.portfolioLink,
                 aboutMe = specialist.aboutMe,
                 workingConditions = specialist.workingConditions,
                 educationGrade = specialist.educationGrade,
                 contactLinks = specialist.contactLinks,
                 isVisible = specialist.isVisible,
-                isCompletelyFilled = specialist.isCompletelyFilled,
+                profileStatus = statusDto,
                 telegramId = specialist.telegramUser?.id
             )
         }

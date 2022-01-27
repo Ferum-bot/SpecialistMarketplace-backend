@@ -2,7 +2,7 @@ package com.github.ferumbot.specmarket.services
 
 import com.github.ferumbot.specmarket.models.dto.ProfessionDto
 import com.github.ferumbot.specmarket.models.dto.UpdateProfessionDto
-import com.github.ferumbot.specmarket.models.entities.Profession
+import com.github.ferumbot.specmarket.models.entities.specifications.Profession
 
 interface ProfessionService {
 

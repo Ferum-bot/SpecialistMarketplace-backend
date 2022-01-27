@@ -5,7 +5,7 @@ import com.github.ferumbot.specmarket.bots.models.entity.TelegramUser
 import com.github.ferumbot.specmarket.bots.repositories.TelegramUserRepository
 import com.github.ferumbot.specmarket.bots.services.TelegramUserSpecialistService
 import com.github.ferumbot.specmarket.exceptions.ProfessionNotExists
-import com.github.ferumbot.specmarket.models.entities.KeySkills
+import com.github.ferumbot.specmarket.models.entities.specifications.KeySkills
 import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
 import com.github.ferumbot.specmarket.repositories.KeySkillsRepository
 import com.github.ferumbot.specmarket.repositories.ProfessionRepository
@@ -88,7 +88,7 @@ class TelegramUserSpecialistServiceImpl(
             ?: registerNewUser(info)
 
         prepareUserSpecialist(user)
-        val keySkills = skillsAlias.map { KeySkills(alias = it) }
+        val keySkills = skillsAlias.map { KeySkills(value = it) }
         user.specialist?.keySkills?.addAll(keySkills)
         keySkillsRepository.saveAllAndFlush(keySkills)
 
