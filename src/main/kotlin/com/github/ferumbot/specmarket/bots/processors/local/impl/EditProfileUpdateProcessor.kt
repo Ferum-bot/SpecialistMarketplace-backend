@@ -13,7 +13,7 @@ import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
 import com.github.ferumbot.specmarket.core.extensions.removeFirstCharIf
 import com.github.ferumbot.specmarket.models.dto.ProfessionDto
-import com.github.ferumbot.specmarket.models.entities.Specialist
+import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
 import com.github.ferumbot.specmarket.services.ProfessionService
 
 class EditProfileUpdateProcessor(
@@ -188,7 +188,7 @@ class EditProfileUpdateProcessor(
         return MessageUpdateResultBunch(newState, info)
     }
 
-    private fun setEditStateAndReturn(info: BaseUpdateInfo, specialist: Specialist): MessageUpdateResultBunch<UserSpecialistInfo> {
+    private fun setEditStateAndReturn(info: BaseUpdateInfo, specialist: SpecialistProfile): MessageUpdateResultBunch<UserSpecialistInfo> {
         val newState = EditProfileScreenState
         userService.setNewUserState(newState, info)
 

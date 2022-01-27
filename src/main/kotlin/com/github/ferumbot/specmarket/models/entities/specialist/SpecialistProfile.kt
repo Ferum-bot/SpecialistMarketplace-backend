@@ -1,12 +1,15 @@
-package com.github.ferumbot.specmarket.models.entities
+package com.github.ferumbot.specmarket.models.entities.specialist
 
 import com.github.ferumbot.specmarket.bots.models.entity.TelegramUser
+import com.github.ferumbot.specmarket.models.entities.KeySkills
+import com.github.ferumbot.specmarket.models.entities.Niche
+import com.github.ferumbot.specmarket.models.entities.Profession
 import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
-@Table(name = "specialist")
-data class Specialist(
+@Table(name = "specialist_profile")
+data class SpecialistProfile(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,9 +18,6 @@ data class Specialist(
 
     @Column(name = "full_name", length = 1000)
     var fullName: String? = null,
-
-    @Column(name = "department", length = 1000)
-    var department: String? = null,
 
     @ManyToMany(
         cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH],
@@ -62,11 +62,15 @@ data class Specialist(
     @Column(name = "contact_links", length = 1000)
     var contactLinks: String? = null,
 
-    @Column(name = "is_completely_filled", nullable = false)
-    var isCompletelyFilled: Boolean = false,
-
     @Column(name = "is_visible", nullable = false)
     var isVisible: Boolean = false,
+
+    @ManyToOne(
+        cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH],
+        fetch = FetchType.EAGER,
+    )
+    @JoinColumn(name = "status_id", nullable = false)
+    var status: SpecialistProfileStatus = SpecialistProfileStatus(),
 
     @OneToOne(
         cascade = [CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE],

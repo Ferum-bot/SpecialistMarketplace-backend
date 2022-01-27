@@ -1,7 +1,7 @@
 package com.github.ferumbot.specmarket.models.dto
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.github.ferumbot.specmarket.models.entities.Specialist
+import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
 
 data class SpecialistDto(
 
@@ -45,7 +45,7 @@ data class SpecialistDto(
 
     companion object {
 
-        fun from(specialist: Specialist): SpecialistDto {
+        fun from(specialist: SpecialistProfile): SpecialistDto {
             return SpecialistDto(
                 id = specialist.id,
                 fullName = specialist.fullName,

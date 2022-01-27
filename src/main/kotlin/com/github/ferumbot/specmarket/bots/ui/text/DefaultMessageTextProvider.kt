@@ -11,7 +11,7 @@ class DefaultMessageTextProvider: MessageTextProvider {
 
     override fun provideStartScreenMessage(): String {
         return StringBuilder()
-            .append("Привет!\n")
+            .append("Это главыный экран\n")
             .append("\n")
             .append("Этот бот поможет тебе найти специалиста из сферы SMM для любого твоего проекта.\n")
             .append("Если ты хочешь найти специалиста, нажимай \"я заказчик\".\n")
@@ -21,21 +21,25 @@ class DefaultMessageTextProvider: MessageTextProvider {
 
     override fun provideContactWithUsMessage(): String {
         return StringBuilder()
-            .append("Вопросы по работе бота и баги: @dr_matjo\n")
-            .append("Если возникли трудности с исполнителем или заказчиком: @ma_popovv\n")
+            .append("Если хочешь связаться с нами, то вот несколько контактов.\n\n")
+            .append("Сотрудничество: @Danverrr\n")
+            .append("Если возникли трудности с исполнителем или заказчиком: @Danverrr\n")
+            .append("Если увидел какую-то ошибку или неточность: @ma_popovv\n")
+            .append("Для любых других вопросов или предложений можно писать в личку @Danverrr или @owinowaa")
             .toString()
     }
 
     override fun provideNotImplementedMessage(): String {
         return StringBuilder()
-            .append("Упс! Этот экран еще в разработке. Попробуйте позже.\n")
+            .append("Данный экран еще не сделан.\n")
+            .append("Попробуйте позже.\n")
             .toString()
     }
 
     override fun provideUnSupportedMessage(): String {
         return StringBuilder()
-            .append("Неверная комманда!\n")
-            .append("Пожалуйста, используйте только кнопки на клавиатуры.\n")
+            .append("Не поддерживаемая команда.\n")
+            .append("Пожалуйста, используйте только кнопки и следуйте инструкциям из сообщений!\n")
             .toString()
     }
 
@@ -73,7 +77,12 @@ class DefaultMessageTextProvider: MessageTextProvider {
 
     override fun provideLeaveBidInfoMessage(): String {
         return StringBuilder()
-            .append("Чтобы оставить заявку на подбор специалиста, пожалуйста, напишите @owinowaa и мы вам сразу же ответим!\n")
+            .append("Услуга подбора специалистов.\n\n")
+            .append("Мы можем полностью освободить вас от поиска и первоначального общения со специалистами.")
+            .append("Наши специалисты помогут вам правильно составить техническое задание, сформировать список требований.")
+            .append("Мы сооринтируем вас по актуальным условиям оплаты и проведем интерьвю с кандидатами, таким образом вы получите")
+            .append("только релевантных специалистов, которые идеально подойдут под ваш проект!\n\n")
+            .append("Чтобы оставить заявку на подбор специалистов, напишите в личку @Danverrr")
             .toString()
     }
 

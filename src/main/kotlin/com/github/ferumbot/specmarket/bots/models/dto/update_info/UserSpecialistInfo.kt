@@ -1,7 +1,7 @@
 package com.github.ferumbot.specmarket.bots.models.dto.update_info
 
 import com.github.ferumbot.specmarket.models.dto.SpecialistDto
-import com.github.ferumbot.specmarket.models.entities.Specialist
+import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
 
 data class UserSpecialistInfo(
 
@@ -14,7 +14,7 @@ data class UserSpecialistInfo(
 
     companion object {
 
-        fun getFrom(info: BaseUpdateInfo, specialist: Specialist): UserSpecialistInfo {
+        fun getFrom(info: BaseUpdateInfo, specialist: SpecialistProfile): UserSpecialistInfo {
             return UserSpecialistInfo(
                 chatId = info.chatId,
                 userId = info.userId,

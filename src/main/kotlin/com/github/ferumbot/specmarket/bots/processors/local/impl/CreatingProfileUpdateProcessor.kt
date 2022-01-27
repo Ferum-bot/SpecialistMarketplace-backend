@@ -13,7 +13,7 @@ import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
 import com.github.ferumbot.specmarket.core.extensions.removeFirstCharIf
 import com.github.ferumbot.specmarket.models.dto.ProfessionDto
-import com.github.ferumbot.specmarket.models.entities.Specialist
+import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
 import com.github.ferumbot.specmarket.services.ProfessionService
 
 class CreatingProfileUpdateProcessor(
@@ -182,7 +182,7 @@ class CreatingProfileUpdateProcessor(
         return MessageUpdateResultBunch(state, info)
     }
 
-    private fun Specialist?.getFirstNotImplementedFieldState(): CreatingProfileState {
+    private fun SpecialistProfile?.getFirstNotImplementedFieldState(): CreatingProfileState {
         return this?.run {
             if (fullName == null) {
                 return UserInputFullNameScreenState

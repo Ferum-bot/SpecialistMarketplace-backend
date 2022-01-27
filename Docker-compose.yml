@@ -42,7 +42,7 @@ services:
   backend:
     build: './'
     ports:
-      - '8888:5000'
+      - '8443:5000'
     networks:
       service_network:
         aliases:

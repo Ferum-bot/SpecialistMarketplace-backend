@@ -1,9 +1,7 @@
 package com.github.ferumbot.specmarket.bots.models.entity
 
 import com.github.ferumbot.specmarket.bots.models.entity.embeded.UserBotState
-import com.github.ferumbot.specmarket.bots.state_machine.state.UnRegisteredState
-import com.github.ferumbot.specmarket.models.entities.Specialist
-import org.apache.catalina.User
+import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -44,19 +42,19 @@ data class TelegramUser(
         mappedBy = "telegramUser",
         cascade = [CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE]
     )
-    var specialist: Specialist? = null,
+    var specialist: SpecialistProfile? = null,
 
     @ManyToMany(
         cascade = [CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE],
         fetch = FetchType.LAZY,
-        targetEntity = Specialist::class,
+        targetEntity = SpecialistProfile::class,
     )
     @JoinTable(
         name = "telegram_user_to_specialist_requests",
         joinColumns = [ JoinColumn(name = "telegram_user_id", referencedColumnName = "id") ],
         inverseJoinColumns = [ JoinColumn(name = "specialist_id", referencedColumnName = "id") ]
     )
-    var specialistsRequests: MutableCollection<Specialist> = mutableListOf(),
+    var specialistsRequests: MutableCollection<SpecialistProfile> = mutableListOf(),
 
     @Column(name = "created_date", updatable = false)
     var createdDate: LocalDateTime = LocalDateTime.now(),
