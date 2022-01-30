@@ -26,7 +26,7 @@ class TelegramController @Autowired constructor(
 ) {
 
     @PostMapping("/webhook")
-    @Operation(summary = "Webhook for telegram API")
+    @Operation(summary = "Вебхук для Telegram API")
     fun onWebhookUpdateReceived(
         @RequestBody
         update: Update
@@ -35,7 +35,7 @@ class TelegramController @Autowired constructor(
     }
 
     @GetMapping("/users/all")
-    @Operation(summary = "Find all service telegram user")
+    @Operation(summary = "Получить всех пользователей бота")
     fun getAllUsers(
         @Min(value = 1, message = "Page number must be greater than 1")
         @RequestParam(value = "page_number", required = true)
@@ -51,7 +51,7 @@ class TelegramController @Autowired constructor(
     }
 
     @GetMapping("/user/id")
-    @Operation(summary = "Find service telegram user by internal id")
+    @Operation(summary = "Ищет пользователя бота по его внутреннему id")
     fun getUserById(
         @RequestParam(value = "id", required = true)
         id: Long,
@@ -66,7 +66,7 @@ class TelegramController @Autowired constructor(
     }
 
     @GetMapping("/user/telegramId")
-    @Operation(summary = "Find service telegram user by external telegram id")
+    @Operation(summary = "Ищет пользователя бота по его telegramId")
     fun getUserByTelegramId(
         @RequestParam(value = "id", required = true)
         id: Long,
@@ -81,7 +81,7 @@ class TelegramController @Autowired constructor(
     }
 
     @GetMapping("/user/chatId")
-    @Operation(summary = "Find service telegram user by external telegram chat id")
+    @Operation(summary = "Ищет пользователя бота по chatId с этим пользователем")
     fun getUserByChatId(
         @RequestParam(value = "id", required = true)
         id: Long,
@@ -93,5 +93,13 @@ class TelegramController @Autowired constructor(
         }
 
         return ApiResponse.success(user)
+    }
+
+    @GetMapping("/sendMessage")
+    @Operation(summary = "Отправляет сообщение от лица бота в конкретный чат по его id")
+    fun sendMessageFromBotToChat(
+
+    ) {
+
     }
 }

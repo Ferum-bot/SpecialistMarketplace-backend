@@ -4,7 +4,7 @@ import com.github.ferumbot.specmarket.configs.SwaggerConfig
 import com.github.ferumbot.specmarket.core.annotations.SwaggerVisible
 import com.github.ferumbot.specmarket.models.dto.ProfessionDto
 import com.github.ferumbot.specmarket.models.dto.UpdateProfessionDto
-import com.github.ferumbot.specmarket.models.entities.Profession
+import com.github.ferumbot.specmarket.models.entities.specifications.Profession
 import com.github.ferumbot.specmarket.models.response.ApiResponse
 import com.github.ferumbot.specmarket.services.ProfessionService
 import io.swagger.v3.oas.annotations.Operation
@@ -26,7 +26,7 @@ class ProfessionController {
     private lateinit var service: ProfessionService
 
     @GetMapping("/all")
-    @Operation(summary = "Get all current available professions")
+    @Operation(summary = "Получить все доступные профессии")
     fun getAllAvailableProfessions(): ResponseEntity<ApiResponse<Collection<Profession>>> {
         val professions = service.getAllAvailableProfessions()
 
@@ -36,7 +36,7 @@ class ProfessionController {
 
 
     @GetMapping("/search/by_friendly_name")
-    @Operation(summary = "Get all professions with friendly name")
+    @Operation(summary = "Получить все профессии по имени")
     fun searchProfessionsByFriendlyName(
         @RequestParam(value = "friendly_name", required = true)
         friendlyName: String,
@@ -48,7 +48,7 @@ class ProfessionController {
     }
 
     @GetMapping("/get/by_alias")
-    @Operation(summary = "Get profession with alias")
+    @Operation(summary = "Получить профессию по её alias")
     fun getProfessionByAlias(
         @RequestParam(value = "alias", required = true)
         alias: String
@@ -65,7 +65,7 @@ class ProfessionController {
     }
 
     @GetMapping("/get/by_id")
-    @Operation(summary = "Get profession with id")
+    @Operation(summary = "Получить профессию по её id")
     fun getProfessionById(
         @RequestParam(value = "id", required = true)
         id: Long
@@ -82,7 +82,7 @@ class ProfessionController {
     }
 
     @PostMapping("/create")
-    @Operation(summary = "Create new profession with parameters")
+    @Operation(summary = "Создать новую профессию")
     fun createNewProfession(
         @Valid
         @RequestBody
@@ -95,7 +95,7 @@ class ProfessionController {
     }
 
     @PutMapping("/update/by_id")
-    @Operation(summary = "Update current profession by it id")
+    @Operation(summary = "Обновить существующую профессию по её id")
     fun updateProfessionById(
         @RequestBody
         professionToUpdate: UpdateProfessionDto,
@@ -115,7 +115,7 @@ class ProfessionController {
     }
 
     @PutMapping("/update/by_alias")
-    @Operation(summary = "Update current profession by it alias")
+    @Operation(summary = "Обновить существующую профессию по её alias")
     fun updateProfessionByAlias(
         @RequestBody
         professionToUpdate: UpdateProfessionDto,
@@ -135,7 +135,7 @@ class ProfessionController {
     }
 
     @DeleteMapping("/delete/by_alias")
-    @Operation(summary = "Delete profession by it alias")
+    @Operation(summary = "Удалить профессию по её alias")
     fun deleteProfessionByAlias(
         @RequestParam(value = "alias", required = true)
         alias: String,
@@ -147,7 +147,7 @@ class ProfessionController {
     }
 
     @DeleteMapping("/delete/by_id")
-    @Operation(summary = "Delete profession by it id")
+    @Operation(summary = "Удалить профессию по её id")
     fun deleteProfessionById(
         @RequestParam(value = "id", required = true)
         id: Long

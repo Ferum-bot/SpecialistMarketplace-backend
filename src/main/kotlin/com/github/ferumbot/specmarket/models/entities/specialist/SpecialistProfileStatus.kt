@@ -1,28 +1,26 @@
-package com.github.ferumbot.specmarket.models.entities
+package com.github.ferumbot.specmarket.models.entities.specialist
 
+import com.github.ferumbot.specmarket.models.entities.specialist.converters.SpecialistProfileStatusNameConverter
+import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses
+import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses.NOT_FILLED
 import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
-@Table(name = "niche")
-data class Niche(
+@Table(name = "specialist_profile_status")
+data class SpecialistProfileStatus(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     var id: Long? = null,
 
-    @Column(name = "friendly_name", nullable = false, length = 1000)
-    var friendlyName: String,
+    @Column(name = "alias", nullable = false, unique = true)
+    @Convert(converter = SpecialistProfileStatusNameConverter::class)
+    var alias: ProfileStatuses = NOT_FILLED,
 
-    @Column(name = "alias", nullable = false, unique = true, length = 1000)
-    var alias: String,
-
-    @Column(name = "short_description", nullable = false, length = 1000)
-    var shortDescription: String,
-
-    @Column(name = "long_description", nullable = false, length = 10000)
-    var longDescription: String,
+    @Column(name = "name", nullable = false, length = 1000)
+    var name: String = "",
 
     @Column(name = "created_date", nullable = false, updatable = false)
     var createdDate: LocalDateTime = LocalDateTime.now(),
@@ -35,19 +33,19 @@ data class Niche(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as Niche
+        other as SpecialistProfileStatus
 
         if (id != other.id) return false
-        if (friendlyName != other.friendlyName) return false
         if (alias != other.alias) return false
+        if (name != other.name) return false
 
         return true
     }
 
     override fun hashCode(): Int {
         var result = id?.hashCode() ?: 0
-        result = 31 * result + friendlyName.hashCode()
         result = 31 * result + alias.hashCode()
+        result = 31 * result + name.hashCode()
         return result
     }
 

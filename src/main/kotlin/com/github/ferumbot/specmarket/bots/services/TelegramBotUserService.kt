@@ -6,8 +6,7 @@ import com.github.ferumbot.specmarket.bots.models.entity.TelegramUser
 import com.github.ferumbot.specmarket.bots.models.entity.embeded.UserBotState
 import com.github.ferumbot.specmarket.bots.models.enums.TelegramUserSpecialistStatus
 import com.github.ferumbot.specmarket.bots.state_machine.state.BotState
-import com.github.ferumbot.specmarket.models.entities.Specialist
-import org.springframework.data.domain.Pageable
+import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
 
 interface TelegramBotUserService {
 
@@ -27,9 +26,9 @@ interface TelegramBotUserService {
 
     fun getUserSpecialistStatus(info: BaseUpdateInfo): TelegramUserSpecialistStatus
 
-    fun getUserSpecialist(info: BaseUpdateInfo): Specialist?
+    fun getUserSpecialist(info: BaseUpdateInfo): SpecialistProfile?
 
-    fun getUserSpecialistRequests(info: BaseUpdateInfo, pageNumber: Int, pageSize: Int): Collection<Specialist>
+    fun getUserSpecialistRequests(info: BaseUpdateInfo, pageNumber: Int, pageSize: Int): Collection<SpecialistProfile>
 
     fun countUserSpecialistRequests(info: BaseUpdateInfo): Int
 

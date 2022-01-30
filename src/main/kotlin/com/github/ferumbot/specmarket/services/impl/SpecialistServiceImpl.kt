@@ -1,7 +1,7 @@
 package com.github.ferumbot.specmarket.services.impl
 
 import com.github.ferumbot.specmarket.models.dto.SpecialistDto
-import com.github.ferumbot.specmarket.models.entities.Specialist
+import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
 import com.github.ferumbot.specmarket.repositories.SpecialistRepository
 import com.github.ferumbot.specmarket.services.SpecialistService
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,7 +24,7 @@ class SpecialistServiceImpl @Autowired constructor(
     }
 
     @Transactional(readOnly = true)
-    override fun getSpecialistById(id: Long): Specialist? {
+    override fun getSpecialistById(id: Long): SpecialistProfile? {
         return repository.findById(id).orElseGet(null)
     }
 

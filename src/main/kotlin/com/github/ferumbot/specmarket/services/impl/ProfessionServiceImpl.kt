@@ -1,7 +1,7 @@
 package com.github.ferumbot.specmarket.services.impl
 
 import com.github.ferumbot.specmarket.exceptions.ProfessionWasNotDeleted
-import com.github.ferumbot.specmarket.models.entities.Profession
+import com.github.ferumbot.specmarket.models.entities.specifications.Profession
 import com.github.ferumbot.specmarket.models.dto.ProfessionDto
 import com.github.ferumbot.specmarket.models.dto.UpdateProfessionDto
 import com.github.ferumbot.specmarket.repositories.ProfessionRepository

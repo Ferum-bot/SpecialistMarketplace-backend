@@ -1,4 +1,4 @@
-package com.github.ferumbot.specmarket.models.entities
+package com.github.ferumbot.specmarket.models.entities.specifications
 
 import java.time.LocalDateTime
 import javax.persistence.*

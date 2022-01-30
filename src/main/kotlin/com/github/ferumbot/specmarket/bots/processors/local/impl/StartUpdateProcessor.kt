@@ -9,7 +9,7 @@ import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
 import com.github.ferumbot.specmarket.bots.services.TelegramBotUserService
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
-import com.github.ferumbot.specmarket.models.entities.Specialist
+import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
 
 class StartUpdateProcessor(
     private val userService: TelegramBotUserService
@@ -83,7 +83,7 @@ class StartUpdateProcessor(
     }
 
     private fun getUpdateResultFor(
-        info: BaseUpdateInfo, specialistEntity: Specialist?, goodState: ProfileState
+        info: BaseUpdateInfo, specialistEntity: SpecialistProfile?, goodState: ProfileState
     ): MessageUpdateResultBunch<*> {
         val notAuthorizedState = YouAreNotAuthorizedScreenState
         return specialistEntity?.let { specialist ->

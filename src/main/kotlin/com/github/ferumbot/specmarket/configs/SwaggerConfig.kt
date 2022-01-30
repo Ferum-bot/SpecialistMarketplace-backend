@@ -14,19 +14,19 @@ class SwaggerConfig {
     companion object {
 
         const val PROFESSION_CONTROLLER_DESCRIPTION = """
-            API for interaction with professions. Creating and editing professions.
+            Endpoints для взаимодействия с профессиями.
         """
 
         const val SPECIALIST_CONTROLLER_DESCRIPTION = """
-            API for interaction with specialists. Viewing and analysis of specialists
+            Endpoints для взаимодействия со специалистами. 
         """
 
         const val TELEGRAM_CONTROLLER_DESCRIPTION = """
-            API for interaction with telegram api. Viewing service users interacting via a telegram bot.
+            Endpoints для взаимодействия с пользователями бота.
         """
 
         const val NICHE_CONTROLLER_DESCRIPTION = """
-            API for interaction with niches. Viewing, creating and editing niches.
+            Endpoints для взаимодействия с нишами.
         """
     }
 

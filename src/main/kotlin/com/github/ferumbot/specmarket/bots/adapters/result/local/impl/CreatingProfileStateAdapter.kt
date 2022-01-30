@@ -6,12 +6,9 @@ import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.ProfessionsInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
-import com.github.ferumbot.specmarket.bots.ui.inline_buttons.DefaultInlineButtonsProvider
 import com.github.ferumbot.specmarket.bots.ui.inline_buttons.InlineMessageButtonsProvider
 import com.github.ferumbot.specmarket.bots.ui.keyboard_buttons.KeyboardMessageButtonsProvider
 import com.github.ferumbot.specmarket.bots.ui.text.MessageTextProvider
-import com.github.ferumbot.specmarket.models.dto.ProfessionDto
-import com.github.ferumbot.specmarket.services.ProfessionService
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 
@@ -69,7 +66,7 @@ class CreatingProfileStateAdapter(
     }
 
     private fun getUserInputDepartment(info: BaseUpdateInfo): BotApiMethod<*> {
-        val text = textProvider.provideUserInputDepartmentInfoMessage()
+        val text = textProvider.provideUserInputNichesInfoMessage()
         val buttons = inlineButtonsProvider.provideCreatingProfileButtons()
         val chatId = info.chatId.toString()
         val sendMessage = SendMessage(chatId, text).apply {

@@ -1,6 +1,7 @@
 package com.github.ferumbot.specmarket.bots.ui.text
 
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
+import com.github.ferumbot.specmarket.models.dto.NicheDto
 import com.github.ferumbot.specmarket.models.dto.ProfessionDto
 import com.github.ferumbot.specmarket.models.dto.SpecialistDto
 
@@ -30,7 +31,9 @@ interface MessageTextProvider {
 
     fun provideAllSpecialistInfoMessage(): String
 
-    fun provideFilterScreenInfoMessage(professions: Collection<ProfessionDto>): String
+    fun provideProfessionFilterScreenInfoMessage(professions: Collection<ProfessionDto>): String
+
+    fun provideNicheFilterScreenInfoMessage(niches: Collection<NicheDto>): String
 
     fun provideCurrentSpecialistsInfoMessage(specialists: Collection<SpecialistDto>): String
 
@@ -52,9 +55,13 @@ interface MessageTextProvider {
 
     fun provideUserInputFullNameInfoMessage(): String
 
-    fun provideUserInputDepartmentInfoMessage(): String
-
     fun provideUserInputProfessionsInfoMessage(availableProfessions: Collection<ProfessionDto>): String
+
+    fun provideUserInputAnotherProfessionsInfoMessage(availableProfessions: Collection<ProfessionDto>): String
+
+    fun provideUserInputNichesInfoMessage(availableNiches: Collection<NicheDto>): String
+
+    fun provideUserInputAnotherNicheInfoMessage(availableNiches: Collection<NicheDto>): String
 
     fun provideUserInputKeySkillsInfoMessage(): String
 
@@ -74,9 +81,13 @@ interface MessageTextProvider {
 
     fun provideUserChangeFullNameInfoMessage(): String
 
-    fun provideUserChangeDepartmentInfoMessage(): String
-
     fun provideUserChangeProfessionsInfoMessage(professions: Collection<ProfessionDto>): String
+
+    fun provideUserChangeAnotherProfessionsInfoMessage(professions: Collection<ProfessionDto>): String
+
+    fun provideUserChangeNicheInfoMessage(niches: Collection<NicheDto>): String
+
+    fun provideUserChangeAnotherNicheInfoMessage(niches: Collection<NicheDto>): String
 
     fun provideUserChangeKeySkillsInfoMessage(): String
 

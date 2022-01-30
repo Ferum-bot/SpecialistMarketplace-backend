@@ -1,13 +1,13 @@
 package com.github.ferumbot.specmarket.services
 
 import com.github.ferumbot.specmarket.models.dto.SpecialistDto
-import com.github.ferumbot.specmarket.models.entities.Specialist
+import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
 
 interface SpecialistService {
 
     fun getAllSpecialists(pageNumber: Int, pageSize: Int): Collection<SpecialistDto>
 
-    fun getSpecialistById(id: Long): Specialist?
+    fun getSpecialistById(id: Long): SpecialistProfile?
 
     fun getAllSpecialistsByProfessionId(
         professionId: Long, pageNumber: Int, pageSize: Int,

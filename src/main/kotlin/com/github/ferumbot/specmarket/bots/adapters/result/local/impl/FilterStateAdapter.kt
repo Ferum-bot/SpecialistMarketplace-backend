@@ -37,7 +37,7 @@ class FilterStateAdapter(
 
     private fun getFilterScreen(info: ProfessionsInfo): BotApiMethod<*> {
         val professions = info.professions
-        val text = textProvider.provideFilterScreenInfoMessage(professions)
+        val text = textProvider.provideProfessionFilterScreenInfoMessage(professions)
         val chatId = info.chatId.toString()
 
         return SendMessage(chatId, text)

@@ -1,6 +1,6 @@
 package com.github.ferumbot.specmarket.repositories
 
-import com.github.ferumbot.specmarket.models.entities.Specialist
+import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 
 @Repository
-interface SpecialistRepository: JpaRepository<Specialist, Long> {
+interface SpecialistRepository: JpaRepository<SpecialistProfile, Long> {
 
     @Query(
         value = "SELECT * FROM specialist WHERE specialist.id = " +
@@ -25,7 +25,7 @@ interface SpecialistRepository: JpaRepository<Specialist, Long> {
         professionId: Long,
 
         page: Pageable,
-    ): Page<Specialist>
+    ): Page<SpecialistProfile>
 
 
     @Query(
@@ -44,7 +44,7 @@ interface SpecialistRepository: JpaRepository<Specialist, Long> {
         professionId: Long,
 
         page: Pageable,
-    ): Page<Specialist>
+    ): Page<SpecialistProfile>
 
     @Query(
         value = "SELECT * FROM specialist WHERE specialist.id = " +
@@ -62,7 +62,7 @@ interface SpecialistRepository: JpaRepository<Specialist, Long> {
         alias: String,
 
         page: Pageable,
-    ): Page<Specialist>
+    ): Page<SpecialistProfile>
 
 
     @Query(
@@ -83,7 +83,7 @@ interface SpecialistRepository: JpaRepository<Specialist, Long> {
         alias: String,
 
         page: Pageable
-    ): Page<Specialist>
+    ): Page<SpecialistProfile>
 
 
     @Query(

@@ -10,7 +10,7 @@ import com.github.ferumbot.specmarket.bots.repositories.TelegramUserRepository
 import com.github.ferumbot.specmarket.bots.services.TelegramBotUserService
 import com.github.ferumbot.specmarket.bots.state_machine.state.BotState
 import com.github.ferumbot.specmarket.exceptions.SpecialistNotExists
-import com.github.ferumbot.specmarket.models.entities.Specialist
+import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
 import com.github.ferumbot.specmarket.repositories.SpecialistRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -99,13 +99,13 @@ class TelegramBotUserServiceImpl @Autowired constructor(
         }
     }
 
-    override fun getUserSpecialist(info: BaseUpdateInfo): Specialist? {
+    override fun getUserSpecialist(info: BaseUpdateInfo): SpecialistProfile? {
         val user = userRepository.findByTelegramUserId(info.userId)
             ?: registerNewUser(info)
         return user.specialist
     }
 
-    override fun getUserSpecialistRequests(info: BaseUpdateInfo, pageNumber: Int, pageSize: Int): Collection<Specialist> {
+    override fun getUserSpecialistRequests(info: BaseUpdateInfo, pageNumber: Int, pageSize: Int): Collection<SpecialistProfile> {
         val user = userRepository.findByTelegramUserId(info.userId)
             ?: registerNewUser(info)
         return user.specialistsRequests
