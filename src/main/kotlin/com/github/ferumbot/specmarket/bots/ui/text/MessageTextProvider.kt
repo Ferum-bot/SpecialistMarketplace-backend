@@ -31,7 +31,9 @@ interface MessageTextProvider {
 
     fun provideAllSpecialistInfoMessage(): String
 
-    fun provideFilterScreenInfoMessage(professions: Collection<ProfessionDto>): String
+    fun provideProfessionFilterScreenInfoMessage(professions: Collection<ProfessionDto>): String
+
+    fun provideNicheFilterScreenInfoMessage(niches: Collection<NicheDto>): String
 
     fun provideCurrentSpecialistsInfoMessage(specialists: Collection<SpecialistDto>): String
 

@@ -20,7 +20,7 @@ class NicheController  {
     private lateinit var service: NicheService
 
     @GetMapping("/all")
-    @Operation(summary = "Get all current available niches")
+    @Operation(summary = "Получить все достпуные нишы")
     fun getAllAvailableNiches(): ResponseEntity<ApiResponse<Collection<Niche>>> {
         val result = service.getAllAvailableNiches()
         val response = ApiResponse.success(result)
@@ -28,7 +28,7 @@ class NicheController  {
     }
 
     @GetMapping("/byId")
-    @Operation(summary = "Get niche by it id")
+    @Operation(summary = "Получить нишу по её id")
     fun getNicheById(
         @RequestParam(value = "id", required = true)
         id: Long,
@@ -41,7 +41,7 @@ class NicheController  {
     }
 
     @GetMapping("/byAlias")
-    @Operation(summary = "Get niche by it program alias")
+    @Operation(summary = "Получить нишу по её alias")
     fun getNicheByAlias(
         @RequestParam(value = "alias", required = true)
         alias: String,
@@ -54,7 +54,7 @@ class NicheController  {
     }
 
     @PatchMapping("/create")
-    @Operation(summary = "Create new niche")
+    @Operation(summary = "Создать новую нишу")
     fun createNewNiche(
         @RequestBody
         newNiche: NicheDto

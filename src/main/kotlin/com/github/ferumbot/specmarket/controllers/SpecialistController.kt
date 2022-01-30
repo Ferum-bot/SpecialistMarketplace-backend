@@ -28,7 +28,7 @@ class SpecialistController {
     private lateinit var service: SpecialistService
 
     @GetMapping("/all")
-    @Operation(summary = "Get all service specialists")
+    @Operation(summary = "Получить всех специалистов")
     fun getAllSpecialists(
         @Min(value = 1, message = "Page number must be greater than 0")
         @RequestParam(value = "page_number", required = true)
@@ -44,7 +44,7 @@ class SpecialistController {
     }
 
     @GetMapping("/byId")
-    @Operation(summary = "Get specialist by it internal id")
+    @Operation(summary = "Получить специалиста по его внутреннему id")
     fun getSpecialistById(
         @RequestParam(value = "id", required = true)
         id: Long,
@@ -59,7 +59,7 @@ class SpecialistController {
     }
 
     @GetMapping("/all/byProfessionId")
-    @Operation(summary = "Get all specialists with this profession by it id")
+    @Operation(summary = "Получить всех специалистов по id профессии")
     fun getAllSpecialistsByProfessionId(
         @RequestParam(value = "id", required = true)
         id: Long,
@@ -78,7 +78,7 @@ class SpecialistController {
     }
 
     @GetMapping("/all/byProfessionAlias")
-    @Operation(summary = "Get all specialists with this profession by it alias")
+    @Operation(summary = "Получить всех специалистов по alias профессии")
     fun getAllSpecialistsByProfessionAlias(
         @RequestParam(value = "alias", required = true)
         alias: String,

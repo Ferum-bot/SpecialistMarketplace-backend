@@ -123,18 +123,33 @@ class DefaultMessageTextProvider: MessageTextProvider {
             .toString()
     }
 
-    override fun provideFilterScreenInfoMessage(professions: Collection<ProfessionDto>): String {
+    override fun provideProfessionFilterScreenInfoMessage(professions: Collection<ProfessionDto>): String {
         val command = OpenCurrentSpecialistsScreenEvent.commandAlias
         val professionsToFilter = professions.fold(StringBuilder()) { builder, profession ->
-            builder.append("${profession.friendlyName}: ${profession.shortDescription}\n")
-            builder.append("Отфильтровать по этой профессии ${command}_${profession.alias}\n")
+            builder.append(profession.friendlyName)
+            builder.append(" - Отфильтровать ${command}_${profession.alias}\n")
         }
 
         return StringBuilder()
-            .append("Вы можете отфильтровать специалистов по их профессиям!\n")
+            .append("Вы можете отфильтровать специалистов по их профессиям.\n")
             .append("Доступные профессии:\n")
             .append("\n")
             .append(professionsToFilter)
+            .toString()
+    }
+
+    override fun provideNicheFilterScreenInfoMessage(niches: Collection<NicheDto>): String {
+        val command = ""
+        val nichesToFilter = niches.fold(StringBuilder()) { builder, niche ->
+            builder.append(niche.friendlyName)
+            builder.append(" - Отфильтровать ${command}_${niche.alias}\n")
+        }
+
+        return StringBuilder()
+            .append("Теперь вы так же можете отфильтровать специалистов по нише в которой они работают.\n")
+            .append("Если вы хотите посмотреть всех специалистов по данной профессии, то нажмите кнопку")
+            .append(" \"Показать всех\"\n")
+            .append(nichesToFilter)
             .toString()
     }
 
@@ -152,7 +167,8 @@ class DefaultMessageTextProvider: MessageTextProvider {
 
     override fun provideCurrentSpecialistsEmptyInfoMessage(): String {
         return StringBuilder()
-            .append("Упс! Мы не нашли таких специалистов... Пожалуйста, поменяйте фильтры и попробуйте еще раз!\n")
+            .append("К сожалению, доступных специалистов по такому профилю не найдено.\n")
+            .append("Попробуйте ещё раз позже.\n")
             .toString()
     }
 
@@ -165,46 +181,30 @@ class DefaultMessageTextProvider: MessageTextProvider {
 
     override fun provideYouAreNotAuthorizedInfoMessage(): String {
         return StringBuilder()
-            .append("Профиль\n")
-            .append("\n")
-            .append("Вы не авторизованы!\n")
-            .append("Вы можете просматривать ваши заказы!\n")
+            .append("У вас еще нет профиля специалиста!\n")
+            .append("Если вы хотите, чтобы мы вас разместили на нашей бирже, то создайте свой профиль.\n")
+            .append("После этого, наши специалисты проверят ваш профиль и вы будете видны на бирже.\n")
+            .append("Вы можете просматривать свои обращения к другим специалистам!\n")
             .toString()
     }
 
     override fun provideYouArePartiallyAuthorizedInfoMessage(specialist: SpecialistDto): String {
         return StringBuilder()
-            .append("Профиль\n")
-            .append("\n")
             .append("Вы не окончили процесс регистрации до конца, но можете продолжить в любой момент.\n")
-            .append("Теперь ваш профиль выглядит так:\n")
+            .append("На данный момент ваш профиль выглядит так:\n")
             .append(getProfileTemplate(specialist))
-            .append("Вы можете просматривать ваши заказы!\n")
+            .append("Вы так же можете просмотреть свои обращения к другим специалистам!\n")
             .toString()
     }
 
     override fun provideYouAreAuthorizedInfoMessage(specialist: SpecialistDto): String {
-        val status = specialist.profileStatus.alias
-        val statusMessage = when (status) {
-            NOT_FILLED.alias -> {
-                StringBuilder()
-            }
-            AWAITING_CONFIRMATION.alias -> {
-                StringBuilder()
-            }
-            REJECTED.alias -> {
-                StringBuilder()
-            }
-            APPROVED.alias -> {
-                StringBuilder()
-            }
-        }
+        val statusMessage = profileStatusMessageBuilder(specialist)
 
         return StringBuilder()
-            .append("Вот так выглядит ваш профиль: \n")
+            .append("Ваш профиль выглядит вот так: \n")
             .append(getProfileTemplate(specialist))
-            .append("Вы можете просматривать ваши заказы!\n")
-            .append(isVisible)
+            .append(statusMessage)
+            .append("Вы так же можете просмотреть свои обращения к другим специалистам!\n")
             .toString()
     }
 
@@ -292,7 +292,7 @@ class DefaultMessageTextProvider: MessageTextProvider {
             .append(userInputKeySkillsTemplate())
             .toString()
     }
-x
+
     override fun provideUserInputPortfolioLinkInfoMessage(): String {
         return StringBuilder()
             .append("Теперь нам необходимо ваше портфолио.\n")
@@ -425,6 +425,41 @@ x
             .append("Введите вашу контактную информацию.\n")
             .append(userInputContactLinksTemplate())
             .toString()
+    }
+
+    private fun profileStatusMessageBuilder(specialist: SpecialistDto): StringBuilder {
+        val statusAlias = specialist.profileStatus.alias
+        val status = ProfileStatuses.fromAlias(statusAlias)
+        val isVisible = specialist.isVisible
+
+        return when (status) {
+            NOT_FILLED -> StringBuilder()
+                .append("Ваш профиль заполнен не до конца. Если хотите чтобы он был виден на бирже")
+                .append("заполните недостоющие поля!\n")
+
+            AWAITING_CONFIRMATION -> StringBuilder()
+                .append("Ваш профиль ожидает подтверждения от наших специалистов.\n")
+                .append("Они проверят все данные и, если что покажут что и где можно улучшить.\n")
+                .append("Обычно проверка за нимает не более суток, но в среднем это пару часов.\n")
+
+            REJECTED -> StringBuilder()
+                .append("Наши специалисты проверили вашу заявку и нашли некоторые недочеты.\n")
+                .append("Мы описали причину в недавнем сообщении от нашего бота, если вы считаете, что")
+                .append("мы не правы или вам не пришло сообщение, то напишите @Danverrr.\n")
+                .append("Вы также можете запросить повторную проверку, для этого нажмите на кнопку снизу.\n")
+
+            APPROVED -> StringBuilder()
+                .append("Мы проверели ваш профиль и теперь вы можете изменить видимость вашего профиля на бирже.\n")
+                .append("На данный момент ваш профиль ")
+                .append {
+                    return@append if (isVisible) {
+                        "виден на площадке.\n"
+                    } else {
+                        "не виден на площадке.\n"
+                    }
+                }
+                .append("Если вы отредактируете какое-то поле, то ваш профиль будет снова ожидать подтверждения от наших специалистов.\n")
+        }
     }
 
     private fun userInputProfessionTemplate(professions: Collection<ProfessionDto>): StringBuilder {
