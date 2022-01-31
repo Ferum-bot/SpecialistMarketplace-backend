@@ -1,8 +1,10 @@
 package com.github.ferumbot.specmarket.bots.models.dto
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.github.ferumbot.specmarket.bots.models.entity.TelegramUser
 import com.github.ferumbot.specmarket.bots.state_machine.state.BotState
+import com.github.ferumbot.specmarket.bots.state_machine.state.serializer.BotStateSerializer
 
 data class TelegramUserDto(
 
@@ -25,6 +27,7 @@ data class TelegramUserDto(
     val userName: String? = null,
 
     @JsonInclude(JsonInclude.Include.ALWAYS)
+    @JsonSerialize(using = BotStateSerializer::class)
     val currentBotState: BotState,
 
     @JsonInclude(JsonInclude.Include.ALWAYS)
