@@ -17,5 +17,5 @@ object OpenAboutEachSpecialistScreenEvent: IDoNotKnowWhatINeedEvent {
 
     override val commandAlias: String = "/open_about_each_specialist"
 
-    override val friendlyName: String = "Открыть справку"
+    override val friendlyName: String = "Открыть справку о специалистах"
 }

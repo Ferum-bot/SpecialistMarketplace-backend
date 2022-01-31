@@ -19,7 +19,7 @@ object ChangeDepartmentEvent: EditProfileEvent {
 
     override val eventName: String = "Change department event"
 
-    override val friendlyName: String = "Изменить отдел"
+    override val friendlyName: String = "Изменить свою нишу"
 
     override val commandAlias: String = "/change_department"
 }
@@ -46,7 +46,7 @@ object ChangePortfolioLinkEvent: EditProfileEvent {
 
     override val eventName: String = "Change portfolio link event"
 
-    override val friendlyName: String = "Изменить ссылку на резюме"
+    override val friendlyName: String = "Изменить мое портфолио"
 
     override val commandAlias: String = "/change_portfolio_link"
 }

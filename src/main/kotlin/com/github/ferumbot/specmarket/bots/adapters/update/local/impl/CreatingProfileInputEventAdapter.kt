@@ -17,7 +17,7 @@ class CreatingProfileInputEventAdapter(
     companion object {
 
         private val handlingStates = listOf(
-            UserInputFullNameScreenState, UserInputDepartmentScreenState,
+            UserInputFullNameScreenState, UserInputNicheScreenState,
             UserInputProfessionScreenState, UserInputKeySkillsScreenState,
             UserInputPortfolioLinkScreenState, UserInputAboutMeScreenState,
             UserInputWorkingConditionsScreenState, UserInputEducationGradeScreenState,
@@ -38,7 +38,7 @@ class CreatingProfileInputEventAdapter(
         return when(currentState) {
             is UserInputFullNameScreenState ->
                 getSimpleUserInput(info, update, OnUserInputFullNameEvent)
-            is UserInputDepartmentScreenState ->
+            is UserInputNicheScreenState ->
                 getSimpleUserInput(info, update, OnUserInputDepartmentEvent)
             is UserInputProfessionScreenState ->
                 getSimpleUserInput(info, update, OnUserInputProfessionEvent)

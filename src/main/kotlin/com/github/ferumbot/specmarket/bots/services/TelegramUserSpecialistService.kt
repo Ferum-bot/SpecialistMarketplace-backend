@@ -7,7 +7,7 @@ interface TelegramUserSpecialistService {
 
     fun updateFullName(info: BaseUpdateInfo, newFullName: String): SpecialistProfile
 
-    fun updateDepartment(info: BaseUpdateInfo, newDepartment: String): SpecialistProfile
+    fun updateNiche(info: BaseUpdateInfo, newDepartment: String): SpecialistProfile
 
     fun addProfession(info: BaseUpdateInfo, professionAlias: String): SpecialistProfile
 

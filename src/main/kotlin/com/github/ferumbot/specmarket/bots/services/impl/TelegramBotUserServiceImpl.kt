@@ -4,13 +4,14 @@ import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.RegisterNewUserInfo
 import com.github.ferumbot.specmarket.bots.models.entity.TelegramUser
 import com.github.ferumbot.specmarket.bots.models.entity.embeded.UserBotState
-import com.github.ferumbot.specmarket.bots.models.enums.TelegramUserSpecialistStatus
-import com.github.ferumbot.specmarket.bots.models.enums.TelegramUserSpecialistStatus.*
+import com.github.ferumbot.specmarket.bots.models.enums.TelegramUserProfileStatus
+import com.github.ferumbot.specmarket.bots.models.enums.TelegramUserProfileStatus.*
 import com.github.ferumbot.specmarket.bots.repositories.TelegramUserRepository
 import com.github.ferumbot.specmarket.bots.services.TelegramBotUserService
 import com.github.ferumbot.specmarket.bots.state_machine.state.BotState
 import com.github.ferumbot.specmarket.exceptions.SpecialistNotExists
 import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
+import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses
 import com.github.ferumbot.specmarket.repositories.SpecialistRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -86,16 +87,17 @@ class TelegramBotUserServiceImpl @Autowired constructor(
         userRepository.saveAndFlush(entity)
     }
 
-    override fun getUserSpecialistStatus(info: BaseUpdateInfo): TelegramUserSpecialistStatus {
+    override fun getUserSpecialistStatus(info: BaseUpdateInfo): TelegramUserProfileStatus {
         val userEntity = userRepository.findByTelegramUserId(info.userId)
             ?: registerNewUser(info)
-        val specialistEntity = userEntity.specialist
+        val specialistStatus = userEntity.specialist?.status?.alias
             ?: return NOT_AUTHORIZED
 
-        return if (specialistEntity.isCompletelyFilled) {
-            AUTHORIZED
-        } else {
-            PARTIALLY_AUTHORIZED
+        return when(specialistStatus) {
+            ProfileStatuses.NOT_FILLED -> NOT_FILLED
+            ProfileStatuses.AWAITING_CONFIRMATION -> AWAITING_CONFIRMATION
+            ProfileStatuses.REJECTED -> REJECTED
+            ProfileStatuses.APPROVED -> APPROVED
         }
     }
 

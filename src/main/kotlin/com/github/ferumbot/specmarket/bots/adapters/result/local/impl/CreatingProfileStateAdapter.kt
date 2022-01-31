@@ -29,7 +29,7 @@ class CreatingProfileStateAdapter(
         return when(state) {
             is UserInputInvalidDataScreenState -> getUserInputInvalidData(info)
             is UserInputFullNameScreenState -> getUserInputFullName(info)
-            is UserInputDepartmentScreenState -> getUserInputDepartment(info)
+            is UserInputNicheScreenState -> getUserInputNiches(info)
             is UserInputProfessionScreenState -> getUserInputProfession(info as ProfessionsInfo)
             is UserInputKeySkillsScreenState -> getUserInputKeySkills(info)
             is UserInputPortfolioLinkScreenState -> getUserInputPortfolioLink(info)
@@ -65,8 +65,8 @@ class CreatingProfileStateAdapter(
         return sendMessage
     }
 
-    private fun getUserInputDepartment(info: BaseUpdateInfo): BotApiMethod<*> {
-        val text = textProvider.provideUserInputNichesInfoMessage()
+    private fun getUserInputNiches(info: BaseUpdateInfo): BotApiMethod<*> {
+        val text = textProvider.provideUserInputNichesInfoMessage(emptyList())
         val buttons = inlineButtonsProvider.provideCreatingProfileButtons()
         val chatId = info.chatId.toString()
         val sendMessage = SendMessage(chatId, text).apply {

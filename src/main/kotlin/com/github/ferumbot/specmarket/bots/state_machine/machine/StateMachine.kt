@@ -21,7 +21,7 @@ object StateMachine {
             IAmSpecialistInfoScreenState.screenName -> IAmSpecialistInfoScreenState
             UserInputInvalidDataScreenState.screenName -> UserInputInvalidDataScreenState
             UserInputFullNameScreenState.screenName -> UserInputFullNameScreenState
-            UserInputDepartmentScreenState.screenName -> UserInputDepartmentScreenState
+            UserInputNicheScreenState.screenName -> UserInputNicheScreenState
             UserInputProfessionScreenState.screenName -> UserInputProfessionScreenState
             UserInputKeySkillsScreenState.screenName -> UserInputKeySkillsScreenState
             UserInputPortfolioLinkScreenState.screenName -> UserInputPortfolioLinkScreenState

@@ -8,5 +8,5 @@ object SubmitYourCVEvent: IAmSpecialistEvent {
 
     override val commandAlias: String = "/open_submit_your_application"
 
-    override val friendlyName: String = "Загрузить мое резюме"
+    override val friendlyName: String = "Создать мое резюме"
 }

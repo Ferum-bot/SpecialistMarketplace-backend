@@ -8,7 +8,7 @@ object OpenFilterScreenEvent: FilterEvent {
 
     override val commandAlias: String = "/open_filter"
 
-    override val friendlyName: String = "Фильтр"
+    override val friendlyName: String = "Открыть фильтр"
 }
 
 object OpenCurrentSpecialistsScreenEvent: FilterEvent {
