@@ -65,7 +65,7 @@ class CreatingProfileUpdateProcessor(
     }
 
     private fun processOnUserInputFullName(info: BaseDataInfo): MessageUpdateResultBunch<*> {
-        val state = UserInputDepartmentScreenState
+        val state = UserInputNicheScreenState
         val fullName = info.userInput.firstOrNull().orEmpty()
         specialistService.updateFullName(info, fullName)
         userService.setNewUserState(state, info)
@@ -76,7 +76,7 @@ class CreatingProfileUpdateProcessor(
     private fun processOnUserInputDepartment(info: BaseDataInfo): MessageUpdateResultBunch<*> {
         val state = UserInputProfessionScreenState
         val department = info.userInput.firstOrNull().orEmpty()
-        specialistService.updateDepartment(info, department)
+        specialistService.updateNiche(info, department)
         userService.setNewUserState(state, info)
 
         val professions = professionsService.getAllAvailableProfessions()
@@ -187,8 +187,8 @@ class CreatingProfileUpdateProcessor(
             if (fullName == null) {
                 return UserInputFullNameScreenState
             }
-            if (department == null) {
-                return UserInputDepartmentScreenState
+            if (niches.isEmpty()) {
+                return UserInputNicheScreenState
             }
             if (professions.isEmpty()) {
                 return UserInputProfessionScreenState

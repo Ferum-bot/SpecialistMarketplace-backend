@@ -7,8 +7,6 @@ import com.github.ferumbot.specmarket.bots.models.dto.update_info.ProfessionsInf
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
 import com.github.ferumbot.specmarket.bots.ui.inline_buttons.InlineMessageButtonsProvider
 import com.github.ferumbot.specmarket.bots.ui.text.MessageTextProvider
-import com.github.ferumbot.specmarket.models.dto.ProfessionDto
-import com.github.ferumbot.specmarket.services.ProfessionService
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 
@@ -27,7 +25,7 @@ class EditProfileStateAdapter(
 
         return when(state) {
             is UserChangeFullNameScreenState -> getUserChangeFullName(info)
-            is UserChangeDepartmentScreenState -> getUserChangeDepartment(info)
+            is UserChangeDepartmentScreenState -> getUserChangeNiche(info)
             is UserChangeProfessionScreenState -> getUserChangeProfession(info as ProfessionsInfo)
             is UserChangeKeySkillsScreenState -> getUserChangeKeySkills(info)
             is UserChangePortfolioLinkScreenState -> getUserChangePortfolioLink(info)
@@ -44,8 +42,8 @@ class EditProfileStateAdapter(
         return getDefaultMethod(text, info)
     }
 
-    private fun getUserChangeDepartment(info: BaseUpdateInfo): BotApiMethod<*> {
-        val text = textProvider.provideUserChangeDepartmentInfoMessage()
+    private fun getUserChangeNiche(info: BaseUpdateInfo): BotApiMethod<*> {
+        val text = textProvider.provideUserChangeNicheInfoMessage(emptyList())
         return getDefaultMethod(text, info)
     }
 

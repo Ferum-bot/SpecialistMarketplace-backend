@@ -4,8 +4,9 @@ import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.RegisterNewUserInfo
 import com.github.ferumbot.specmarket.bots.models.entity.TelegramUser
 import com.github.ferumbot.specmarket.bots.models.entity.embeded.UserBotState
-import com.github.ferumbot.specmarket.bots.models.enums.TelegramUserSpecialistStatus
+import com.github.ferumbot.specmarket.bots.models.enums.TelegramUserProfileStatus
 import com.github.ferumbot.specmarket.bots.state_machine.state.BotState
+import com.github.ferumbot.specmarket.models.dto.SpecialistStatusDto
 import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
 
 interface TelegramBotUserService {
@@ -24,7 +25,7 @@ interface TelegramBotUserService {
         newState: BotState, info: BaseUpdateInfo, currentPage: Int? = null, pageCount: Int? = null
     )
 
-    fun getUserSpecialistStatus(info: BaseUpdateInfo): TelegramUserSpecialistStatus
+    fun getUserSpecialistStatus(info: BaseUpdateInfo): TelegramUserProfileStatus
 
     fun getUserSpecialist(info: BaseUpdateInfo): SpecialistProfile?
 

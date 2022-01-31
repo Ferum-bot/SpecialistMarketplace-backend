@@ -16,9 +16,9 @@ object UserInputFullNameScreenState: CreatingProfileState {
     override val previousState: BotState = StartScreenState
 }
 
-object UserInputDepartmentScreenState: CreatingProfileState {
+object UserInputNicheScreenState: CreatingProfileState {
 
-    override val screenName: String = "User input department screen state"
+    override val screenName: String = "User input niche screen state"
 
     override val previousState: BotState = UserInputFullNameScreenState
 }
@@ -27,7 +27,7 @@ object UserInputProfessionScreenState: CreatingProfileState {
 
     override val screenName: String = "User input activity screen state"
 
-    override val previousState: BotState = UserInputDepartmentScreenState
+    override val previousState: BotState = UserInputNicheScreenState
 }
 
 object UserInputKeySkillsScreenState: CreatingProfileState {

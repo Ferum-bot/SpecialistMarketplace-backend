@@ -127,7 +127,7 @@ class EditProfileUpdateProcessor(
     private fun processUserChangedDepartment(info: BaseDataInfo): MessageUpdateResultBunch<*> {
         val newDepartment = info.simpleInput
 
-        val specialist = specialistService.updateDepartment(info, newDepartment)
+        val specialist = specialistService.updateNiche(info, newDepartment)
         return setEditStateAndReturn(info, specialist)
     }
 

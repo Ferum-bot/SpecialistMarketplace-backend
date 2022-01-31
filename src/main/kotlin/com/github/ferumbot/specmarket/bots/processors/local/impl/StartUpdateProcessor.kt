@@ -4,7 +4,8 @@ import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
-import com.github.ferumbot.specmarket.bots.models.enums.TelegramUserSpecialistStatus.*
+import com.github.ferumbot.specmarket.bots.models.enums.TelegramUserProfileStatus
+import com.github.ferumbot.specmarket.bots.models.enums.TelegramUserProfileStatus.*
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
 import com.github.ferumbot.specmarket.bots.services.TelegramBotUserService
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
@@ -67,13 +68,13 @@ class StartUpdateProcessor(
 
                 MessageUpdateResultBunch(notAuthorizedState, info)
             }
-            PARTIALLY_AUTHORIZED -> {
+            NOT_FILLED -> {
                 val goodState = YouAreNotFullAuthorizedScreenState
                 val specialistEntity = userService.getUserSpecialist(info)
 
                 getUpdateResultFor(info, specialistEntity, goodState)
             }
-            AUTHORIZED -> {
+            AWAITING_CONFIRMATION, REJECTED, APPROVED -> {
                 val goodState = YouAreAuthorizedScreenState
                 val specialistEntity = userService.getUserSpecialist(info)
 

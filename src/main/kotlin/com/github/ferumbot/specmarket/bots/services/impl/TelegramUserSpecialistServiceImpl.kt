@@ -33,12 +33,11 @@ class TelegramUserSpecialistServiceImpl(
         return user.specialist!!
     }
 
-    override fun updateDepartment(info: BaseUpdateInfo, newDepartment: String): SpecialistProfile {
+    override fun updateNiche(info: BaseUpdateInfo, newDepartment: String): SpecialistProfile {
         val user = userRepository.findByTelegramUserId(info.userId)
             ?: registerNewUser(info)
 
         prepareUserSpecialist(user)
-        user.specialist?.department = newDepartment
 
         userRepository.saveAndFlush(user)
         return user.specialist!!
@@ -167,9 +166,6 @@ class TelegramUserSpecialistServiceImpl(
             ?: registerNewUser(info)
 
         prepareUserSpecialist(user)
-        user.specialist?.isCompletelyFilled = completelyFilled
-
-        userRepository.saveAndFlush(user)
         return user.specialist!!
     }
 
