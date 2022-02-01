@@ -17,7 +17,7 @@ class EditProfileInputEventAdapter(
     companion object {
 
         private val handlingStates = listOf(
-            UserChangeFullNameScreenState, UserChangeDepartmentScreenState,
+            UserChangeFullNameScreenState, UserNicheScreenState,
             UserChangeProfessionScreenState, UserChangeKeySkillsScreenState,
             UserChangePortfolioLinkScreenState, UserChangeAboutMeScreenState,
             UserChangeWorkingConditionsScreenState, UserChangeEducationGradeScreenState,
@@ -38,8 +38,8 @@ class EditProfileInputEventAdapter(
         return when(state) {
             is UserChangeFullNameScreenState ->
                 getSimpleUserInput(info, update, OnUserChangedFullNameEvent)
-            is UserChangeDepartmentScreenState ->
-                getSimpleUserInput(info, update, OnUserChangedDepartmentEvent)
+            is UserNicheScreenState ->
+                getSimpleUserInput(info, update, OnUserChangedNicheEvent)
             is UserChangeProfessionScreenState ->
                 getSimpleUserInput(info, update, OnUserChangedProfessionEvent)
             is UserChangeKeySkillsScreenState ->

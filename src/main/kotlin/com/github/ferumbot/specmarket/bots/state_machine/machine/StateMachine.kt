@@ -37,7 +37,7 @@ object StateMachine {
             MyRequestsScreenState.screenName -> MyRequestsScreenState
             EditProfileScreenState.screenName -> EditProfileScreenState
             UserChangeFullNameScreenState.screenName -> UserChangeFullNameScreenState
-            UserChangeDepartmentScreenState.screenName -> UserChangeDepartmentScreenState
+            UserNicheScreenState.screenName -> UserNicheScreenState
             UserChangeProfessionScreenState.screenName -> UserChangeProfessionScreenState
             UserChangeKeySkillsScreenState.screenName -> UserChangeKeySkillsScreenState
             UserChangePortfolioLinkScreenState.screenName -> UserChangePortfolioLinkScreenState

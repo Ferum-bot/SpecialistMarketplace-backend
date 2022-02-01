@@ -30,7 +30,7 @@ class DefaultKeyboardButtonsProvider: KeyboardMessageButtonsProvider {
         private val CHANGE_VISIBILITY = ChangeProfileSpecialistVisibilityScreenEvent.friendlyName
 
         private val CHANGE_FULL_NAME = ChangeFullNameEvent.friendlyName
-        private val CHANGE_DEPARTMENT = ChangeDepartmentEvent.friendlyName
+        private val CHANGE_DEPARTMENT = ChangeNicheEvent.friendlyName
         private val CHANGE_PROFESSIONS = ChangeProfessionEvent.friendlyName
         private val CHANGE_KEY_SKILLS = ChangeKeySkillsEvent.friendlyName
         private val CHANGE_PORTFOLIO_LINK = ChangePortfolioLinkEvent.friendlyName

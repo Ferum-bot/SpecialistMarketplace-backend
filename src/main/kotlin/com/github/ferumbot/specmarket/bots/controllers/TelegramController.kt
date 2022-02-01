@@ -1,6 +1,7 @@
 package com.github.ferumbot.specmarket.bots.controllers
 
 import com.github.ferumbot.specmarket.bots.TelegramBot
+import com.github.ferumbot.specmarket.bots.controllers.models.SendMessageToChatRequest
 import com.github.ferumbot.specmarket.bots.models.dto.TelegramUserDto
 import com.github.ferumbot.specmarket.bots.services.TelegramUsersService
 import com.github.ferumbot.specmarket.configs.SwaggerConfig
@@ -98,7 +99,8 @@ class TelegramController @Autowired constructor(
     @GetMapping("/sendMessage")
     @Operation(summary = "Отправляет сообщение от лица бота в конкретный чат по его id")
     fun sendMessageFromBotToChat(
-
+        @RequestBody
+        request: SendMessageToChatRequest
     ) {
 
     }

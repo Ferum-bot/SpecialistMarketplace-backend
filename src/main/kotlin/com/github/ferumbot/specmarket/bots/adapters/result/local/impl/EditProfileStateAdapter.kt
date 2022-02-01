@@ -25,7 +25,7 @@ class EditProfileStateAdapter(
 
         return when(state) {
             is UserChangeFullNameScreenState -> getUserChangeFullName(info)
-            is UserChangeDepartmentScreenState -> getUserChangeNiche(info)
+            is UserNicheScreenState -> getUserChangeNiche(info)
             is UserChangeProfessionScreenState -> getUserChangeProfession(info as ProfessionsInfo)
             is UserChangeKeySkillsScreenState -> getUserChangeKeySkills(info)
             is UserChangePortfolioLinkScreenState -> getUserChangePortfolioLink(info)

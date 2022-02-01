@@ -29,13 +29,22 @@ object OnUserInputFullNameEvent: CreatingProfileEvent {
     override val friendlyName: String = ""
 }
 
-object OnUserInputDepartmentEvent: CreatingProfileEvent {
+object OnUserInputNicheEvent: CreatingProfileEvent {
 
-    override val eventName: String = "On user input department event"
+    override val eventName: String = "On user input niche event"
 
     override val commandAlias: String = ""
 
     override val friendlyName: String = ""
+}
+
+object OnUserFinishInputNicheEvent: CreatingProfileEvent {
+
+    override val eventName: String = "On user finish input niche event"
+
+    override val commandAlias: String = "/finish_input_niche"
+
+    override val friendlyName: String = "К следующему пункту"
 }
 
 object OnUserInputProfessionEvent: CreatingProfileEvent {
@@ -45,6 +54,15 @@ object OnUserInputProfessionEvent: CreatingProfileEvent {
     override val commandAlias: String = ""
 
     override val friendlyName: String = ""
+}
+
+object OnUserFinishInputProfessionEvent: CreatingProfileEvent {
+
+    override val eventName: String = "On user finish input profession event"
+
+    override val commandAlias: String = "/finish_input_profession"
+
+    override val friendlyName: String = "К следующему пункту"
 }
 
 object OnUserInputKeySkillsEvent: CreatingProfileEvent {

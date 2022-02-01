@@ -2,24 +2,24 @@ package com.github.ferumbot.specmarket.bots.processors.local.impl
 
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseDataInfo
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.ProfessionsInfo
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.*
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
 import com.github.ferumbot.specmarket.bots.services.TelegramBotUserService
 import com.github.ferumbot.specmarket.bots.services.TelegramUserSpecialistService
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
 import com.github.ferumbot.specmarket.core.extensions.removeFirstCharIf
+import com.github.ferumbot.specmarket.models.dto.NicheDto
 import com.github.ferumbot.specmarket.models.dto.ProfessionDto
 import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
+import com.github.ferumbot.specmarket.services.NicheService
 import com.github.ferumbot.specmarket.services.ProfessionService
 
 class CreatingProfileUpdateProcessor(
     private val userService: TelegramBotUserService,
     private val specialistService: TelegramUserSpecialistService,
     private val professionsService: ProfessionService,
+    private val nicheService: NicheService,
 ): LocalUpdateProcessor {
 
     override fun canProcess(bunch: MessageUpdateBunch<*>): Boolean {
@@ -34,8 +34,10 @@ class CreatingProfileUpdateProcessor(
             is StartRegistrationFlowEvent -> processStartRegistrationFlow(info)
             is ContinueCreatingProfileFlowEvent -> processContinueRegistrationFlow(info)
             is OnUserInputFullNameEvent -> processOnUserInputFullName(info as BaseDataInfo)
-            is OnUserInputDepartmentEvent -> processOnUserInputDepartment(info as BaseDataInfo)
             is OnUserInputProfessionEvent -> processOnUserInputProfession(info as BaseDataInfo)
+            is OnUserFinishInputProfessionEvent -> processOnUserFinishInputProfession(info)
+            is OnUserInputNicheEvent -> processOnUserInputNiche(info as BaseDataInfo)
+            is OnUserFinishInputNicheEvent -> processOnUserFinishInputNiche(info)
             is OnUserInputKeySkillsEvent -> processOnUserInputKeySkills(info as BaseDataInfo)
             is OnUserInputPortfolioLinkEvent -> processOnUserInputPortfolioLink(info as BaseDataInfo)
             is OnUserInputAboutMeEvent -> processOnUserInputAboutMe(info as BaseDataInfo)
@@ -65,18 +67,9 @@ class CreatingProfileUpdateProcessor(
     }
 
     private fun processOnUserInputFullName(info: BaseDataInfo): MessageUpdateResultBunch<*> {
-        val state = UserInputNicheScreenState
+        val state = UserInputProfessionScreenState
         val fullName = info.userInput.firstOrNull().orEmpty()
         specialistService.updateFullName(info, fullName)
-        userService.setNewUserState(state, info)
-
-        return MessageUpdateResultBunch(state, info)
-    }
-
-    private fun processOnUserInputDepartment(info: BaseDataInfo): MessageUpdateResultBunch<*> {
-        val state = UserInputProfessionScreenState
-        val department = info.userInput.firstOrNull().orEmpty()
-        specialistService.updateNiche(info, department)
         userService.setNewUserState(state, info)
 
         val professions = professionsService.getAllAvailableProfessions()
@@ -87,11 +80,56 @@ class CreatingProfileUpdateProcessor(
     }
 
     private fun processOnUserInputProfession(info: BaseDataInfo): MessageUpdateResultBunch<*> {
-        val state = UserInputKeySkillsScreenState
-        val profession = info.userInput.firstOrNull().orEmpty()
+        val state = UserInputProfessionScreenState
+        val chosenProfession = info.userInput.firstOrNull().orEmpty()
             .removeFirstCharIf { it.first() == '/' }
 
-        specialistService.addProfession(info, profession)
+        val specialist = specialistService.addProfession(info, chosenProfession)
+        userService.setNewUserState(state, info)
+
+        val allProfessions = professionsService.getAllAvailableProfessions()
+        val chosenProfessions = specialist.professions
+        val availableProfessions = allProfessions.filter { profession ->
+            chosenProfessions.count { it.id == profession.id } == 0
+        }.map { ProfessionDto.from(it) }
+
+        val newInfo = ProfessionsInfo.from(info, availableProfessions, false)
+
+        return MessageUpdateResultBunch(state, newInfo)
+    }
+
+    private fun processOnUserFinishInputProfession(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
+        val state = UserInputNicheScreenState
+        val niches = nicheService.getAllAvailableNiches()
+            .map { NicheDto.from(it) }
+
+        userService.setNewUserState(state, info)
+
+        val newInfo = NichesInfo.from(info, niches)
+        return MessageUpdateResultBunch(state, newInfo)
+    }
+
+    private fun processOnUserInputNiche(info: BaseDataInfo): MessageUpdateResultBunch<*> {
+        val state = UserInputNicheScreenState
+        val chosenNiche = info.userInput.firstOrNull().orEmpty()
+            .removeFirstCharIf { it.first() == '/' }
+
+        val specialist = specialistService.addNiche(info, chosenNiche)
+        userService.setNewUserState(state, info)
+
+        val allNiches = nicheService.getAllAvailableNiches()
+        val chosenNiches = specialist.niches
+        val availableNiches = allNiches.filter { niche ->
+            chosenNiches.count { it.id == niche.id } == 0
+        }.map { NicheDto.from(it) }
+
+        val newInfo = NichesInfo.from(info, availableNiches, false)
+
+        return MessageUpdateResultBunch(state, newInfo)
+    }
+
+    private fun processOnUserFinishInputNiche(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
+        val state = UserInputKeySkillsScreenState
         userService.setNewUserState(state, info)
 
         return MessageUpdateResultBunch(state, info)
@@ -166,7 +204,6 @@ class CreatingProfileUpdateProcessor(
 
     private fun processFinishRegistrationFlow(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
         val state = YouAreAuthorizedScreenState
-        specialistService.updateCompletelyFilled(info, true)
         userService.setNewUserState(state, info)
 
         val specialist = userService.getUserSpecialist(info)
@@ -184,7 +221,7 @@ class CreatingProfileUpdateProcessor(
 
     private fun SpecialistProfile?.getFirstNotImplementedFieldState(): CreatingProfileState {
         return this?.run {
-            if (fullName == null) {
+            if (fullName.isNullOrBlank()) {
                 return UserInputFullNameScreenState
             }
             if (niches.isEmpty()) {
@@ -196,19 +233,19 @@ class CreatingProfileUpdateProcessor(
             if (keySkills.isEmpty()) {
                 return UserInputKeySkillsScreenState
             }
-            if (portfolioLink == null) {
+            if (portfolioLink.isNullOrBlank()) {
                 return UserInputPortfolioLinkScreenState
             }
-            if (aboutMe == null) {
+            if (aboutMe.isNullOrBlank()) {
                 return UserInputAboutMeScreenState
             }
-            if (workingConditions == null) {
+            if (workingConditions.isNullOrBlank()) {
                 return UserInputWorkingConditionsScreenState
             }
-            if (educationGrade == null) {
+            if (educationGrade.isNullOrBlank()) {
                 return UserInputEducationGradeScreenState
             }
-            if (contactLinks == null) {
+            if (contactLinks.isNullOrBlank()) {
                 return UserInputContactLinksScreenState
             }
 

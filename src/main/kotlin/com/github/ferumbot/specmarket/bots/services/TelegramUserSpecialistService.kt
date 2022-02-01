@@ -7,7 +7,11 @@ interface TelegramUserSpecialistService {
 
     fun updateFullName(info: BaseUpdateInfo, newFullName: String): SpecialistProfile
 
-    fun updateNiche(info: BaseUpdateInfo, newDepartment: String): SpecialistProfile
+    fun addNiche(info: BaseUpdateInfo, nicheAlias: String): SpecialistProfile
+
+    fun removeNiche(info: BaseUpdateInfo, nicheAlias: String): SpecialistProfile
+
+    fun clearNiches(info: BaseUpdateInfo): SpecialistProfile
 
     fun addProfession(info: BaseUpdateInfo, professionAlias: String): SpecialistProfile
 
@@ -28,8 +32,6 @@ interface TelegramUserSpecialistService {
     fun updateEducationGrade(info: BaseUpdateInfo, newEducationGrade: String): SpecialistProfile
 
     fun updateContactLinks(info: BaseUpdateInfo, newContactLinks: String): SpecialistProfile
-
-    fun updateCompletelyFilled(info: BaseUpdateInfo, completelyFilled: Boolean): SpecialistProfile
 
     fun updateVisibility(info: BaseUpdateInfo, visibility: Boolean): SpecialistProfile
 }

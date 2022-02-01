@@ -15,9 +15,9 @@ object ChangeFullNameEvent: EditProfileEvent {
     override val commandAlias: String = "/change_full_name"
 }
 
-object ChangeDepartmentEvent: EditProfileEvent {
+object ChangeNicheEvent: EditProfileEvent {
 
-    override val eventName: String = "Change department event"
+    override val eventName: String = "Change niche event"
 
     override val friendlyName: String = "Изменить свою нишу"
 
@@ -110,13 +110,22 @@ object OnUserChangedFullNameEvent: EditProfileEvent {
     override val commandAlias: String = ""
 }
 
-object OnUserChangedDepartmentEvent: EditProfileEvent {
+object OnUserChangedNicheEvent: EditProfileEvent {
 
-    override val eventName: String = "On user changed department event"
+    override val eventName: String = "On user changed niche event"
 
     override val friendlyName: String = ""
 
     override val commandAlias: String = ""
+}
+
+object OnUserFinishedChangingNicheEvent: EditProfileEvent {
+
+    override val eventName: String = "On user finished changing niche event"
+
+    override val friendlyName: String = "Перейти к следующему пункту"
+
+    override val commandAlias: String = "/finish_changing_niche"
 }
 
 object OnUserChangedProfessionEvent: EditProfileEvent {
@@ -126,6 +135,15 @@ object OnUserChangedProfessionEvent: EditProfileEvent {
     override val friendlyName: String = ""
 
     override val commandAlias: String = ""
+}
+
+object OnUserFinishedChangingProfessionEvent: EditProfileEvent {
+
+    override val eventName: String = "On user finished changing profession event"
+
+    override val friendlyName: String = "Перейти к следующему пункту"
+
+    override val commandAlias: String = "/finish_changing_profession"
 }
 
 object OnUserChangedKeySkillsEvent: EditProfileEvent {

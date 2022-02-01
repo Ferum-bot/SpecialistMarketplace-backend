@@ -34,6 +34,16 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
 
         private val LEAVE_BID_NAME = OpenLeaveBidScreenEvent.friendlyName
         private val LEAVE_BID_COMMAND = OpenLeaveBidScreenEvent.commandAlias
+
+        private val FINISH_INPUT_PROFESSION_NAME = OnUserFinishInputProfessionEvent.friendlyName
+        private val FINISH_INPUT_PROFESSION_COMMAND = OnUserFinishInputProfessionEvent.commandAlias
+        private val FINISH_INPUT_NICHE_NAME = OnUserFinishInputNicheEvent.friendlyName
+        private val FINISH_INPUT_NICHE_COMMAND = OnUserFinishInputNicheEvent.commandAlias
+
+        private val FINISH_CHANGING_PROFESSION_NAME = OnUserFinishedChangingProfessionEvent.friendlyName
+        private val FINISH_CHANGING_PROFESSION_COMMAND = OnUserFinishedChangingProfessionEvent.commandAlias
+        private val FINISH_CHANGING_NICHE_NAME = OnUserFinishedChangingNicheEvent.friendlyName
+        private val FINISH_CHANGING_NICHE_COMMAND = OnUserFinishedChangingNicheEvent.commandAlias
     }
 
     override fun provideNotImplementedScreenButtons(): InlineKeyboardMarkup {
@@ -107,6 +117,62 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
         )
         val secondButton = InlineButton(
             RESTART_REGISTRATION_FLOW_NAME, RESTART_REGISTRATION_FLOW_COMMAND
+        )
+
+        val firstRow = getInlineRow(firstButton)
+        val secondRow = getInlineRow(secondButton)
+
+        return getInlineKeyboard(firstRow, secondRow)
+    }
+
+    override fun provideFinishInputProfessionsButtons(): InlineKeyboardMarkup {
+        val firstButton = InlineButton(
+            SHOW_HOW_IT_LOOKS_LIKE_NOW_NAME, SHOW_HOW_IT_LOOKS_LIKE_NOW_COMMAND
+        )
+        val secondButton = InlineButton(
+            FINISH_INPUT_PROFESSION_NAME, FINISH_INPUT_PROFESSION_COMMAND
+        )
+
+        val firstRow = getInlineRow(firstButton)
+        val secondRow = getInlineRow(secondButton)
+
+        return getInlineKeyboard(firstRow, secondRow)
+    }
+
+    override fun provideFinishInputNichesButtons(): InlineKeyboardMarkup {
+        val firstButton = InlineButton(
+            SHOW_HOW_IT_LOOKS_LIKE_NOW_NAME, SHOW_HOW_IT_LOOKS_LIKE_NOW_COMMAND
+        )
+        val secondButton = InlineButton(
+            FINISH_INPUT_NICHE_NAME, FINISH_INPUT_NICHE_COMMAND
+        )
+
+        val firstRow = getInlineRow(firstButton)
+        val secondRow = getInlineRow(secondButton)
+
+        return getInlineKeyboard(firstRow, secondRow)
+    }
+
+    override fun provideFinishChangingProfessionsButtons(): InlineKeyboardMarkup {
+        val firstButton = InlineButton(
+            SHOW_HOW_IT_LOOKS_LIKE_NOW_NAME, SHOW_HOW_IT_LOOKS_LIKE_NOW_COMMAND
+        )
+        val secondButton = InlineButton(
+            FINISH_CHANGING_PROFESSION_NAME, FINISH_CHANGING_PROFESSION_COMMAND
+        )
+
+        val firstRow = getInlineRow(firstButton)
+        val secondRow = getInlineRow(secondButton)
+
+        return getInlineKeyboard(firstRow, secondRow)
+    }
+
+    override fun provideFinishChangingNichesButtons(): InlineKeyboardMarkup {
+        val firstButton = InlineButton(
+            SHOW_HOW_IT_LOOKS_LIKE_NOW_NAME, SHOW_HOW_IT_LOOKS_LIKE_NOW_COMMAND
+        )
+        val secondButton = InlineButton(
+            FINISH_CHANGING_NICHE_NAME, FINISH_CHANGING_NICHE_COMMAND
         )
 
         val firstRow = getInlineRow(firstButton)

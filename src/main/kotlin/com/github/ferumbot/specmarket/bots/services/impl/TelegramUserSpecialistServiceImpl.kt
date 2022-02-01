@@ -4,10 +4,12 @@ import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.models.entity.TelegramUser
 import com.github.ferumbot.specmarket.bots.repositories.TelegramUserRepository
 import com.github.ferumbot.specmarket.bots.services.TelegramUserSpecialistService
+import com.github.ferumbot.specmarket.exceptions.NicheNotExists
 import com.github.ferumbot.specmarket.exceptions.ProfessionNotExists
 import com.github.ferumbot.specmarket.models.entities.specifications.KeySkills
 import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
 import com.github.ferumbot.specmarket.repositories.KeySkillsRepository
+import com.github.ferumbot.specmarket.repositories.NicheRepository
 import com.github.ferumbot.specmarket.repositories.ProfessionRepository
 import com.github.ferumbot.specmarket.repositories.SpecialistRepository
 import org.springframework.stereotype.Service
@@ -20,6 +22,7 @@ class TelegramUserSpecialistServiceImpl(
     private val professionRepository: ProfessionRepository,
     private val specialistRepository: SpecialistRepository,
     private val keySkillsRepository: KeySkillsRepository,
+    private val nicheRepository: NicheRepository,
 ): TelegramUserSpecialistService {
 
     override fun updateFullName(info: BaseUpdateInfo, newFullName: String): SpecialistProfile {
@@ -33,11 +36,40 @@ class TelegramUserSpecialistServiceImpl(
         return user.specialist!!
     }
 
-    override fun updateNiche(info: BaseUpdateInfo, newDepartment: String): SpecialistProfile {
+    override fun addNiche(info: BaseUpdateInfo, nicheAlias: String): SpecialistProfile {
+        val user = userRepository.findByTelegramUserId(info.userId)
+            ?: registerNewUser(info)
+        val niche = nicheRepository.getByAlias(nicheAlias)
+            ?: throw NicheNotExists()
+
+        prepareUserSpecialist(user)
+        if (user.specialist?.niches?.contains(niche) == false) {
+            user.specialist?.niches?.add(niche)
+        }
+
+        userRepository.saveAndFlush(user)
+        return user.specialist!!
+    }
+
+    override fun removeNiche(info: BaseUpdateInfo, nicheAlias: String): SpecialistProfile {
+        val user = userRepository.findByTelegramUserId(info.userId)
+            ?: registerNewUser(info)
+        val niche = nicheRepository.getByAlias(nicheAlias)
+            ?: throw NicheNotExists()
+
+        prepareUserSpecialist(user)
+        user.specialist?.niches?.remove(niche)
+
+        userRepository.saveAndFlush(user)
+        return user.specialist!!
+    }
+
+    override fun clearNiches(info: BaseUpdateInfo): SpecialistProfile {
         val user = userRepository.findByTelegramUserId(info.userId)
             ?: registerNewUser(info)
 
         prepareUserSpecialist(user)
+        user.specialist?.niches?.clear()
 
         userRepository.saveAndFlush(user)
         return user.specialist!!
@@ -158,14 +190,6 @@ class TelegramUserSpecialistServiceImpl(
         user.specialist?.contactLinks = newContactLinks
 
         userRepository.saveAndFlush(user)
-        return user.specialist!!
-    }
-
-    override fun updateCompletelyFilled(info: BaseUpdateInfo, completelyFilled: Boolean): SpecialistProfile {
-        val user = userRepository.findByTelegramUserId(info.userId)
-            ?: registerNewUser(info)
-
-        prepareUserSpecialist(user)
         return user.specialist!!
     }
 

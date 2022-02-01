@@ -32,7 +32,7 @@ class EditProfileUpdateProcessor(
 
         return when(event) {
             is ChangeFullNameEvent -> processChangeFullName(info)
-            is ChangeDepartmentEvent -> processChangeDepartment(info)
+            is ChangeNicheEvent -> processChangeDepartment(info)
             is ChangeProfessionEvent -> processChangeProfession(info)
             is ChangeKeySkillsEvent -> processChangeKeySkills(info)
             is ChangePortfolioLinkEvent -> processChangePortfolioLink(info)
@@ -43,7 +43,7 @@ class EditProfileUpdateProcessor(
             is FinishProfileEditingEvent -> processFinishProfileEditing(info)
 
             is OnUserChangedFullNameEvent -> processUserChangedFullName(info as BaseDataInfo)
-            is OnUserChangedDepartmentEvent -> processUserChangedDepartment(info as BaseDataInfo)
+            is OnUserChangedNicheEvent -> processUserChangedDepartment(info as BaseDataInfo)
             is OnUserChangedProfessionEvent -> processUserChangedProfession(info as BaseDataInfo)
             is OnUserChangedKeySkillsEvent -> processUserChangedKeySkills(info as BaseDataInfo)
             is OnUserChangedPortfolioLinkEvent -> processUserChangedPortfolioLink(info as BaseDataInfo)
@@ -62,7 +62,7 @@ class EditProfileUpdateProcessor(
     }
 
     private fun processChangeDepartment(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
-        val newState = UserChangeDepartmentScreenState
+        val newState = UserNicheScreenState
         return setNewStateAndReturn(info, newState)
     }
 
@@ -127,7 +127,7 @@ class EditProfileUpdateProcessor(
     private fun processUserChangedDepartment(info: BaseDataInfo): MessageUpdateResultBunch<*> {
         val newDepartment = info.simpleInput
 
-        val specialist = specialistService.updateNiche(info, newDepartment)
+        val specialist = specialistService.addNiche(info, newDepartment)
         return setEditStateAndReturn(info, specialist)
     }
 

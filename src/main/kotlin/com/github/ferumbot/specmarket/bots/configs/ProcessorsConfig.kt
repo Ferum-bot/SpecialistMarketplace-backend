@@ -6,6 +6,7 @@ import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
 import com.github.ferumbot.specmarket.bots.processors.local.impl.*
 import com.github.ferumbot.specmarket.bots.services.TelegramBotUserService
 import com.github.ferumbot.specmarket.bots.services.TelegramUserSpecialistService
+import com.github.ferumbot.specmarket.services.NicheService
 import com.github.ferumbot.specmarket.services.ProfessionService
 import com.github.ferumbot.specmarket.services.SpecialistService
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,6 +27,9 @@ class ProcessorsConfig {
 
     @Autowired
     private lateinit var specialistService: SpecialistService
+
+    @Autowired
+    private lateinit var nicheService: NicheService
 
     @Bean
     fun provideFacadeProcessor(): BotUpdateProcessor {
@@ -90,26 +94,36 @@ class ProcessorsConfig {
 
     @Bean
     fun provideMyProfileProcessor(): LocalUpdateProcessor {
-        return MyProfileUpdateProcessor(userService, userSpecialistService)
+        return MyProfileUpdateProcessor(
+            userService, userSpecialistService
+        )
     }
 
     @Bean
     fun provideCreatingProfileProcessor(): LocalUpdateProcessor {
-        return CreatingProfileUpdateProcessor(userService, userSpecialistService, professionService)
+        return CreatingProfileUpdateProcessor(
+            userService, userSpecialistService, professionService, nicheService
+        )
     }
 
     @Bean
     fun provideEditProfileProcessor(): LocalUpdateProcessor {
-        return EditProfileUpdateProcessor(userService, userSpecialistService, professionService)
+        return EditProfileUpdateProcessor(
+            userService, userSpecialistService, professionService
+        )
     }
 
     @Bean
     fun provideFilterProcessor(): LocalUpdateProcessor {
-        return FilterUpdateProcessor(professionService, specialistService, userService)
+        return FilterUpdateProcessor(
+            professionService, specialistService, userService
+        )
     }
 
     @Bean
     fun provideIDoNotKnowWhatINeedProcessor(): LocalUpdateProcessor {
-        return IDoNotKnowWhatINeedUpdateProcessor(professionService, userService)
+        return IDoNotKnowWhatINeedUpdateProcessor(
+            professionService, userService
+        )
     }
 }

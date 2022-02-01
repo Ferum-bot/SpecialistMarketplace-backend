@@ -8,13 +8,21 @@ data class ProfessionsInfo(
 
     override val chatId: Long,
 
-    val professions: Collection<ProfessionDto>
+    val professions: Collection<ProfessionDto>,
+
+    val isFirstMessage: Boolean = true,
 ): BaseUpdateInfo {
 
     companion object {
 
-        fun from(info: BaseUpdateInfo, professions: Collection<ProfessionDto>): ProfessionsInfo {
-            return ProfessionsInfo(info.userId, info.chatId, professions)
+        fun from(
+            info: BaseUpdateInfo,
+            professions: Collection<ProfessionDto>,
+            isFirstMessage: Boolean = true,
+        ): ProfessionsInfo {
+            return ProfessionsInfo(
+                info.userId, info.chatId, professions, isFirstMessage
+            )
         }
     }
 }

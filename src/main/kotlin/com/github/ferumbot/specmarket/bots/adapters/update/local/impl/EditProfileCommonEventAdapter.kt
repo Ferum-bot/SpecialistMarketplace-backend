@@ -13,7 +13,7 @@ class EditProfileCommonEventAdapter: LocalUpdateAdapter {
     companion object {
 
         private val CHANGE_FULL_NAME = ChangeFullNameEvent.friendlyName
-        private val CHANGE_DEPARTMENT = ChangeDepartmentEvent.friendlyName
+        private val CHANGE_DEPARTMENT = ChangeNicheEvent.friendlyName
         private val CHANGE_PROFESSION = ChangeProfessionEvent.friendlyName
         private val CHANGE_KEY_SKILLS = ChangeKeySkillsEvent.friendlyName
         private val CHANGE_PORTFOLIO_LINK = ChangePortfolioLinkEvent.friendlyName
@@ -65,7 +65,7 @@ class EditProfileCommonEventAdapter: LocalUpdateAdapter {
     }
 
     private fun changeDepartment(update: Update): MessageUpdateBunch<*> {
-        val event = ChangeDepartmentEvent
+        val event = ChangeNicheEvent
         val info = BaseUpdateInfo.from(update)
 
         return MessageUpdateBunch(event, info)

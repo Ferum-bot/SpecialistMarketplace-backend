@@ -21,4 +21,12 @@ interface InlineMessageButtonsProvider {
     fun provideCreatingProfileButtons(): InlineKeyboardMarkup
 
     fun provideHowProfileLooksLikeKnowButtons(): InlineKeyboardMarkup
+
+    fun provideFinishInputProfessionsButtons(): InlineKeyboardMarkup
+
+    fun provideFinishInputNichesButtons(): InlineKeyboardMarkup
+
+    fun provideFinishChangingProfessionsButtons(): InlineKeyboardMarkup
+
+    fun provideFinishChangingNichesButtons(): InlineKeyboardMarkup
 }
