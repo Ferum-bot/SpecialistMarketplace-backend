@@ -16,29 +16,45 @@ class EditProfileInputEventAdapter(
 
     companion object {
 
+        private val FINISH_CHANGING_PROFESSIONS = OnUserFinishedChangingProfessionEvent.commandAlias
+        private val FINISH_CHANGING_NICHES = OnUserFinishedChangingNicheEvent.commandAlias
+
         private val handlingStates = listOf(
-            UserChangeFullNameScreenState, UserNicheScreenState,
+            UserChangeFullNameScreenState, UserChangeNicheScreenState,
             UserChangeProfessionScreenState, UserChangeKeySkillsScreenState,
             UserChangePortfolioLinkScreenState, UserChangeAboutMeScreenState,
             UserChangeWorkingConditionsScreenState, UserChangeEducationGradeScreenState,
             UserChangeContactLinksScreenState
+        )
+
+        private val handlingEvents = listOf(
+            FINISH_CHANGING_PROFESSIONS, FINISH_CHANGING_NICHES
         )
     }
 
     override fun isFor(update: Update): Boolean {
         val info = BaseUpdateInfo.from(update)
         val state = userService.getUserCurrentState(info)
-        return state.currentState in handlingStates
+        val message = update.getCommandAlias()
+        return state.currentState in handlingStates || message in handlingEvents
     }
 
     override fun adapt(update: Update): MessageUpdateBunch<*> {
         val info = BaseUpdateInfo.from(update)
         val state = userService.getUserCurrentState(info).currentState
+        val message = update.getCommandAlias()
+
+        if (message == FINISH_CHANGING_PROFESSIONS) {
+            return getFinishChangingProfessions(info)
+        }
+        if (message == FINISH_CHANGING_NICHES) {
+            return getFinishChangingNiches(info)
+        }
 
         return when(state) {
             is UserChangeFullNameScreenState ->
                 getSimpleUserInput(info, update, OnUserChangedFullNameEvent)
-            is UserNicheScreenState ->
+            is UserChangeNicheScreenState ->
                 getSimpleUserInput(info, update, OnUserChangedNicheEvent)
             is UserChangeProfessionScreenState ->
                 getSimpleUserInput(info, update, OnUserChangedProfessionEvent)
@@ -56,6 +72,16 @@ class EditProfileInputEventAdapter(
                 getSimpleUserInput(info, update, OnUserChangedContactLinksEvent)
             else -> LocalUpdateAdapter.unSupportedUpdate(update)
         }
+    }
+
+    private fun getFinishChangingProfessions(info: BaseUpdateInfo): MessageUpdateBunch<*> {
+        val event = OnUserFinishedChangingProfessionEvent
+        return MessageUpdateBunch(event, info)
+    }
+
+    private fun getFinishChangingNiches(info: BaseUpdateInfo): MessageUpdateBunch<*> {
+        val event = OnUserFinishedChangingNicheEvent
+        return MessageUpdateBunch(event, info)
     }
 
     private fun getSimpleUserInput(

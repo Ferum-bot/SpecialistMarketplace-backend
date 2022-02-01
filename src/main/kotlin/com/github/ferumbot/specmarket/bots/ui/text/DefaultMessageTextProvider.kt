@@ -554,17 +554,17 @@ class DefaultMessageTextProvider: MessageTextProvider {
     private fun getProfileTemplate(specialist: SpecialistDto, ignoreContactLinks: Boolean = false): StringBuilder {
         return specialist.run {
             StringBuilder()
-                .append("1. Имя:\n ${fullName ?: "-"} \n")
-                .append("2. Чем занимается:\n ${professions.joinToString().ifEmpty { "-" }} \n")
-                .append("3. Нишы: ${professions.joinToString().ifEmpty { "-" }} \n")
-                .append("4. Навыки:\n ${keySkills.joinToString().ifEmpty { "-" }} \n")
-                .append("5. Образование:\n ${educationGrade ?: "-"} \n")
-                .append("6. Портфолио:\n ${portfolioLink ?: "-"} \n")
-                .append("7. Обо мне:\n ${aboutMe ?: "-"} \n")
-                .append("8. Условия работы:\n ${workingConditions ?: "-"} \n")
+                .append("1. Имя:\n   ${fullName ?: "-"} \n")
+                .append("2. Чем занимается:\n   ${professions.joinToString().ifEmpty { "-" }} \n")
+                .append("3. Нишы:\n   ${niches.joinToString().ifEmpty { "-" }} \n")
+                .append("4. Навыки:\n   ${keySkills.joinToString().ifEmpty { "-" }} \n")
+                .append("5. Образование:\n   ${educationGrade ?: "-"} \n")
+                .append("6. Портфолио:\n   ${portfolioLink ?: "-"} \n")
+                .append("7. Обо мне:\n   ${aboutMe ?: "-"} \n")
+                .append("8. Условия работы:\n   ${workingConditions ?: "-"} \n")
                 .apply {
                     if (!ignoreContactLinks) {
-                        append("9. Контакты:\n ${contactLinks ?: "-"} \n")
+                        append("9. Контакты:\n   ${contactLinks ?: "-"} \n")
                     }
                 }
                 .append("\n")

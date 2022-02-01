@@ -60,10 +60,10 @@ class CreatingProfileUpdateProcessor(
 
     private fun processContinueRegistrationFlow(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
         val specialist = userService.getUserSpecialist(info)
-        val state = specialist.getFirstNotImplementedFieldState()
+        val (state, newInfo) = specialist.getFirstNotImplementedFieldState(info)
         userService.setNewUserState(state, info)
 
-        return MessageUpdateResultBunch(state, info)
+        return MessageUpdateResultBunch(state, newInfo)
     }
 
     private fun processOnUserInputFullName(info: BaseDataInfo): MessageUpdateResultBunch<*> {
@@ -219,37 +219,47 @@ class CreatingProfileUpdateProcessor(
         return MessageUpdateResultBunch(state, info)
     }
 
-    private fun SpecialistProfile?.getFirstNotImplementedFieldState(): CreatingProfileState {
+    private fun SpecialistProfile?.getFirstNotImplementedFieldState(
+        info: BaseUpdateInfo
+    ): Pair<CreatingProfileState, BaseUpdateInfo> {
         return this?.run {
             if (fullName.isNullOrBlank()) {
-                return UserInputFullNameScreenState
+                return UserInputFullNameScreenState to info
             }
             if (niches.isEmpty()) {
-                return UserInputNicheScreenState
+                val niches = nicheService.getAllAvailableNiches()
+                    .map { NicheDto.from(it) }
+                val newInfo = NichesInfo.from(info, niches)
+
+                return UserInputNicheScreenState to newInfo
             }
             if (professions.isEmpty()) {
-                return UserInputProfessionScreenState
+                val professions = professionsService.getAllAvailableProfessions()
+                    .map { ProfessionDto.from(it) }
+                val newInfo = ProfessionsInfo.from(info, professions)
+
+                return UserInputProfessionScreenState to newInfo
             }
             if (keySkills.isEmpty()) {
-                return UserInputKeySkillsScreenState
+                return UserInputKeySkillsScreenState to info
             }
             if (portfolioLink.isNullOrBlank()) {
-                return UserInputPortfolioLinkScreenState
+                return UserInputPortfolioLinkScreenState to info
             }
             if (aboutMe.isNullOrBlank()) {
-                return UserInputAboutMeScreenState
+                return UserInputAboutMeScreenState to info
             }
             if (workingConditions.isNullOrBlank()) {
-                return UserInputWorkingConditionsScreenState
+                return UserInputWorkingConditionsScreenState to info
             }
             if (educationGrade.isNullOrBlank()) {
-                return UserInputEducationGradeScreenState
+                return UserInputEducationGradeScreenState to info
             }
             if (contactLinks.isNullOrBlank()) {
-                return UserInputContactLinksScreenState
+                return UserInputContactLinksScreenState to info
             }
 
-            UserInputFullNameScreenState
-        } ?: UserInputFullNameScreenState
+            UserInputFullNameScreenState to info
+        } ?: (UserInputFullNameScreenState to info)
     }
 }

@@ -155,30 +155,18 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
 
     override fun provideFinishChangingProfessionsButtons(): InlineKeyboardMarkup {
         val firstButton = InlineButton(
-            SHOW_HOW_IT_LOOKS_LIKE_NOW_NAME, SHOW_HOW_IT_LOOKS_LIKE_NOW_COMMAND
-        )
-        val secondButton = InlineButton(
             FINISH_CHANGING_PROFESSION_NAME, FINISH_CHANGING_PROFESSION_COMMAND
         )
-
         val firstRow = getInlineRow(firstButton)
-        val secondRow = getInlineRow(secondButton)
-
-        return getInlineKeyboard(firstRow, secondRow)
+        return getInlineKeyboard(firstRow)
     }
 
     override fun provideFinishChangingNichesButtons(): InlineKeyboardMarkup {
         val firstButton = InlineButton(
-            SHOW_HOW_IT_LOOKS_LIKE_NOW_NAME, SHOW_HOW_IT_LOOKS_LIKE_NOW_COMMAND
-        )
-        val secondButton = InlineButton(
             FINISH_CHANGING_NICHE_NAME, FINISH_CHANGING_NICHE_COMMAND
         )
-
         val firstRow = getInlineRow(firstButton)
-        val secondRow = getInlineRow(secondButton)
-
-        return getInlineKeyboard(firstRow, secondRow)
+        return getInlineKeyboard(firstRow)
     }
 
     private fun getPageSimpleButtons(

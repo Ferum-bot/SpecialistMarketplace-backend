@@ -2,24 +2,24 @@ package com.github.ferumbot.specmarket.bots.processors.local.impl
 
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseDataInfo
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.ProfessionsInfo
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.*
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
 import com.github.ferumbot.specmarket.bots.services.TelegramBotUserService
 import com.github.ferumbot.specmarket.bots.services.TelegramUserSpecialistService
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
 import com.github.ferumbot.specmarket.core.extensions.removeFirstCharIf
+import com.github.ferumbot.specmarket.models.dto.NicheDto
 import com.github.ferumbot.specmarket.models.dto.ProfessionDto
 import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
+import com.github.ferumbot.specmarket.services.NicheService
 import com.github.ferumbot.specmarket.services.ProfessionService
 
 class EditProfileUpdateProcessor(
     private val userService: TelegramBotUserService,
     private val specialistService: TelegramUserSpecialistService,
     private val professionService: ProfessionService,
+    private val nichesService: NicheService,
 ): LocalUpdateProcessor {
 
     override fun canProcess(bunch: MessageUpdateBunch<*>): Boolean {
@@ -32,7 +32,7 @@ class EditProfileUpdateProcessor(
 
         return when(event) {
             is ChangeFullNameEvent -> processChangeFullName(info)
-            is ChangeNicheEvent -> processChangeDepartment(info)
+            is ChangeNicheEvent -> processChangeNiche(info)
             is ChangeProfessionEvent -> processChangeProfession(info)
             is ChangeKeySkillsEvent -> processChangeKeySkills(info)
             is ChangePortfolioLinkEvent -> processChangePortfolioLink(info)
@@ -43,8 +43,10 @@ class EditProfileUpdateProcessor(
             is FinishProfileEditingEvent -> processFinishProfileEditing(info)
 
             is OnUserChangedFullNameEvent -> processUserChangedFullName(info as BaseDataInfo)
-            is OnUserChangedNicheEvent -> processUserChangedDepartment(info as BaseDataInfo)
             is OnUserChangedProfessionEvent -> processUserChangedProfession(info as BaseDataInfo)
+            is OnUserFinishedChangingProfessionEvent -> processUserFinishChangingProfessions(info)
+            is OnUserChangedNicheEvent -> processUserChangedNiche(info as BaseDataInfo)
+            is OnUserFinishedChangingNicheEvent -> processUserFinishChangingNiches(info)
             is OnUserChangedKeySkillsEvent -> processUserChangedKeySkills(info as BaseDataInfo)
             is OnUserChangedPortfolioLinkEvent -> processUserChangedPortfolioLink(info as BaseDataInfo)
             is OnUserChangedAboutMeEvent -> processUserChangedAboutMe(info as BaseDataInfo)
@@ -61,18 +63,26 @@ class EditProfileUpdateProcessor(
         return setNewStateAndReturn(info, newState)
     }
 
-    private fun processChangeDepartment(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
-        val newState = UserNicheScreenState
-        return setNewStateAndReturn(info, newState)
-    }
-
     private fun processChangeProfession(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
         val newState = UserChangeProfessionScreenState
         userService.setNewUserState(newState, info)
+        specialistService.clearProfessions(info)
 
         val professions = professionService.getAllAvailableProfessions()
             .map { ProfessionDto.from(it) }
         val newInfo = ProfessionsInfo.from(info, professions)
+
+        return MessageUpdateResultBunch(newState, newInfo)
+    }
+
+    private fun processChangeNiche(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
+        val newState = UserChangeNicheScreenState
+        userService.setNewUserState(newState, info)
+        specialistService.clearNiches(info)
+
+        val niches = nichesService.getAllAvailableNiches()
+            .map { NicheDto.from(it) }
+        val newInfo = NichesInfo.from(info, niches)
 
         return MessageUpdateResultBunch(newState, newInfo)
     }
@@ -124,19 +134,45 @@ class EditProfileUpdateProcessor(
         return setEditStateAndReturn(info, specialist)
     }
 
-    private fun processUserChangedDepartment(info: BaseDataInfo): MessageUpdateResultBunch<*> {
-        val newDepartment = info.simpleInput
-
-        val specialist = specialistService.addNiche(info, newDepartment)
-        return setEditStateAndReturn(info, specialist)
-    }
-
     private fun processUserChangedProfession(info: BaseDataInfo): MessageUpdateResultBunch<*> {
         val newProfession = info.simpleInput
             .removeFirstCharIf { it.first() == '/' }
 
-        specialistService.clearProfessions(info)
         val specialist = specialistService.addProfession(info, newProfession)
+        val allProfessions = professionService.getAllAvailableProfessions()
+        val availableProfessions = allProfessions.filter { profession ->
+            specialist.professions.count { it.id == profession.id } == 0
+        }.map { ProfessionDto.from(it) }
+
+        val newState = UserChangeProfessionScreenState
+        val newInfo = ProfessionsInfo.from(info, availableProfessions, false)
+
+        return MessageUpdateResultBunch(newState, newInfo)
+    }
+
+    private fun processUserFinishChangingProfessions(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
+        val specialist = userService.getUserSpecialist(info)!!
+        return setEditStateAndReturn(info, specialist)
+    }
+
+    private fun processUserChangedNiche(info: BaseDataInfo): MessageUpdateResultBunch<*> {
+        val newNiche = info.simpleInput
+            .removeFirstCharIf { it.first() == '/' }
+
+        val specialist = specialistService.addNiche(info, newNiche)
+        val allNiches = nichesService.getAllAvailableNiches()
+        val availableNiches = allNiches.filter { niche ->
+            specialist.niches.count { it.id == niche.id } == 0
+        }.map { NicheDto.from(it) }
+
+        val newState = UserChangeNicheScreenState
+        val newInfo = NichesInfo.from(info, availableNiches, false)
+
+        return MessageUpdateResultBunch(newState, newInfo)
+    }
+
+    private fun processUserFinishChangingNiches(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
+        val specialist = userService.getUserSpecialist(info)!!
         return setEditStateAndReturn(info, specialist)
     }
 

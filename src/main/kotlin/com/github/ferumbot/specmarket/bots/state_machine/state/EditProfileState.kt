@@ -9,7 +9,7 @@ object UserChangeFullNameScreenState: EditProfileState {
     override val previousState: BotState = StartScreenState
 }
 
-object UserNicheScreenState: EditProfileState {
+object UserChangeNicheScreenState: EditProfileState {
 
     override val screenName: String = "User change niche screen state"
 
