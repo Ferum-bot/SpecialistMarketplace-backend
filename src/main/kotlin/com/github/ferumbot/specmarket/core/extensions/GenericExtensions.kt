@@ -5,3 +5,7 @@ inline fun <reified T> T?.ifNull(action: () -> Unit) {
         action.invoke()
     }
 }
+
+inline fun <reified T, reified P> T.map(transform: (T) -> P): P {
+    return transform(this)
+}

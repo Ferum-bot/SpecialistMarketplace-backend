@@ -4,7 +4,7 @@ import com.github.ferumbot.specmarket.configs.SwaggerConfig
 import com.github.ferumbot.specmarket.core.annotations.SwaggerVisible
 import com.github.ferumbot.specmarket.models.dto.ProfessionDto
 import com.github.ferumbot.specmarket.models.dto.UpdateProfessionDto
-import com.github.ferumbot.specmarket.models.entities.specifications.Profession
+import com.github.ferumbot.specmarket.models.entities.filter.Profession
 import com.github.ferumbot.specmarket.models.response.ApiResponse
 import com.github.ferumbot.specmarket.services.ProfessionService
 import io.swagger.v3.oas.annotations.Operation

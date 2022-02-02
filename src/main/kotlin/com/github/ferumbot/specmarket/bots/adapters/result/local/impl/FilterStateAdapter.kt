@@ -7,7 +7,7 @@ import com.github.ferumbot.specmarket.bots.models.dto.update_info.ProfessionsInf
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.SpecialistsPageInfo
 import com.github.ferumbot.specmarket.bots.state_machine.state.CurrentSpecialistsContactsScreenState
 import com.github.ferumbot.specmarket.bots.state_machine.state.CurrentSpecialistsScreenState
-import com.github.ferumbot.specmarket.bots.state_machine.state.FilterScreenState
+import com.github.ferumbot.specmarket.bots.state_machine.state.ProfessionFilterScreenState
 import com.github.ferumbot.specmarket.bots.state_machine.state.FilterState
 import com.github.ferumbot.specmarket.bots.ui.inline_buttons.InlineMessageButtonsProvider
 import com.github.ferumbot.specmarket.bots.ui.text.MessageTextProvider
@@ -28,7 +28,7 @@ class FilterStateAdapter(
         val info = bunch.resultData
 
         return when(state) {
-            is FilterScreenState -> getFilterScreen(info as ProfessionsInfo)
+            is ProfessionFilterScreenState -> getFilterScreen(info as ProfessionsInfo)
             is CurrentSpecialistsScreenState -> getCurrentSpecialistsScreen(info as SpecialistsPageInfo)
             is CurrentSpecialistsContactsScreenState -> getCurrentSpecialistContactsScreen(info as BaseDataInfo)
             else -> LocalUpdateResultAdapter.unSupportedState(info)

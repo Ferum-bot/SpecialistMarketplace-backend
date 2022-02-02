@@ -45,7 +45,8 @@ object StateMachine {
             UserChangeWorkingConditionsScreenState.screenName -> UserChangeWorkingConditionsScreenState
             UserChangeEducationGradeScreenState.screenName -> UserChangeEducationGradeScreenState
             UserChangeContactLinksScreenState.screenName -> UserChangeContactLinksScreenState
-            FilterScreenState.screenName -> FilterScreenState
+            ProfessionFilterScreenState.screenName -> ProfessionFilterScreenState
+            NicheFilterScreenState.screenName -> NicheFilterScreenState
             CurrentSpecialistsScreenState.screenName -> CurrentSpecialistsScreenState
             CurrentSpecialistsContactsScreenState.screenName -> CurrentSpecialistsContactsScreenState
             else -> UnSupportedScreenState

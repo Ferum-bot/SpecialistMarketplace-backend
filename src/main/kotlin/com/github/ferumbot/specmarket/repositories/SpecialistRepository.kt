@@ -100,39 +100,12 @@ interface SpecialistRepository: JpaRepository<SpecialistProfile, Long> {
 
     @Query(
         value = "SELECT COUNT(*) FROM specialist WHERE specialist.id = " +
-                "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = ?1)" +
-                "AND is_visible = true AND is_completely_filled = true",
-
-        nativeQuery = true,
-    )
-    fun countOnlyVisibleAndFinishedSpecialistsByProfessionId(
-        @Param(value = "profession_id")
-        professionId: Long,
-    ): Int
-
-
-    @Query(
-        value = "SELECT COUNT(*) FROM specialist WHERE specialist.id = " +
                 "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = " +
                 "ANY(SELECT id FROM profession WHERE profession.alias = ?1))",
 
         nativeQuery = true,
     )
     fun countAllSpecialistsByProfessionAlias(
-        @Param(value = "profession_alias")
-        alias: String,
-    ): Int
-
-
-    @Query(
-        value = "SELECT COUNT(*) FROM specialist WHERE specialist.id = " +
-                "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = " +
-                "ANY(SELECT id FROM profession WHERE profession.alias = ?1))" +
-                "AND is_visible = true AND is_completely_filled = true",
-
-        nativeQuery = true,
-    )
-    fun countOnlyVisibleAndFinishedSpecialistsByProfessionAlias(
         @Param(value = "profession_alias")
         alias: String,
     ): Int

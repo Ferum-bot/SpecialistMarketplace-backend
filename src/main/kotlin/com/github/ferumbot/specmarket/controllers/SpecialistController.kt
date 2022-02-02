@@ -73,7 +73,7 @@ class SpecialistController {
         @RequestParam(value = "page_size", required = true)
         pageSize: Int,
     ): ApiResponse<Collection<SpecialistDto>> {
-        val specialists = service.getAllSpecialistsByProfessionId(id, pageNumber, pageSize)
+        val specialists = service.getAllSpecialistsByProfession(id, pageNumber, pageSize)
         return ApiResponse.success(specialists)
     }
 
@@ -92,7 +92,7 @@ class SpecialistController {
         @RequestParam(value = "page_size", required = true)
         pageSize: Int,
     ): ApiResponse<Collection<SpecialistDto>> {
-        val specialists = service.getAllSpecialistsByProfessionAlias(alias, pageNumber, pageSize)
+        val specialists = service.getAllSpecialistsByProfession(alias, pageNumber, pageSize)
         return ApiResponse.success(specialists)
     }
 }

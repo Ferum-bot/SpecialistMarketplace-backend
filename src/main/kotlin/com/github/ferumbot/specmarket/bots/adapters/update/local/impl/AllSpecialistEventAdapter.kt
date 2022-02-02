@@ -4,7 +4,7 @@ import com.github.ferumbot.specmarket.bots.adapters.update.local.LocalUpdateAdap
 import com.github.ferumbot.specmarket.bots.core.*
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
-import com.github.ferumbot.specmarket.bots.state_machine.event.OpenFilterScreenEvent
+import com.github.ferumbot.specmarket.bots.state_machine.event.OpenProfessionFilterScreenEvent
 import com.github.ferumbot.specmarket.bots.state_machine.event.OpenIDoNotKnowWhoISearchScreenEvent
 import org.telegram.telegrambots.meta.api.objects.Update
 
@@ -12,7 +12,7 @@ class AllSpecialistEventAdapter: LocalUpdateAdapter {
 
     companion object {
 
-        private val OPEN_FILTER_SCREEN_NAME = OpenFilterScreenEvent.friendlyName
+        private val OPEN_FILTER_SCREEN_NAME = OpenProfessionFilterScreenEvent.friendlyName
         private val OPEN_I_DO_NOT_KNOW_WHO_I_SEARCH_NAME = OpenIDoNotKnowWhoISearchScreenEvent.friendlyName
 
         private val handlingEvents = listOf(
@@ -40,7 +40,7 @@ class AllSpecialistEventAdapter: LocalUpdateAdapter {
     private fun openFilter(update: Update): MessageUpdateBunch<*> {
         val chatId = update.getChatId()
         val userId = update.getUserId()
-        val event = OpenFilterScreenEvent
+        val event = OpenProfessionFilterScreenEvent
 
         return MessageUpdateBunch(event, BaseUpdateInfo.from(chatId, userId))
     }

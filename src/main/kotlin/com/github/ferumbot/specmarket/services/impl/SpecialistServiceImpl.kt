@@ -2,6 +2,7 @@ package com.github.ferumbot.specmarket.services.impl
 
 import com.github.ferumbot.specmarket.models.dto.SpecialistDto
 import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
+import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses
 import com.github.ferumbot.specmarket.repositories.SpecialistRepository
 import com.github.ferumbot.specmarket.services.SpecialistService
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,7 +30,14 @@ class SpecialistServiceImpl @Autowired constructor(
     }
 
     @Transactional(readOnly = true)
-    override fun getAllSpecialistsByProfessionId(
+    override fun getSpecialistsWithStatus(
+        status: ProfileStatuses, pageNumber: Int, pageSize: Int
+    ): Collection<SpecialistDto> {
+        TODO("Not yet implemented")
+    }
+
+    @Transactional(readOnly = true)
+    override fun getAllSpecialistsByProfession(
         professionId: Long, pageNumber: Int, pageSize: Int
     ): Collection<SpecialistDto> {
         val page = PageRequest.of(pageNumber - 1, pageSize)
@@ -39,7 +47,7 @@ class SpecialistServiceImpl @Autowired constructor(
     }
 
     @Transactional(readOnly = true)
-    override fun getAllSpecialistsByProfessionAlias(
+    override fun getAllSpecialistsByProfession(
         alias: String, pageNumber: Int, pageSize: Int
     ): Collection<SpecialistDto> {
         val page = PageRequest.of(pageNumber - 1, pageSize)
@@ -49,42 +57,120 @@ class SpecialistServiceImpl @Autowired constructor(
     }
 
     @Transactional(readOnly = true)
-    override fun getAvailableSpecialistsByProfessionId(
-        professionId: Long, pageNumber: Int, pageSize: Int
+    override fun getAllSpecialistsByNiche(
+        id: Long, pageNumber: Int, pageSize: Int
     ): Collection<SpecialistDto> {
-        val page = PageRequest.of(pageNumber - 1, pageSize)
-        val result = repository.findOnlyVisibleAndFinishedByProfessionId(professionId, page)
-
-        return result.content.map { SpecialistDto.from(it) }
+        TODO("Not yet implemented")
     }
 
     @Transactional(readOnly = true)
-    override fun getAvailableSpecialistsByProfessionAlias(
+    override fun getAllSpecialistsByNiche(
         alias: String, pageNumber: Int, pageSize: Int
     ): Collection<SpecialistDto> {
-        val page = PageRequest.of(pageNumber - 1, pageSize)
-        val result = repository.findOnlyVisibleAndFinishedByProfessionAlias(alias, page)
-
-        return result.content.map { SpecialistDto.from(it) }
+        TODO("Not yet implemented")
     }
 
     @Transactional(readOnly = true)
-    override fun countAllSpecialistsByProfessionId(professionId: Long): Int {
+    override fun getSpecialistsByProfessionWithStatus(
+        id: Long, status: ProfileStatuses, pageNumber: Int, pageSize: Int
+    ): Collection<SpecialistDto> {
+        TODO("Not yet implemented")
+    }
+
+    @Transactional(readOnly = true)
+    override fun getSpecialistsByProfessionWithStatus(
+        alias: String, status: ProfileStatuses, pageNumber: Int, pageSize: Int
+    ): Collection<SpecialistDto> {
+        TODO("Not yet implemented")
+    }
+
+    @Transactional(readOnly = true)
+    override fun getSpecialistsByNicheWithStatus(
+        id: Long, status: ProfileStatuses, pageNumber: Int, pageSize: Int
+    ): Collection<SpecialistDto> {
+        TODO("Not yet implemented")
+    }
+
+    @Transactional(readOnly = true)
+    override fun getSpecialistsByNicheWithStatus(
+        alias: String, status: ProfileStatuses, pageNumber: Int, pageSize: Int
+    ): Collection<SpecialistDto> {
+        TODO("Not yet implemented")
+    }
+
+    @Transactional(readOnly = true)
+    override fun getSpecialistsWithProfessionAndNiche(
+        professionId: Long, nicheId: Long, status: ProfileStatuses, pageNumber: Int, pageSize: Int
+    ): Collection<SpecialistDto> {
+        TODO("Not yet implemented")
+    }
+
+    @Transactional(readOnly = true)
+    override fun getSpecialistsWithProfessionAndNiche(
+        professionAlias: String, nicheAlias: String, status: ProfileStatuses, pageNumber: Int, pageSize: Int
+    ): Collection<SpecialistDto> {
+        TODO("Not yet implemented")
+    }
+
+    @Transactional(readOnly = true)
+    override fun countAllSpecialistsByProfession(professionId: Long): Int {
         return repository.countAllSpecialistsByProfessionId(professionId)
     }
 
     @Transactional(readOnly = true)
-    override fun countAllSpecialistsByProfessionAlias(alias: String): Int {
+    override fun countAllSpecialistsByProfession(alias: String): Int {
         return repository.countAllSpecialistsByProfessionAlias(alias)
     }
 
     @Transactional(readOnly = true)
-    override fun countAvailableSpecialistsByProfessionId(professionId: Long): Int {
-        return repository.countOnlyVisibleAndFinishedSpecialistsByProfessionId(professionId)
+    override fun countAllSpecialistsByNiche(nicheId: Long): Int {
+        TODO("Not yet implemented")
     }
 
     @Transactional(readOnly = true)
-    override fun countAvailableSpecialistsByProfessionAlias(alias: String): Int {
-        return repository.countOnlyVisibleAndFinishedSpecialistsByProfessionAlias(alias)
+    override fun countAllSpecialistsByNiche(nicheAlias: String): Int {
+        TODO("Not yet implemented")
+    }
+
+    @Transactional(readOnly = true)
+    override fun countSpecialistsByProfessionWithStatus(
+        professionId: Long, status: ProfileStatuses
+    ): Int {
+        TODO("Not yet implemented")
+    }
+
+    @Transactional(readOnly = true)
+    override fun countSpecialistsByProfessionWithStatus(
+        professionAlias: String, status: ProfileStatuses
+    ): Int {
+        TODO("Not yet implemented")
+    }
+
+    @Transactional(readOnly = true)
+    override fun countSpecialistsByNicheWithStatus(
+        nicheId: Long, status: ProfileStatuses
+    ): Int {
+        TODO("Not yet implemented")
+    }
+
+    @Transactional(readOnly = true)
+    override fun countSpecialistsByNicheWithStatus(
+        nicheAlias: String, status: ProfileStatuses
+    ): Int {
+        TODO("Not yet implemented")
+    }
+
+    @Transactional(readOnly = true)
+    override fun countSpecialistsWithNicheAndProfession(
+        nicheId: Long, professionId: Long, status: ProfileStatuses
+    ): Int {
+        TODO("Not yet implemented")
+    }
+
+    @Transactional(readOnly = true)
+    override fun countSpecialistsWithNicheAndProfession(
+        nicheAlias: String, professionAlias: String, status: ProfileStatuses
+    ): Int {
+        TODO("Not yet implemented")
     }
 }

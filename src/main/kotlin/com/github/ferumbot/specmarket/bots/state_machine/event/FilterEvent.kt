@@ -2,13 +2,22 @@ package com.github.ferumbot.specmarket.bots.state_machine.event
 
 interface FilterEvent: BotEvent
 
-object OpenFilterScreenEvent: FilterEvent {
+object OpenProfessionFilterScreenEvent: FilterEvent {
 
-    override val eventName: String = "Open filter screen event"
+    override val eventName: String = "Open profession filter screen event"
 
-    override val commandAlias: String = "/open_filter"
+    override val commandAlias: String = "/open_profession_filter"
 
     override val friendlyName: String = "Открыть фильтр"
+}
+
+object OpenNicheFilterScreenEvent: FilterEvent {
+
+    override val eventName: String = "Open niche filter screen event"
+
+    override val commandAlias: String = "/open_niche_filter"
+
+    override val friendlyName: String = "Выбрать нишу"
 }
 
 object OpenCurrentSpecialistsScreenEvent: FilterEvent {

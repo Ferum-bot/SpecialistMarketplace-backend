@@ -1,7 +1,6 @@
 package com.github.ferumbot.specmarket.bots.services
 
 import com.github.ferumbot.specmarket.bots.models.dto.TelegramUserDto
-import com.github.ferumbot.specmarket.bots.models.entity.TelegramUser
 
 interface TelegramUsersService {
 

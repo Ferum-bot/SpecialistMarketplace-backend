@@ -4,7 +4,7 @@ import com.github.ferumbot.specmarket.bots.processors.BotUpdateProcessor
 import com.github.ferumbot.specmarket.bots.processors.FacadeBotUpdateProcessor
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
 import com.github.ferumbot.specmarket.bots.processors.local.impl.*
-import com.github.ferumbot.specmarket.bots.services.TelegramBotUserService
+import com.github.ferumbot.specmarket.bots.services.TelegramBotFlowService
 import com.github.ferumbot.specmarket.bots.services.TelegramUserSpecialistService
 import com.github.ferumbot.specmarket.services.NicheService
 import com.github.ferumbot.specmarket.services.ProfessionService
@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration
 class ProcessorsConfig {
 
     @Autowired
-    private lateinit var userService: TelegramBotUserService
+    private lateinit var userService: TelegramBotFlowService
 
     @Autowired
     private lateinit var userSpecialistService: TelegramUserSpecialistService
@@ -109,14 +109,14 @@ class ProcessorsConfig {
     @Bean
     fun provideEditProfileProcessor(): LocalUpdateProcessor {
         return EditProfileUpdateProcessor(
-            userService, userSpecialistService, professionService
+            userService, userSpecialistService, professionService, nicheService
         )
     }
 
     @Bean
     fun provideFilterProcessor(): LocalUpdateProcessor {
         return FilterUpdateProcessor(
-            professionService, specialistService, userService
+            professionService, specialistService, nicheService, userService
         )
     }
 

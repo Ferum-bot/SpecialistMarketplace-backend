@@ -1,6 +1,6 @@
 package com.github.ferumbot.specmarket.models.dto
 
-import com.github.ferumbot.specmarket.models.entities.specifications.Niche
+import com.github.ferumbot.specmarket.models.entities.filter.Niche
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size

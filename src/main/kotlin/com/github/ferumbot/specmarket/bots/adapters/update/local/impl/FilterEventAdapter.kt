@@ -10,7 +10,7 @@ import com.github.ferumbot.specmarket.bots.models.dto.update_info.OpenAnotherPag
 import com.github.ferumbot.specmarket.bots.state_machine.event.GetSpecialistsContactsEvent
 import com.github.ferumbot.specmarket.bots.state_machine.event.OpenAnotherSpecialistsPageScreenEvent
 import com.github.ferumbot.specmarket.bots.state_machine.event.OpenCurrentSpecialistsScreenEvent
-import com.github.ferumbot.specmarket.bots.state_machine.event.OpenFilterScreenEvent
+import com.github.ferumbot.specmarket.bots.state_machine.event.OpenProfessionFilterScreenEvent
 import com.github.ferumbot.specmarket.core.extensions.second
 import org.telegram.telegrambots.meta.api.objects.Update
 
@@ -21,8 +21,8 @@ class FilterEventAdapter: LocalUpdateAdapter {
         private val OPEN_ANOTHER_SPECIALIST_PAGE = OpenAnotherSpecialistsPageScreenEvent.commandAlias
         private val OPEN_CURRENT_SPECIALIST_PAGE = OpenCurrentSpecialistsScreenEvent.commandAlias
 
-        private val OPEN_FILTER_COMMAND = OpenFilterScreenEvent.commandAlias
-        private val OPEN_FILTER_NAME = OpenFilterScreenEvent.friendlyName
+        private val OPEN_FILTER_COMMAND = OpenProfessionFilterScreenEvent.commandAlias
+        private val OPEN_FILTER_NAME = OpenProfessionFilterScreenEvent.friendlyName
 
         private val GET_SPECIALISTS_CONTACTS_COMMAND = GetSpecialistsContactsEvent.commandAlias
 
@@ -101,7 +101,7 @@ class FilterEventAdapter: LocalUpdateAdapter {
     }
 
     private fun getOpenFilter(update: Update): MessageUpdateBunch<*> {
-        val event = OpenFilterScreenEvent
+        val event = OpenProfessionFilterScreenEvent
         val info = BaseUpdateInfo.from(update)
 
         return MessageUpdateBunch(event, info)

@@ -1,7 +1,7 @@
 package com.github.ferumbot.specmarket.services
 
 import com.github.ferumbot.specmarket.models.dto.NicheDto
-import com.github.ferumbot.specmarket.models.entities.specifications.Niche
+import com.github.ferumbot.specmarket.models.entities.filter.Niche
 
 interface NicheService {
 
