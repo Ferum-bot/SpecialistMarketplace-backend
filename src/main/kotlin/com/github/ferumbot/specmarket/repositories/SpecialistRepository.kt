@@ -170,8 +170,20 @@ interface SpecialistRepository: JpaRepository<SpecialistProfile, Long> {
 
 
     @Query(
-        value = "SELECT * FROM specialist_profile WHERE ",
-        countQuery = "SELECT COUNT(*) FROM specialist",
+        value = "SELECT * FROM specialist_profile WHERE specialist_profile.id = " +
+                "ANY(" +
+                "SELECT specialist_id FROM specialists_to_professions WHERE profession_id = :profession_id " +
+                "INTERSECT " +
+                "SELECT specialist_id FROM specialists_to_niches WHERE niche_id = :niche_id " +
+                ")" +
+                "AND status_id = :status_id",
+        countQuery = "SELECT COUNT(*) FROM specialist_profile WHERE specialist_profile.id = " +
+                "ANY(" +
+                "SELECT specialist_id FROM specialists_to_professions WHERE profession_id = :profession_id " +
+                "INTERSECT " +
+                "SELECT specialist_id FROM specialists_to_niches WHERE niche_id = :niche_id " +
+                ")" +
+                "AND status_id = :status_id",
         nativeQuery = true,
     )
     fun findAllByProfessionAndNiche(
@@ -189,8 +201,24 @@ interface SpecialistRepository: JpaRepository<SpecialistProfile, Long> {
 
 
     @Query(
-        value = "SELECT * FROM specialist",
-        countQuery = "SELECT COUNT(*) FROM specialist",
+        value = "SELECT * FROM specialist_profile WHERE specialist_profile.id = " +
+                "ANY( " +
+                "SELECT specialist_id FROM specialists_to_professions WHERE profession_id = " +
+                "ANY(SELECT id FROM profession WHERE alias = :profession_alias) " +
+                "INTERSECT " +
+                "SELECT specialist_id FROM specialists_to_niches WHERE niche_id = " +
+                "ANY(SELECT id FROM niche WHERE alias = :niche_alias)" +
+                ")" +
+                "AND status_id = :status_id",
+        countQuery = "SELECT COUNT(*) FROM specialist_profile WHERE specialist_profile.id = " +
+                "ANY( " +
+                "SELECT specialist_id FROM specialists_to_professions WHERE profession_id = " +
+                "ANY(SELECT id FROM profession WHERE alias = :profession_alias) " +
+                "INTERSECT " +
+                "SELECT specialist_id FROM specialists_to_niches WHERE niche_id = " +
+                "ANY(SELECT id FROM niche WHERE alias = :niche_alias)" +
+                ")" +
+                "AND status_id = :status_id",
         nativeQuery = true,
     )
     fun findAllByProfessionAndNiche(
@@ -208,9 +236,8 @@ interface SpecialistRepository: JpaRepository<SpecialistProfile, Long> {
 
 
     @Query(
-        value = "SELECT COUNT(*) FROM specialist WHERE specialist.id = " +
-                "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = ?1)",
-
+        value = "SELECT COUNT(*) FROM specialist_profile WHERE specialist_profile.id = " +
+                "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = :profession_id)",
         nativeQuery = true,
     )
     fun countAllByProfession(
@@ -220,9 +247,9 @@ interface SpecialistRepository: JpaRepository<SpecialistProfile, Long> {
 
 
     @Query(
-        value = "SELECT COUNT(*) FROM specialist WHERE specialist.id = " +
+        value = "SELECT COUNT(*) FROM specialist_profile WHERE specialist_profile.id = " +
                 "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = " +
-                "ANY(SELECT id FROM profession WHERE profession.alias = ?1))",
+                "ANY(SELECT id FROM profession WHERE profession.alias = :profession_alias))",
 
         nativeQuery = true,
     )
@@ -233,8 +260,8 @@ interface SpecialistRepository: JpaRepository<SpecialistProfile, Long> {
 
 
     @Query(
-        value = "SELECT * FROM specialist",
-        countQuery = "SELECT COUNT(*) FROM specialist",
+        value = "SELECT COUNT(*) FROM specialist_profile WHERE specialist_profile.id = " +
+                "ANY(SELECT specialist_id FROM specialists_to_niches WHERE niche_id = :niche_id)",
         nativeQuery = true,
     )
     fun countAllByNiche(
@@ -244,8 +271,9 @@ interface SpecialistRepository: JpaRepository<SpecialistProfile, Long> {
 
 
     @Query(
-        value = "SELECT * FROM specialist",
-        countQuery = "SELECT COUNT(*) FROM specialist",
+        value = "SELECT COUNT(*) FROM specialist_profile WHERE specialist_profile.id = " +
+                "ANY(SELECT specialist_id FROM specialists_to_niches WHERE niche_id = " +
+                "ANY(SELECT id FROM niche WHERE alias = :niche_alias))",
         nativeQuery = true,
     )
     fun countAllByNiche(
@@ -255,8 +283,9 @@ interface SpecialistRepository: JpaRepository<SpecialistProfile, Long> {
 
 
     @Query(
-        value = "SELECT * FROM specialist",
-        countQuery = "SELECT COUNT(*) FROM specialist",
+        value = "SELECT COUNT(*) FROM specialist_profile WHERE specialist_profile.id = " +
+                "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = :profession_id)" +
+                "AND status_id = :status_id",
         nativeQuery = true,
     )
     fun countAllByProfessionWithStatus(
@@ -269,8 +298,10 @@ interface SpecialistRepository: JpaRepository<SpecialistProfile, Long> {
 
 
     @Query(
-        value = "SELECT * FROM specialist",
-        countQuery = "SELECT COUNT(*) FROM specialist",
+        value = "SELECT COUNT(*) FROM specialist_profile WHERE specialist_profile.id = " +
+                "ANY(SELECT specialist_id FROM specialists_to_professions WHERE profession_id = " +
+                "ANY(SELECT id FROM profession WHERE alias = :profession_alias))" +
+                "AND status_id = :status_id",
         nativeQuery = true,
     )
     fun countAllByProfessionWithStatus(
@@ -283,8 +314,9 @@ interface SpecialistRepository: JpaRepository<SpecialistProfile, Long> {
 
 
     @Query(
-        value = "SELECT * FROM specialist",
-        countQuery = "SELECT COUNT(*) FROM specialist",
+        value = "SELECT COUNT(*) FROM specialist_profile WHERE specialist_profile.id = " +
+                "ANY(SELECT specialist_id FROM specialists_to_niches WHERE niche_id = :niche_id)" +
+                "AND status_id = :status_id",
         nativeQuery = true,
     )
     fun countAllByNicheWithStatus(
@@ -297,8 +329,10 @@ interface SpecialistRepository: JpaRepository<SpecialistProfile, Long> {
 
 
     @Query(
-        value = "SELECT * FROM specialist",
-        countQuery = "SELECT COUNT(*) FROM specialist",
+        value =  "SELECT COUNT(*) FROM specialist_profile WHERE specialist_profile.id = " +
+                "ANY(SELECT specialist_id FROM specialists_to_niches WHERE niche_id = " +
+                "ANY(SELECT id FROM niche WHERE alias = :niche_alias))" +
+                "AND status_id = :status_id",
         nativeQuery = true,
     )
     fun countAllByNicheWithStatus(
@@ -311,8 +345,13 @@ interface SpecialistRepository: JpaRepository<SpecialistProfile, Long> {
 
 
     @Query(
-        value = "SELECT * FROM specialist",
-        countQuery = "SELECT COUNT(*) FROM specialist",
+        value = "SELECT COUNT(*) FROM specialist_profile WHERE specialist_profile.id = " +
+                "ANY(" +
+                "SELECT specialist_id FROM specialists_to_professions WHERE profession_id = :profession_id " +
+                "INTERSECT " +
+                "SELECT specialist_id FROM specialists_to_niches WHERE niche_id = :niche_id" +
+                ")" +
+                "AND status_id = :status_id",
         nativeQuery = true,
     )
     fun countAllByProfessionAndNiche(
@@ -328,8 +367,15 @@ interface SpecialistRepository: JpaRepository<SpecialistProfile, Long> {
 
 
     @Query(
-        value = "SELECT * FROM specialist",
-        countQuery = "SELECT COUNT(*) FROM specialist",
+        value = "SELECT COUNT(*) FROM specialist_profile WHERE specialist_profile.id = " +
+                "ANY(" +
+                "SELECT specialist_id FROM specialists_to_professions WHERE profession_id = " +
+                "ANY(SELECT id FROM profession WHERE alias = :profession_alias)" +
+                "INTERSECT " +
+                "SELECT specialist_id FROM specialists_to_niches WHERE niche_id = " +
+                "ANY(SELECT id FROM niche WHERE alias = :niche_alias)" +
+                ")" +
+                "AND status_id = :status_id",
         nativeQuery = true,
     )
     fun countAllByProfessionAndNiche(
