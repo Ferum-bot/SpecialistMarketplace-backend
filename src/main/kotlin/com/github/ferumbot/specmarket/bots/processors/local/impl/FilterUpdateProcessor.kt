@@ -11,16 +11,13 @@ import com.github.ferumbot.specmarket.bots.state_machine.state.CurrentSpecialist
 import com.github.ferumbot.specmarket.bots.state_machine.state.NicheFilterScreenState
 import com.github.ferumbot.specmarket.bots.state_machine.state.ProfessionFilterScreenState
 import com.github.ferumbot.specmarket.core.extensions.removeFirstCharIf
-import com.github.ferumbot.specmarket.exceptions.ProfessionNotExists
 import com.github.ferumbot.specmarket.models.dto.NicheDto
 import com.github.ferumbot.specmarket.models.dto.ProfessionDto
 import com.github.ferumbot.specmarket.models.dto.SpecialistDto
-import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses
 import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses.APPROVED
 import com.github.ferumbot.specmarket.services.NicheService
 import com.github.ferumbot.specmarket.services.ProfessionService
 import com.github.ferumbot.specmarket.services.SpecialistService
-import kotlin.properties.Delegates
 
 class FilterUpdateProcessor(
     private val professionService: ProfessionService,
@@ -94,7 +91,7 @@ class FilterUpdateProcessor(
             ?.alias
 
         val (specialists, specialistsCount) = getSpecialistsAndCountWith(
-            professionAlias, nicheAlias, firstPage, info
+            professionAlias, nicheAlias, firstPage
         )
 
         val newState = CurrentSpecialistsScreenState
@@ -114,7 +111,7 @@ class FilterUpdateProcessor(
             ?.alias
 
         val (specialists, specialistsCount) = getSpecialistsAndCountWith(
-            professionAlias, nicheAlias, newPage, info
+            professionAlias, nicheAlias, newPage
         )
 
         val newState = CurrentSpecialistsScreenState
@@ -137,7 +134,7 @@ class FilterUpdateProcessor(
     }
 
     private fun getSpecialistsAndCountWith(
-        professionAlias: String?, nicheAlias: String?, page: Int, info: BaseUpdateInfo
+        professionAlias: String?, nicheAlias: String?, page: Int
     ): Pair<Collection<SpecialistDto>, Int> {
         var specialists: Collection<SpecialistDto> = emptyList()
         var specialistsCount = 0

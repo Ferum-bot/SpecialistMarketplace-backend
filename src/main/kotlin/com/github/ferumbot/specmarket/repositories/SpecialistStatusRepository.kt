@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface SpecialistStatusRepository: JpaRepository<SpecialistProfileStatus, Long> {
 
-    fun findByAlias(alias: ProfileStatuses): SpecialistProfileStatus
+    fun findByAlias(alias: ProfileStatuses): SpecialistProfileStatus?
 }
