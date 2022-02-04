@@ -180,6 +180,22 @@ class TelegramBotFlowServiceImpl @Autowired constructor(
         return userRepository.saveAndFlush(user)
     }
 
+    override fun deleteSpecialistFromRequests(info: BaseUpdateInfo, specialistId: Long): TelegramUser {
+        val user = userRepository.findByTelegramUserId(info.userId)
+            ?: registerNewUser(info)
+
+        user.specialistsRequests.removeIf { it.id == specialistId }
+        return userRepository.saveAndFlush(user)
+    }
+
+    override fun clearUserSpecialistsRequests(info: BaseUpdateInfo): TelegramUser {
+        val user = userRepository.findByTelegramUserId(info.userId)
+            ?: registerNewUser(info)
+
+        user.specialistsRequests.clear()
+        return userRepository.saveAndFlush(user)
+    }
+
     private fun registerNewUser(info: BaseUpdateInfo): TelegramUser {
         val entity = TelegramUser(
             telegramUserId = info.userId,

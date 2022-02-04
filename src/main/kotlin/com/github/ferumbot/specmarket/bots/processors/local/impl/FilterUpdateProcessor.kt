@@ -126,6 +126,7 @@ class FilterUpdateProcessor(
         val specialistId = info.specialistId
         val contacts = specialistService.getSpecialistById(specialistId)?.contactLinks.orEmpty()
         val state = CurrentSpecialistsContactsScreenState
+        userService.addSpecialistToUserRequests(info, specialistId)
         userService.setNewUserState(state, info)
 
         val newInfo = BaseDataInfo.from(info, contacts)

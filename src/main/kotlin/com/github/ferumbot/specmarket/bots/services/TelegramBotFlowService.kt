@@ -47,4 +47,8 @@ interface TelegramBotFlowService {
     fun countUserSpecialistRequests(info: BaseUpdateInfo): Int
 
     fun addSpecialistToUserRequests(info: BaseUpdateInfo, specialistId: Long): TelegramUser
+
+    fun deleteSpecialistFromRequests(info: BaseUpdateInfo, specialistId: Long): TelegramUser
+
+    fun clearUserSpecialistsRequests(info: BaseUpdateInfo): TelegramUser
 }
