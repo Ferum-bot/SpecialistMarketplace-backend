@@ -5,3 +5,15 @@ inline fun <reified T> T?.ifNull(action: () -> Unit) {
         action.invoke()
     }
 }
+
+inline fun <reified T, reified P> T.transform(transform: (T) -> P): P {
+    return transform(this)
+}
+
+inline fun <reified T> T?.falseIfNull(): Boolean {
+    return this != null
+}
+
+inline fun <reified T> T?.trueIfNull(): Boolean {
+    return this == null
+}

@@ -2,9 +2,16 @@ package com.github.ferumbot.specmarket.bots.state_machine.state
 
 interface FilterState: BotState
 
-object FilterScreenState: FilterState {
+object ProfessionFilterScreenState: FilterState {
 
-    override val screenName: String = "Filter screen state"
+    override val screenName: String = "Profession filter screen state"
+
+    override val previousState: BotState = StartScreenState
+}
+
+object NicheFilterScreenState: FilterState {
+
+    override val screenName: String = "Niche filter screen state"
 
     override val previousState: BotState = StartScreenState
 }

@@ -3,6 +3,7 @@ package com.github.ferumbot.specmarket.bots.adapters.result.local.impl
 import com.github.ferumbot.specmarket.bots.adapters.result.local.LocalUpdateResultAdapter
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.NichesInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.ProfessionsInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
@@ -29,8 +30,8 @@ class CreatingProfileStateAdapter(
         return when(state) {
             is UserInputInvalidDataScreenState -> getUserInputInvalidData(info)
             is UserInputFullNameScreenState -> getUserInputFullName(info)
-            is UserInputNicheScreenState -> getUserInputNiches(info)
             is UserInputProfessionScreenState -> getUserInputProfession(info as ProfessionsInfo)
+            is UserInputNicheScreenState -> getUserInputNiches(info as NichesInfo)
             is UserInputKeySkillsScreenState -> getUserInputKeySkills(info)
             is UserInputPortfolioLinkScreenState -> getUserInputPortfolioLink(info)
             is UserInputAboutMeScreenState -> getUserInputAboutMe(info)
@@ -65,9 +66,18 @@ class CreatingProfileStateAdapter(
         return sendMessage
     }
 
-    private fun getUserInputNiches(info: BaseUpdateInfo): BotApiMethod<*> {
-        val text = textProvider.provideUserInputNichesInfoMessage(emptyList())
-        val buttons = inlineButtonsProvider.provideCreatingProfileButtons()
+    private fun getUserInputProfession(info: ProfessionsInfo): BotApiMethod<*> {
+        val availableProfessions = info.professions
+        val text = if (info.isFirstMessage) {
+            textProvider.provideUserInputProfessionsInfoMessage(availableProfessions)
+        } else {
+            textProvider.provideUserInputAnotherProfessionsInfoMessage(availableProfessions)
+        }
+        val buttons = if (info.isFirstMessage) {
+            inlineButtonsProvider.provideCreatingProfileButtons()
+        } else {
+            inlineButtonsProvider.provideFinishInputProfessionsButtons()
+        }
         val chatId = info.chatId.toString()
         val sendMessage = SendMessage(chatId, text).apply {
             replyMarkup = buttons
@@ -76,10 +86,18 @@ class CreatingProfileStateAdapter(
         return sendMessage
     }
 
-    private fun getUserInputProfession(info: ProfessionsInfo): BotApiMethod<*> {
-        val availableProfessions = info.professions
-        val text = textProvider.provideUserInputProfessionsInfoMessage(availableProfessions)
-        val buttons = inlineButtonsProvider.provideCreatingProfileButtons()
+    private fun getUserInputNiches(info: NichesInfo): BotApiMethod<*> {
+        val availableNiches = info.niches
+        val text = if (info.isFirstMessage) {
+            textProvider.provideUserInputNichesInfoMessage(availableNiches)
+        } else {
+            textProvider.provideUserInputAnotherNicheInfoMessage(availableNiches)
+        }
+        val buttons = if (info.isFirstMessage) {
+            inlineButtonsProvider.provideCreatingProfileButtons()
+        } else {
+            inlineButtonsProvider.provideFinishInputNichesButtons()
+        }
         val chatId = info.chatId.toString()
         val sendMessage = SendMessage(chatId, text).apply {
             replyMarkup = buttons

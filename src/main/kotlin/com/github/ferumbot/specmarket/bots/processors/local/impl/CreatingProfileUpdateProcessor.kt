@@ -2,24 +2,27 @@ package com.github.ferumbot.specmarket.bots.processors.local.impl
 
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateBunch
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseDataInfo
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.ProfessionsInfo
-import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.*
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
-import com.github.ferumbot.specmarket.bots.services.TelegramBotUserService
+import com.github.ferumbot.specmarket.bots.services.TelegramBotFlowService
 import com.github.ferumbot.specmarket.bots.services.TelegramUserSpecialistService
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
 import com.github.ferumbot.specmarket.core.extensions.removeFirstCharIf
+import com.github.ferumbot.specmarket.models.dto.NicheDto
 import com.github.ferumbot.specmarket.models.dto.ProfessionDto
 import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
+import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses
+import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses.AWAITING_CONFIRMATION
+import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses.NOT_FILLED
+import com.github.ferumbot.specmarket.services.NicheService
 import com.github.ferumbot.specmarket.services.ProfessionService
 
 class CreatingProfileUpdateProcessor(
-    private val userService: TelegramBotUserService,
+    private val userService: TelegramBotFlowService,
     private val specialistService: TelegramUserSpecialistService,
     private val professionsService: ProfessionService,
+    private val nicheService: NicheService,
 ): LocalUpdateProcessor {
 
     override fun canProcess(bunch: MessageUpdateBunch<*>): Boolean {
@@ -34,8 +37,10 @@ class CreatingProfileUpdateProcessor(
             is StartRegistrationFlowEvent -> processStartRegistrationFlow(info)
             is ContinueCreatingProfileFlowEvent -> processContinueRegistrationFlow(info)
             is OnUserInputFullNameEvent -> processOnUserInputFullName(info as BaseDataInfo)
-            is OnUserInputDepartmentEvent -> processOnUserInputDepartment(info as BaseDataInfo)
             is OnUserInputProfessionEvent -> processOnUserInputProfession(info as BaseDataInfo)
+            is OnUserFinishInputProfessionEvent -> processOnUserFinishInputProfession(info)
+            is OnUserInputNicheEvent -> processOnUserInputNiche(info as BaseDataInfo)
+            is OnUserFinishInputNicheEvent -> processOnUserFinishInputNiche(info)
             is OnUserInputKeySkillsEvent -> processOnUserInputKeySkills(info as BaseDataInfo)
             is OnUserInputPortfolioLinkEvent -> processOnUserInputPortfolioLink(info as BaseDataInfo)
             is OnUserInputAboutMeEvent -> processOnUserInputAboutMe(info as BaseDataInfo)
@@ -58,25 +63,16 @@ class CreatingProfileUpdateProcessor(
 
     private fun processContinueRegistrationFlow(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
         val specialist = userService.getUserSpecialist(info)
-        val state = specialist.getFirstNotImplementedFieldState()
+        val (state, newInfo) = specialist.getFirstNotImplementedFieldState(info)
         userService.setNewUserState(state, info)
 
-        return MessageUpdateResultBunch(state, info)
+        return MessageUpdateResultBunch(state, newInfo)
     }
 
     private fun processOnUserInputFullName(info: BaseDataInfo): MessageUpdateResultBunch<*> {
-        val state = UserInputNicheScreenState
+        val state = UserInputProfessionScreenState
         val fullName = info.userInput.firstOrNull().orEmpty()
         specialistService.updateFullName(info, fullName)
-        userService.setNewUserState(state, info)
-
-        return MessageUpdateResultBunch(state, info)
-    }
-
-    private fun processOnUserInputDepartment(info: BaseDataInfo): MessageUpdateResultBunch<*> {
-        val state = UserInputProfessionScreenState
-        val department = info.userInput.firstOrNull().orEmpty()
-        specialistService.updateNiche(info, department)
         userService.setNewUserState(state, info)
 
         val professions = professionsService.getAllAvailableProfessions()
@@ -87,11 +83,58 @@ class CreatingProfileUpdateProcessor(
     }
 
     private fun processOnUserInputProfession(info: BaseDataInfo): MessageUpdateResultBunch<*> {
-        val state = UserInputKeySkillsScreenState
-        val profession = info.userInput.firstOrNull().orEmpty()
+        val state = UserInputProfessionScreenState
+        val chosenProfession = info.userInput.firstOrNull().orEmpty()
             .removeFirstCharIf { it.first() == '/' }
 
-        specialistService.addProfession(info, profession)
+        specialistService.clearProfessions(info)
+        val specialist = specialistService.addProfession(info, chosenProfession)
+        userService.setNewUserState(state, info)
+
+        val allProfessions = professionsService.getAllAvailableProfessions()
+        val chosenProfessions = specialist.professions
+        val availableProfessions = allProfessions.filter { profession ->
+            chosenProfessions.count { it.id == profession.id } == 0
+        }.map { ProfessionDto.from(it) }
+
+        val newInfo = ProfessionsInfo.from(info, availableProfessions, false)
+
+        return MessageUpdateResultBunch(state, newInfo)
+    }
+
+    private fun processOnUserFinishInputProfession(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
+        val state = UserInputNicheScreenState
+        val niches = nicheService.getAllAvailableNiches()
+            .map { NicheDto.from(it) }
+
+        userService.setNewUserState(state, info)
+
+        val newInfo = NichesInfo.from(info, niches)
+        return MessageUpdateResultBunch(state, newInfo)
+    }
+
+    private fun processOnUserInputNiche(info: BaseDataInfo): MessageUpdateResultBunch<*> {
+        val state = UserInputNicheScreenState
+        val chosenNiche = info.userInput.firstOrNull().orEmpty()
+            .removeFirstCharIf { it.first() == '/' }
+
+        specialistService.clearNiches(info)
+        val specialist = specialistService.addNiche(info, chosenNiche)
+        userService.setNewUserState(state, info)
+
+        val allNiches = nicheService.getAllAvailableNiches()
+        val chosenNiches = specialist.niches
+        val availableNiches = allNiches.filter { niche ->
+            chosenNiches.count { it.id == niche.id } == 0
+        }.map { NicheDto.from(it) }
+
+        val newInfo = NichesInfo.from(info, availableNiches, false)
+
+        return MessageUpdateResultBunch(state, newInfo)
+    }
+
+    private fun processOnUserFinishInputNiche(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
+        val state = UserInputKeySkillsScreenState
         userService.setNewUserState(state, info)
 
         return MessageUpdateResultBunch(state, info)
@@ -166,8 +209,8 @@ class CreatingProfileUpdateProcessor(
 
     private fun processFinishRegistrationFlow(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
         val state = YouAreAuthorizedScreenState
-        specialistService.updateCompletelyFilled(info, true)
         userService.setNewUserState(state, info)
+        specialistService.updateStatus(info, AWAITING_CONFIRMATION)
 
         val specialist = userService.getUserSpecialist(info)
         val resultInfo = UserSpecialistInfo.getFrom(info, specialist!!)
@@ -178,41 +221,52 @@ class CreatingProfileUpdateProcessor(
     private fun processRestartRegistrationFlow(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
         val state = UserInputFullNameScreenState
         userService.setNewUserState(state, info)
+        specialistService.updateStatus(info, NOT_FILLED)
 
         return MessageUpdateResultBunch(state, info)
     }
 
-    private fun SpecialistProfile?.getFirstNotImplementedFieldState(): CreatingProfileState {
+    private fun SpecialistProfile?.getFirstNotImplementedFieldState(
+        info: BaseUpdateInfo
+    ): Pair<CreatingProfileState, BaseUpdateInfo> {
         return this?.run {
-            if (fullName == null) {
-                return UserInputFullNameScreenState
+            if (fullName.isNullOrBlank()) {
+                return UserInputFullNameScreenState to info
             }
             if (niches.isEmpty()) {
-                return UserInputNicheScreenState
+                val niches = nicheService.getAllAvailableNiches()
+                    .map { NicheDto.from(it) }
+                val newInfo = NichesInfo.from(info, niches)
+
+                return UserInputNicheScreenState to newInfo
             }
             if (professions.isEmpty()) {
-                return UserInputProfessionScreenState
+                val professions = professionsService.getAllAvailableProfessions()
+                    .map { ProfessionDto.from(it) }
+                val newInfo = ProfessionsInfo.from(info, professions)
+
+                return UserInputProfessionScreenState to newInfo
             }
             if (keySkills.isEmpty()) {
-                return UserInputKeySkillsScreenState
+                return UserInputKeySkillsScreenState to info
             }
-            if (portfolioLink == null) {
-                return UserInputPortfolioLinkScreenState
+            if (portfolioLink.isNullOrBlank()) {
+                return UserInputPortfolioLinkScreenState to info
             }
-            if (aboutMe == null) {
-                return UserInputAboutMeScreenState
+            if (aboutMe.isNullOrBlank()) {
+                return UserInputAboutMeScreenState to info
             }
-            if (workingConditions == null) {
-                return UserInputWorkingConditionsScreenState
+            if (workingConditions.isNullOrBlank()) {
+                return UserInputWorkingConditionsScreenState to info
             }
-            if (educationGrade == null) {
-                return UserInputEducationGradeScreenState
+            if (educationGrade.isNullOrBlank()) {
+                return UserInputEducationGradeScreenState to info
             }
-            if (contactLinks == null) {
-                return UserInputContactLinksScreenState
+            if (contactLinks.isNullOrBlank()) {
+                return UserInputContactLinksScreenState to info
             }
 
-            UserInputFullNameScreenState
-        } ?: UserInputFullNameScreenState
+            UserInputFullNameScreenState to info
+        } ?: (UserInputFullNameScreenState to info)
     }
 }

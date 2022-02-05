@@ -4,12 +4,13 @@ import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.models.entity.TelegramUser
 import com.github.ferumbot.specmarket.bots.repositories.TelegramUserRepository
 import com.github.ferumbot.specmarket.bots.services.TelegramUserSpecialistService
+import com.github.ferumbot.specmarket.exceptions.NicheNotExists
 import com.github.ferumbot.specmarket.exceptions.ProfessionNotExists
+import com.github.ferumbot.specmarket.exceptions.UndefinedProfileStatus
 import com.github.ferumbot.specmarket.models.entities.specifications.KeySkills
 import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
-import com.github.ferumbot.specmarket.repositories.KeySkillsRepository
-import com.github.ferumbot.specmarket.repositories.ProfessionRepository
-import com.github.ferumbot.specmarket.repositories.SpecialistRepository
+import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses
+import com.github.ferumbot.specmarket.repositories.*
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -20,6 +21,8 @@ class TelegramUserSpecialistServiceImpl(
     private val professionRepository: ProfessionRepository,
     private val specialistRepository: SpecialistRepository,
     private val keySkillsRepository: KeySkillsRepository,
+    private val nicheRepository: NicheRepository,
+    private val statusRepository: SpecialistStatusRepository,
 ): TelegramUserSpecialistService {
 
     override fun updateFullName(info: BaseUpdateInfo, newFullName: String): SpecialistProfile {
@@ -33,11 +36,40 @@ class TelegramUserSpecialistServiceImpl(
         return user.specialist!!
     }
 
-    override fun updateNiche(info: BaseUpdateInfo, newDepartment: String): SpecialistProfile {
+    override fun addNiche(info: BaseUpdateInfo, nicheAlias: String): SpecialistProfile {
+        val user = userRepository.findByTelegramUserId(info.userId)
+            ?: registerNewUser(info)
+        val niche = nicheRepository.getByAlias(nicheAlias)
+            ?: throw NicheNotExists()
+
+        prepareUserSpecialist(user)
+        if (user.specialist?.niches?.contains(niche) == false) {
+            user.specialist?.niches?.add(niche)
+        }
+
+        userRepository.saveAndFlush(user)
+        return user.specialist!!
+    }
+
+    override fun removeNiche(info: BaseUpdateInfo, nicheAlias: String): SpecialistProfile {
+        val user = userRepository.findByTelegramUserId(info.userId)
+            ?: registerNewUser(info)
+        val niche = nicheRepository.getByAlias(nicheAlias)
+            ?: throw NicheNotExists()
+
+        prepareUserSpecialist(user)
+        user.specialist?.niches?.remove(niche)
+
+        userRepository.saveAndFlush(user)
+        return user.specialist!!
+    }
+
+    override fun clearNiches(info: BaseUpdateInfo): SpecialistProfile {
         val user = userRepository.findByTelegramUserId(info.userId)
             ?: registerNewUser(info)
 
         prepareUserSpecialist(user)
+        user.specialist?.niches?.clear()
 
         userRepository.saveAndFlush(user)
         return user.specialist!!
@@ -161,20 +193,25 @@ class TelegramUserSpecialistServiceImpl(
         return user.specialist!!
     }
 
-    override fun updateCompletelyFilled(info: BaseUpdateInfo, completelyFilled: Boolean): SpecialistProfile {
-        val user = userRepository.findByTelegramUserId(info.userId)
-            ?: registerNewUser(info)
-
-        prepareUserSpecialist(user)
-        return user.specialist!!
-    }
-
     override fun updateVisibility(info: BaseUpdateInfo, visibility: Boolean): SpecialistProfile {
         val user = userRepository.findByTelegramUserId(info.userId)
             ?: registerNewUser(info)
 
         prepareUserSpecialist(user)
         user.specialist?.isVisible = visibility
+
+        userRepository.saveAndFlush(user)
+        return user.specialist!!
+    }
+
+    override fun updateStatus(info: BaseUpdateInfo, status: ProfileStatuses): SpecialistProfile {
+        val user = userRepository.findByTelegramUserId(info.userId)
+            ?: registerNewUser(info)
+
+        prepareUserSpecialist(user)
+        val statusEntity = statusRepository.findByAlias(status)
+            ?: throw UndefinedProfileStatus("Status with alias: $status not exists")
+        user.specialist?.status = statusEntity
 
         userRepository.saveAndFlush(user)
         return user.specialist!!

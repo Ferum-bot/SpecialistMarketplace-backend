@@ -8,13 +8,21 @@ data class NichesInfo(
 
     override val chatId: Long,
 
-    val niches: Collection<NicheDto>
+    val niches: Collection<NicheDto>,
+
+    val isFirstMessage: Boolean = true,
 ): BaseUpdateInfo {
 
     companion object {
 
-        fun from(info: BaseUpdateInfo, niches: Collection<NicheDto>): NichesInfo {
-            return NichesInfo(info.userId, info.chatId, niches)
+        fun from(
+            info: BaseUpdateInfo,
+            niches: Collection<NicheDto>,
+            isFirstMessage: Boolean = true
+        ): NichesInfo {
+            return NichesInfo(
+                info.userId, info.chatId, niches, isFirstMessage
+            )
         }
     }
 }

@@ -29,11 +29,24 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
         private val RESTART_REGISTRATION_FLOW_NAME = RestartRegistrationFlowEvent.friendlyName
         private val RESTART_REGISTRATION_FLOW_COMMAND = RestartRegistrationFlowEvent.commandAlias
 
+        private val OPEN_ALL_SPECIALISTS_NAME = "Показать всех специалистов"
+        private val OPEN_ALL_SPECIALISTS_COMMAND = OpenCurrentSpecialistsScreenEvent.commandAlias
+
         private val GET_SPECIALISTS_CONTACTS_NAME = GetSpecialistsContactsEvent.friendlyName
         private val GET_SPECIALISTS_CONTACTS_COMMAND = GetSpecialistsContactsEvent.commandAlias
 
         private val LEAVE_BID_NAME = OpenLeaveBidScreenEvent.friendlyName
         private val LEAVE_BID_COMMAND = OpenLeaveBidScreenEvent.commandAlias
+
+        private val FINISH_INPUT_PROFESSION_NAME = OnUserFinishInputProfessionEvent.friendlyName
+        private val FINISH_INPUT_PROFESSION_COMMAND = OnUserFinishInputProfessionEvent.commandAlias
+        private val FINISH_INPUT_NICHE_NAME = OnUserFinishInputNicheEvent.friendlyName
+        private val FINISH_INPUT_NICHE_COMMAND = OnUserFinishInputNicheEvent.commandAlias
+
+        private val FINISH_CHANGING_PROFESSION_NAME = OnUserFinishedChangingProfessionEvent.friendlyName
+        private val FINISH_CHANGING_PROFESSION_COMMAND = OnUserFinishedChangingProfessionEvent.commandAlias
+        private val FINISH_CHANGING_NICHE_NAME = OnUserFinishedChangingNicheEvent.friendlyName
+        private val FINISH_CHANGING_NICHE_COMMAND = OnUserFinishedChangingNicheEvent.commandAlias
     }
 
     override fun provideNotImplementedScreenButtons(): InlineKeyboardMarkup {
@@ -72,8 +85,17 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
         }
     }
 
+    override fun provideFilterButtons(): InlineKeyboardMarkup {
+        val button = InlineButton(
+            OPEN_ALL_SPECIALISTS_NAME, OPEN_ALL_SPECIALISTS_COMMAND
+        )
+        val row = getInlineRow(button)
+
+        return getInlineKeyboard(row)
+    }
+
     override fun provideCurrentSpecialistsButton(
-        currentPage: Int, totalPageCount: Int, professionAlias: String, specialistId: Long,
+        currentPage: Int, totalPageCount: Int, specialistId: Long,
     ): InlineKeyboardMarkup {
         val getContactRow = getGetSpecialistsContactsRow(specialistId)
         val buttonProvider = object: ButtonProvider {
@@ -81,7 +103,7 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
             override fun invoke(page: Int, selectedPage: Int)
             = InlineButton(
                 aliasForPageButton(page, selectedPage, totalPageCount),
-                commandForPageSpecialistsButton(page, professionAlias),
+                commandForPageSpecialistsButton(page),
             )
         }
 
@@ -113,6 +135,50 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
         val secondRow = getInlineRow(secondButton)
 
         return getInlineKeyboard(firstRow, secondRow)
+    }
+
+    override fun provideFinishInputProfessionsButtons(): InlineKeyboardMarkup {
+        val firstButton = InlineButton(
+            SHOW_HOW_IT_LOOKS_LIKE_NOW_NAME, SHOW_HOW_IT_LOOKS_LIKE_NOW_COMMAND
+        )
+        val secondButton = InlineButton(
+            FINISH_INPUT_PROFESSION_NAME, FINISH_INPUT_PROFESSION_COMMAND
+        )
+
+        val firstRow = getInlineRow(firstButton)
+        val secondRow = getInlineRow(secondButton)
+
+        return getInlineKeyboard(firstRow, secondRow)
+    }
+
+    override fun provideFinishInputNichesButtons(): InlineKeyboardMarkup {
+        val firstButton = InlineButton(
+            SHOW_HOW_IT_LOOKS_LIKE_NOW_NAME, SHOW_HOW_IT_LOOKS_LIKE_NOW_COMMAND
+        )
+        val secondButton = InlineButton(
+            FINISH_INPUT_NICHE_NAME, FINISH_INPUT_NICHE_COMMAND
+        )
+
+        val firstRow = getInlineRow(firstButton)
+        val secondRow = getInlineRow(secondButton)
+
+        return getInlineKeyboard(firstRow, secondRow)
+    }
+
+    override fun provideFinishChangingProfessionsButtons(): InlineKeyboardMarkup {
+        val firstButton = InlineButton(
+            FINISH_CHANGING_PROFESSION_NAME, FINISH_CHANGING_PROFESSION_COMMAND
+        )
+        val firstRow = getInlineRow(firstButton)
+        return getInlineKeyboard(firstRow)
+    }
+
+    override fun provideFinishChangingNichesButtons(): InlineKeyboardMarkup {
+        val firstButton = InlineButton(
+            FINISH_CHANGING_NICHE_NAME, FINISH_CHANGING_NICHE_COMMAND
+        )
+        val firstRow = getInlineRow(firstButton)
+        return getInlineKeyboard(firstRow)
     }
 
     private fun getPageSimpleButtons(
@@ -223,10 +289,10 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
     }
 
     private fun commandForPageRequestsButton(page: Int) =
-        "$OPEN_REQUESTS_PAGE_COMMAND$page"
+        "$OPEN_REQUESTS_PAGE_COMMAND:$page"
 
-    private fun commandForPageSpecialistsButton(page: Int, alias: String) =
-        "$OPEN_SPECIALISTS_PAGE_COMMAND:$page:$alias"
+    private fun commandForPageSpecialistsButton(page: Int) =
+        "$OPEN_SPECIALISTS_PAGE_COMMAND:$page"
 
     private fun commandForGetSpecialistsContacts(specialistId: Long) =
         "$GET_SPECIALISTS_CONTACTS_COMMAND:$specialistId"

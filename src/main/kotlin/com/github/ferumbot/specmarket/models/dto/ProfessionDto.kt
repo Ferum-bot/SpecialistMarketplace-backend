@@ -1,6 +1,6 @@
 package com.github.ferumbot.specmarket.models.dto
 
-import com.github.ferumbot.specmarket.models.entities.specifications.Profession
+import com.github.ferumbot.specmarket.models.entities.filter.Profession
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 

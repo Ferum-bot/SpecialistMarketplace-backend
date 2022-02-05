@@ -9,4 +9,8 @@ class TelegramChatServiceImpl(
     private val repository: TelegramChatRepository,
 ): TelegramChatService {
 
+    override fun sendMessage(chatId: Int, message: Int) {
+        TODO("Not yet implemented")
+    }
+
 }

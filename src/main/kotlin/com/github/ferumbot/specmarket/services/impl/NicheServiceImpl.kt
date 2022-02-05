@@ -1,7 +1,7 @@
 package com.github.ferumbot.specmarket.services.impl
 
 import com.github.ferumbot.specmarket.models.dto.NicheDto
-import com.github.ferumbot.specmarket.models.entities.specifications.Niche
+import com.github.ferumbot.specmarket.models.entities.filter.Niche
 import com.github.ferumbot.specmarket.repositories.NicheRepository
 import com.github.ferumbot.specmarket.services.NicheService
 import org.springframework.beans.factory.annotation.Autowired

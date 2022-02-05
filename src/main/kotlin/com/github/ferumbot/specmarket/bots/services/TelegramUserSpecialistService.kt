@@ -2,12 +2,17 @@ package com.github.ferumbot.specmarket.bots.services
 
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
+import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses
 
 interface TelegramUserSpecialistService {
 
     fun updateFullName(info: BaseUpdateInfo, newFullName: String): SpecialistProfile
 
-    fun updateNiche(info: BaseUpdateInfo, newDepartment: String): SpecialistProfile
+    fun addNiche(info: BaseUpdateInfo, nicheAlias: String): SpecialistProfile
+
+    fun removeNiche(info: BaseUpdateInfo, nicheAlias: String): SpecialistProfile
+
+    fun clearNiches(info: BaseUpdateInfo): SpecialistProfile
 
     fun addProfession(info: BaseUpdateInfo, professionAlias: String): SpecialistProfile
 
@@ -29,7 +34,7 @@ interface TelegramUserSpecialistService {
 
     fun updateContactLinks(info: BaseUpdateInfo, newContactLinks: String): SpecialistProfile
 
-    fun updateCompletelyFilled(info: BaseUpdateInfo, completelyFilled: Boolean): SpecialistProfile
-
     fun updateVisibility(info: BaseUpdateInfo, visibility: Boolean): SpecialistProfile
+
+    fun updateStatus(info: BaseUpdateInfo, status: ProfileStatuses): SpecialistProfile
 }

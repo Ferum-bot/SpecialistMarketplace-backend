@@ -2,8 +2,8 @@ package com.github.ferumbot.specmarket.models.entities.specialist
 
 import com.github.ferumbot.specmarket.bots.models.entity.TelegramUser
 import com.github.ferumbot.specmarket.models.entities.specifications.KeySkills
-import com.github.ferumbot.specmarket.models.entities.specifications.Niche
-import com.github.ferumbot.specmarket.models.entities.specifications.Profession
+import com.github.ferumbot.specmarket.models.entities.filter.Niche
+import com.github.ferumbot.specmarket.models.entities.filter.Profession
 import java.time.LocalDateTime
 import javax.persistence.*
 

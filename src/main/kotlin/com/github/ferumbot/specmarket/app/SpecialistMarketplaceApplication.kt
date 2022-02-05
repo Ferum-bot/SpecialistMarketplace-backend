@@ -22,6 +22,7 @@ import org.springframework.context.annotation.ComponentScan
 		SecurityConfig::class,
 		SwaggerConfig::class,
 		DataSourceConfig::class,
+		WebConfig::class,
 	],
 	basePackages = [
 		"com.github.ferumbot.specmarket"

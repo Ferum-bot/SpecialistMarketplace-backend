@@ -17,7 +17,7 @@ class DefaultKeyboardButtonsProvider: KeyboardMessageButtonsProvider {
 
         private val SUBMIT_MY_CV_NAME = SubmitYourCVEvent.friendlyName
 
-        private val OPEN_FILTER_NAME = OpenFilterScreenEvent.friendlyName
+        private val OPEN_FILTER_NAME = OpenProfessionFilterScreenEvent.friendlyName
         private val OPEN_I_DO_NOT_WHO_I_SEARCH_NAME = OpenIDoNotKnowWhoISearchScreenEvent.friendlyName
 
         private val OPEN_I_DO_KNOW_WHAT_I_WANT_NAME = OpenIDoNotKnowWhatIWantScreenEvent.friendlyName
@@ -30,7 +30,7 @@ class DefaultKeyboardButtonsProvider: KeyboardMessageButtonsProvider {
         private val CHANGE_VISIBILITY = ChangeProfileSpecialistVisibilityScreenEvent.friendlyName
 
         private val CHANGE_FULL_NAME = ChangeFullNameEvent.friendlyName
-        private val CHANGE_DEPARTMENT = ChangeDepartmentEvent.friendlyName
+        private val CHANGE_DEPARTMENT = ChangeNicheEvent.friendlyName
         private val CHANGE_PROFESSIONS = ChangeProfessionEvent.friendlyName
         private val CHANGE_KEY_SKILLS = ChangeKeySkillsEvent.friendlyName
         private val CHANGE_PORTFOLIO_LINK = ChangePortfolioLinkEvent.friendlyName

@@ -3,12 +3,14 @@ package com.github.ferumbot.specmarket.bots.adapters.result.local.impl
 import com.github.ferumbot.specmarket.bots.adapters.result.local.LocalUpdateResultAdapter
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.NichesInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.ProfessionsInfo
 import com.github.ferumbot.specmarket.bots.state_machine.state.*
 import com.github.ferumbot.specmarket.bots.ui.inline_buttons.InlineMessageButtonsProvider
 import com.github.ferumbot.specmarket.bots.ui.text.MessageTextProvider
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard
 
 class EditProfileStateAdapter(
     private val textProvider: MessageTextProvider,
@@ -25,7 +27,7 @@ class EditProfileStateAdapter(
 
         return when(state) {
             is UserChangeFullNameScreenState -> getUserChangeFullName(info)
-            is UserChangeDepartmentScreenState -> getUserChangeNiche(info)
+            is UserChangeNicheScreenState -> getUserChangeNiche(info as NichesInfo)
             is UserChangeProfessionScreenState -> getUserChangeProfession(info as ProfessionsInfo)
             is UserChangeKeySkillsScreenState -> getUserChangeKeySkills(info)
             is UserChangePortfolioLinkScreenState -> getUserChangePortfolioLink(info)
@@ -42,15 +44,36 @@ class EditProfileStateAdapter(
         return getDefaultMethod(text, info)
     }
 
-    private fun getUserChangeNiche(info: BaseUpdateInfo): BotApiMethod<*> {
-        val text = textProvider.provideUserChangeNicheInfoMessage(emptyList())
-        return getDefaultMethod(text, info)
+    private fun getUserChangeNiche(info: NichesInfo): BotApiMethod<*> {
+        val niches = info.niches
+        val text = if (info.isFirstMessage) {
+            textProvider.provideUserChangeNicheInfoMessage(niches )
+        } else {
+            textProvider.provideUserChangeAnotherNicheInfoMessage(niches)
+        }
+        val buttons = if (info.isFirstMessage) {
+            inlineButtonsProvider.provideBackButton()
+        } else {
+            inlineButtonsProvider.provideFinishChangingNichesButtons()
+        }
+
+        return getDefaultMethod(text, info, buttons)
     }
 
     private fun getUserChangeProfession(info: ProfessionsInfo): BotApiMethod<*> {
         val professions = info.professions
-        val text = textProvider.provideUserChangeProfessionsInfoMessage(professions)
-        return getDefaultMethod(text, info)
+        val text = if (info.isFirstMessage) {
+            textProvider.provideUserChangeProfessionsInfoMessage(professions)
+        } else {
+            textProvider.provideUserChangeAnotherProfessionsInfoMessage(professions)
+        }
+        val buttons = if (info.isFirstMessage) {
+            inlineButtonsProvider.provideBackButton()
+        } else {
+            inlineButtonsProvider.provideFinishChangingProfessionsButtons()
+        }
+
+        return getDefaultMethod(text, info, buttons)
     }
 
     private fun getUserChangeKeySkills(info: BaseUpdateInfo): BotApiMethod<*> {
@@ -83,11 +106,13 @@ class EditProfileStateAdapter(
         return getDefaultMethod(text, info)
     }
 
-    private fun getDefaultMethod(text: String, info: BaseUpdateInfo): BotApiMethod<*> {
-        val buttons = inlineButtonsProvider.provideBackButton()
+    private fun getDefaultMethod(
+        text: String, info: BaseUpdateInfo, buttons: ReplyKeyboard? = null,
+    ): BotApiMethod<*> {
+        val defaultButtons = inlineButtonsProvider.provideBackButton()
         val chatId = info.chatId.toString()
         val sendMessage = SendMessage(chatId, text).apply {
-            replyMarkup = buttons
+            replyMarkup = buttons ?: defaultButtons
         }
 
         return sendMessage

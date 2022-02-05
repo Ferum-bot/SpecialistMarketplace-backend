@@ -2,7 +2,7 @@ package com.github.ferumbot.specmarket.controllers
 
 import com.github.ferumbot.specmarket.configs.SwaggerConfig
 import com.github.ferumbot.specmarket.models.dto.NicheDto
-import com.github.ferumbot.specmarket.models.entities.specifications.Niche
+import com.github.ferumbot.specmarket.models.entities.filter.Niche
 import com.github.ferumbot.specmarket.models.response.ApiResponse
 import com.github.ferumbot.specmarket.services.NicheService
 import io.swagger.v3.oas.annotations.Operation

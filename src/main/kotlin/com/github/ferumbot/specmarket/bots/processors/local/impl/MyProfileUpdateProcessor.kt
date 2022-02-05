@@ -7,7 +7,7 @@ import com.github.ferumbot.specmarket.bots.models.dto.update_info.OpenAnotherPag
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.SpecialistsPageInfo
 import com.github.ferumbot.specmarket.bots.processors.local.LocalUpdateProcessor
-import com.github.ferumbot.specmarket.bots.services.TelegramBotUserService
+import com.github.ferumbot.specmarket.bots.services.TelegramBotFlowService
 import com.github.ferumbot.specmarket.bots.services.TelegramUserSpecialistService
 import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import com.github.ferumbot.specmarket.bots.state_machine.state.EditProfileScreenState
@@ -16,7 +16,7 @@ import com.github.ferumbot.specmarket.bots.state_machine.state.YouAreAuthorizedS
 import com.github.ferumbot.specmarket.models.dto.SpecialistDto
 
 class MyProfileUpdateProcessor(
-    private val userService: TelegramBotUserService,
+    private val userService: TelegramBotFlowService,
     private val specialistService: TelegramUserSpecialistService,
 ): LocalUpdateProcessor {
 

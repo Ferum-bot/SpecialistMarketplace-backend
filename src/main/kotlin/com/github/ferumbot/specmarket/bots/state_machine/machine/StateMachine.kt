@@ -37,7 +37,7 @@ object StateMachine {
             MyRequestsScreenState.screenName -> MyRequestsScreenState
             EditProfileScreenState.screenName -> EditProfileScreenState
             UserChangeFullNameScreenState.screenName -> UserChangeFullNameScreenState
-            UserChangeDepartmentScreenState.screenName -> UserChangeDepartmentScreenState
+            UserChangeNicheScreenState.screenName -> UserChangeNicheScreenState
             UserChangeProfessionScreenState.screenName -> UserChangeProfessionScreenState
             UserChangeKeySkillsScreenState.screenName -> UserChangeKeySkillsScreenState
             UserChangePortfolioLinkScreenState.screenName -> UserChangePortfolioLinkScreenState
@@ -45,7 +45,8 @@ object StateMachine {
             UserChangeWorkingConditionsScreenState.screenName -> UserChangeWorkingConditionsScreenState
             UserChangeEducationGradeScreenState.screenName -> UserChangeEducationGradeScreenState
             UserChangeContactLinksScreenState.screenName -> UserChangeContactLinksScreenState
-            FilterScreenState.screenName -> FilterScreenState
+            ProfessionFilterScreenState.screenName -> ProfessionFilterScreenState
+            NicheFilterScreenState.screenName -> NicheFilterScreenState
             CurrentSpecialistsScreenState.screenName -> CurrentSpecialistsScreenState
             CurrentSpecialistsContactsScreenState.screenName -> CurrentSpecialistsContactsScreenState
             else -> UnSupportedScreenState

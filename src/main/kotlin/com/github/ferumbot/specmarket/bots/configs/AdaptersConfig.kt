@@ -10,7 +10,7 @@ import com.github.ferumbot.specmarket.bots.adapters.update.local.LocalUpdateAdap
 import com.github.ferumbot.specmarket.bots.adapters.update.local.impl.*
 import com.github.ferumbot.specmarket.bots.interactors.impl.BotAdapterToProcessorInteractor
 import com.github.ferumbot.specmarket.bots.processors.BotUpdateProcessor
-import com.github.ferumbot.specmarket.bots.services.TelegramBotUserService
+import com.github.ferumbot.specmarket.bots.services.TelegramBotFlowService
 import com.github.ferumbot.specmarket.bots.ui.inline_buttons.InlineMessageButtonsProvider
 import com.github.ferumbot.specmarket.bots.ui.keyboard_buttons.KeyboardMessageButtonsProvider
 import com.github.ferumbot.specmarket.bots.ui.text.MessageTextProvider
@@ -27,7 +27,7 @@ class AdaptersConfig @Autowired constructor(
 ) {
 
     @Autowired
-    private lateinit var userService: TelegramBotUserService
+    private lateinit var userService: TelegramBotFlowService
 
     /**
      *  Incoming event adapters

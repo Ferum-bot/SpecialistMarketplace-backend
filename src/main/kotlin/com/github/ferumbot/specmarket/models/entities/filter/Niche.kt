@@ -1,11 +1,11 @@
-package com.github.ferumbot.specmarket.models.entities.specifications
+package com.github.ferumbot.specmarket.models.entities.filter
 
 import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
-@Table(name = "profession")
-data class Profession(
+@Table(name = "niche")
+data class Niche(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,14 +15,14 @@ data class Profession(
     @Column(name = "friendly_name", nullable = false, length = 1000)
     var friendlyName: String,
 
-    @Column(name = "alias", nullable = false, length = 1000, unique = true)
+    @Column(name = "alias", nullable = false, unique = true, length = 1000)
     var alias: String,
 
-    @Column(name = "short_description", nullable = false, length = 500)
+    @Column(name = "short_description", nullable = false, length = 1000)
     var shortDescription: String,
 
-    @Column(name = "long_description", length = 5000)
-    var longDescription: String? = null,
+    @Column(name = "long_description", nullable = false, length = 10000)
+    var longDescription: String,
 
     @Column(name = "created_date", nullable = false, updatable = false)
     var createdDate: LocalDateTime = LocalDateTime.now(),
@@ -35,13 +35,11 @@ data class Profession(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as Profession
+        other as Niche
 
         if (id != other.id) return false
         if (friendlyName != other.friendlyName) return false
         if (alias != other.alias) return false
-        if (shortDescription != other.shortDescription) return false
-        if (longDescription != other.longDescription) return false
 
         return true
     }
@@ -50,8 +48,6 @@ data class Profession(
         var result = id?.hashCode() ?: 0
         result = 31 * result + friendlyName.hashCode()
         result = 31 * result + alias.hashCode()
-        result = 31 * result + shortDescription.hashCode()
-        result = 31 * result + (longDescription?.hashCode() ?: 0)
         return result
     }
 

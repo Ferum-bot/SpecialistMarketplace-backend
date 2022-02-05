@@ -1,6 +1,6 @@
 package com.github.ferumbot.specmarket.repositories
 
-import com.github.ferumbot.specmarket.models.entities.specifications.Profession
+import com.github.ferumbot.specmarket.models.entities.filter.Profession
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
