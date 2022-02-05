@@ -6,6 +6,14 @@ inline fun <reified T> T?.ifNull(action: () -> Unit) {
     }
 }
 
-inline fun <reified T, reified P> T.map(transform: (T) -> P): P {
+inline fun <reified T, reified P> T.transform(transform: (T) -> P): P {
     return transform(this)
+}
+
+inline fun <reified T> T?.falseIfNull(): Boolean {
+    return this != null
+}
+
+inline fun <reified T> T?.trueIfNull(): Boolean {
+    return this == null
 }

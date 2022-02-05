@@ -3,6 +3,7 @@ package com.github.ferumbot.specmarket.services
 import com.github.ferumbot.specmarket.models.dto.SpecialistDto
 import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
 import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses
+import com.github.ferumbot.specmarket.models.request.CreateSpecialistRequest
 
 interface SpecialistService {
 
@@ -77,4 +78,10 @@ interface SpecialistService {
     fun countSpecialistsWithNicheAndProfession(
         nicheAlias: String, professionAlias: String, status: ProfileStatuses
     ): Int
+
+    fun changeSpecialistStatus(newStatus: ProfileStatuses, id: Long): SpecialistDto
+
+    fun createSpecialist(specialist: CreateSpecialistRequest): SpecialistDto
+
+    fun deleteSpecialist(id: Long)
 }

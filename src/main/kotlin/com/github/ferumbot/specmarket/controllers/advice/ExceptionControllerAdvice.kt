@@ -1,7 +1,6 @@
 package com.github.ferumbot.specmarket.controllers.advice
 
-import com.github.ferumbot.specmarket.exceptions.ProfessionNotExists
-import com.github.ferumbot.specmarket.exceptions.ProfessionWasNotDeleted
+import com.github.ferumbot.specmarket.exceptions.*
 import com.github.ferumbot.specmarket.models.response.ApiResponse
 import com.github.ferumbot.specmarket.models.response.ErrorResponse
 import org.springframework.http.HttpStatus
@@ -41,6 +40,57 @@ class ExceptionControllerAdvice {
             additionalMessage = "Not exists",
             errorMessage = ex.localizedMessage,
             data = errorResponse,
+        )
+
+        return ResponseEntity.ok(response)
+    }
+
+    @ExceptionHandler(NicheNotExists::class)
+    fun nicheNotExists(ex: NicheNotExists): ResponseEntity<ApiResponse<ErrorResponse>> {
+        val errorResponse = ErrorResponse(
+            cause = ex.reason,
+            totalExceptions = ex.suppressed.map { it.toString() }
+        )
+        val response = ApiResponse(
+            statusCode = HttpStatus.NOT_FOUND.value(),
+            statusMessage = "Not found",
+            additionalMessage = "Not exists",
+            errorMessage = ex.localizedMessage,
+            data = errorResponse
+        )
+
+        return ResponseEntity.ok(response)
+    }
+
+    @ExceptionHandler(SpecialistNotExists::class)
+    fun specialistNotExists(ex: SpecialistNotExists): ResponseEntity<ApiResponse<ErrorResponse>> {
+        val errorResponse = ErrorResponse(
+            cause = ex.message,
+            totalExceptions = ex.suppressed.map { it.toString() }
+        )
+        val response = ApiResponse(
+            statusCode = HttpStatus.NOT_FOUND.value(),
+            statusMessage = "Not found",
+            additionalMessage = "Not exists",
+            errorMessage = ex.localizedMessage,
+            data = errorResponse
+        )
+
+        return ResponseEntity.ok(response)
+    }
+
+    @ExceptionHandler(UndefinedProfileStatus::class)
+    fun undefinedProfileStatus(ex: UndefinedProfileStatus): ResponseEntity<ApiResponse<ErrorResponse>> {
+        val errorResponse = ErrorResponse(
+            cause = ex.reason,
+            totalExceptions = ex.suppressed.map { it.toString() }
+        )
+        val response = ApiResponse(
+            statusCode = HttpStatus.NOT_FOUND.value(),
+            statusMessage = "Not found",
+            additionalMessage = "Undefined",
+            errorMessage = ex.localizedMessage,
+            data = errorResponse
         )
 
         return ResponseEntity.ok(response)

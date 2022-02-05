@@ -28,6 +28,10 @@ class SwaggerConfig {
         const val NICHE_CONTROLLER_DESCRIPTION = """
             Endpoints для взаимодействия с нишами.
         """
+
+        const val SPECIALIST_STATUS_CONTROLLER_DESCRIPTION = """
+            Endpoints для взаимодействия со статусами специалистов.
+        """
     }
 
     @Bean

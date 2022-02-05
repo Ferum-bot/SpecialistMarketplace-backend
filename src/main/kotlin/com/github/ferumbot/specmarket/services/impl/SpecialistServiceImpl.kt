@@ -1,11 +1,16 @@
 package com.github.ferumbot.specmarket.services.impl
 
+import com.github.ferumbot.specmarket.core.extensions.transform
+import com.github.ferumbot.specmarket.exceptions.NicheNotExists
+import com.github.ferumbot.specmarket.exceptions.ProfessionNotExists
+import com.github.ferumbot.specmarket.exceptions.SpecialistNotExists
 import com.github.ferumbot.specmarket.exceptions.UndefinedProfileStatus
 import com.github.ferumbot.specmarket.models.dto.SpecialistDto
 import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
 import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses
-import com.github.ferumbot.specmarket.repositories.SpecialistRepository
-import com.github.ferumbot.specmarket.repositories.SpecialistStatusRepository
+import com.github.ferumbot.specmarket.models.entities.specifications.KeySkills
+import com.github.ferumbot.specmarket.models.request.CreateSpecialistRequest
+import com.github.ferumbot.specmarket.repositories.*
 import com.github.ferumbot.specmarket.services.SpecialistService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -17,6 +22,9 @@ import org.springframework.transaction.annotation.Transactional
 class SpecialistServiceImpl @Autowired constructor(
     private val specialistRepository: SpecialistRepository,
     private val statusRepository: SpecialistStatusRepository,
+    private val professionRepository: ProfessionRepository,
+    private val nicheRepository: NicheRepository,
+    private val keySkillsRepository: KeySkillsRepository,
 ): SpecialistService {
 
     @Transactional(readOnly = true)
@@ -236,5 +244,59 @@ class SpecialistServiceImpl @Autowired constructor(
         return specialistRepository.countAllByProfessionAndNiche(
             professionAlias, nicheAlias, statusId
         )
+    }
+
+    override fun changeSpecialistStatus(newStatus: ProfileStatuses, id: Long): SpecialistDto {
+        val status = statusRepository.findByAlias(newStatus)
+            ?: throw UndefinedProfileStatus("Undefined status: $newStatus")
+        val specialist = specialistRepository.findById(id).orElseThrow {
+            SpecialistNotExists(id)
+        }
+
+        specialist.status = status
+        return specialistRepository.saveAndFlush(specialist).transform {
+            SpecialistDto.from(it)
+        }
+    }
+
+    override fun createSpecialist(specialist: CreateSpecialistRequest): SpecialistDto {
+        val professions = specialist.professionIds.map { id ->
+            professionRepository.findById(id).orElseThrow {
+                ProfessionNotExists("Profession with id: $id not exists")
+            }
+        }
+        val niches = specialist.nichesIds.map { id ->
+            nicheRepository.findById(id).orElseThrow {
+                NicheNotExists("Niche with id: $id not exists")
+            }
+        }
+        val keySkills = specialist.keySkills.map { value ->
+            val keySkill = KeySkills(value = value)
+            keySkillsRepository.save(keySkill)
+        }
+        val entity = SpecialistProfile(
+            fullName = specialist.fullName,
+            professions = professions.toMutableList(),
+            niches = niches.toMutableList(),
+            keySkills = keySkills.toMutableList(),
+            portfolioLink = specialist.portfolioLink,
+            aboutMe = specialist.aboutMe,
+            workingConditions = specialist.workingConditions,
+            educationGrade = specialist.educationGrade,
+            contactLinks = specialist.contactLinks,
+            isVisible = specialist.isVisible,
+        )
+
+        return specialistRepository.saveAndFlush(entity).transform {
+            SpecialistDto.from(it)
+        }
+    }
+
+    override fun deleteSpecialist(id: Long) {
+        val specialist = specialistRepository.findById(id).orElseThrow {
+            SpecialistNotExists(id)
+        }
+
+        specialistRepository.delete(specialist)
     }
 }

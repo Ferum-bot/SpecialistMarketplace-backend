@@ -4,16 +4,15 @@ import com.github.ferumbot.specmarket.configs.SwaggerConfig
 import com.github.ferumbot.specmarket.core.annotations.SwaggerVisible
 import com.github.ferumbot.specmarket.core.extensions.ifNull
 import com.github.ferumbot.specmarket.models.dto.SpecialistDto
+import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses
+import com.github.ferumbot.specmarket.models.request.CreateSpecialistRequest
 import com.github.ferumbot.specmarket.models.response.ApiResponse
 import com.github.ferumbot.specmarket.services.SpecialistService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 
@@ -94,5 +93,39 @@ class SpecialistController {
     ): ApiResponse<Collection<SpecialistDto>> {
         val specialists = service.getAllSpecialistsByProfession(alias, pageNumber, pageSize)
         return ApiResponse.success(specialists)
+    }
+
+    @PatchMapping("/status/change")
+    @Operation(summary = "Изменить статус специалиста")
+    fun changeSpecialistStatus(
+        @RequestParam(value = "id", required = true)
+        id: Long,
+
+        @RequestParam(value = "new_status", required = true)
+        newStatus: ProfileStatuses,
+    ): ApiResponse<SpecialistDto> {
+        val result = service.changeSpecialistStatus(newStatus, id)
+        return ApiResponse.success(result)
+    }
+
+    @PutMapping("/create")
+    @Operation(summary = "Создать нового специалиста")
+    fun createSpecialist(
+        @RequestBody
+        specialistRequest: CreateSpecialistRequest
+    ): ApiResponse<SpecialistDto> {
+        val result = service.createSpecialist(specialistRequest)
+        return ApiResponse.success(result)
+    }
+
+    @DeleteMapping("/delete")
+    @Operation(summary = "Удалить существуюшего специалиста")
+    fun deleteSpecialist(
+        @RequestParam(value = "id", required = true)
+        id: Long,
+    ): ApiResponse<*> {
+        service.deleteSpecialist(id)
+
+        return ApiResponse.done { "Specialist with id: $id was deleted." }
     }
 }

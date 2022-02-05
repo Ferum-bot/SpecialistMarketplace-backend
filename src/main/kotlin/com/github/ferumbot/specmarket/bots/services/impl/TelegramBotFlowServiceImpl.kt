@@ -9,7 +9,7 @@ import com.github.ferumbot.specmarket.bots.models.enums.TelegramUserProfileStatu
 import com.github.ferumbot.specmarket.bots.repositories.TelegramUserRepository
 import com.github.ferumbot.specmarket.bots.services.TelegramBotFlowService
 import com.github.ferumbot.specmarket.bots.state_machine.state.BotState
-import com.github.ferumbot.specmarket.core.extensions.map
+import com.github.ferumbot.specmarket.core.extensions.transform
 import com.github.ferumbot.specmarket.exceptions.NicheNotExists
 import com.github.ferumbot.specmarket.exceptions.ProfessionNotExists
 import com.github.ferumbot.specmarket.exceptions.SpecialistNotExists
@@ -154,14 +154,14 @@ class TelegramBotFlowServiceImpl @Autowired constructor(
     override fun getProfessionFromUserFilter(info: BaseUpdateInfo): ProfessionDto? {
         val user = getUser(info)
         return user.currentBotState.currentProfessionFilter
-            ?.map { ProfessionDto.from(it) }
+            ?.transform { ProfessionDto.from(it) }
     }
 
     @Transactional(readOnly = true)
     override fun getNicheFromUserFilter(info: BaseUpdateInfo): NicheDto? {
         val user = getUser(info)
         return user.currentBotState.currentNicheFilter
-            ?.map { NicheDto.from(it) }
+            ?.transform { NicheDto.from(it) }
     }
 
     @Transactional(readOnly = true)
