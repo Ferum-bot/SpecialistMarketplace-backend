@@ -29,6 +29,9 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
         private val RESTART_REGISTRATION_FLOW_NAME = RestartRegistrationFlowEvent.friendlyName
         private val RESTART_REGISTRATION_FLOW_COMMAND = RestartRegistrationFlowEvent.commandAlias
 
+        private val OPEN_ALL_SPECIALISTS_NAME = "Показать всех специалистов"
+        private val OPEN_ALL_SPECIALISTS_COMMAND = OpenCurrentSpecialistsScreenEvent.commandAlias
+
         private val GET_SPECIALISTS_CONTACTS_NAME = GetSpecialistsContactsEvent.friendlyName
         private val GET_SPECIALISTS_CONTACTS_COMMAND = GetSpecialistsContactsEvent.commandAlias
 
@@ -82,8 +85,17 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
         }
     }
 
+    override fun provideFilterButtons(): InlineKeyboardMarkup {
+        val button = InlineButton(
+            OPEN_ALL_SPECIALISTS_NAME, OPEN_ALL_SPECIALISTS_COMMAND
+        )
+        val row = getInlineRow(button)
+
+        return getInlineKeyboard(row)
+    }
+
     override fun provideCurrentSpecialistsButton(
-        currentPage: Int, totalPageCount: Int, professionAlias: String, specialistId: Long,
+        currentPage: Int, totalPageCount: Int, specialistId: Long,
     ): InlineKeyboardMarkup {
         val getContactRow = getGetSpecialistsContactsRow(specialistId)
         val buttonProvider = object: ButtonProvider {
@@ -91,7 +103,7 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
             override fun invoke(page: Int, selectedPage: Int)
             = InlineButton(
                 aliasForPageButton(page, selectedPage, totalPageCount),
-                commandForPageSpecialistsButton(page, professionAlias),
+                commandForPageSpecialistsButton(page),
             )
         }
 
@@ -277,10 +289,10 @@ class DefaultInlineButtonsProvider: InlineMessageButtonsProvider {
     }
 
     private fun commandForPageRequestsButton(page: Int) =
-        "$OPEN_REQUESTS_PAGE_COMMAND$page"
+        "$OPEN_REQUESTS_PAGE_COMMAND:$page"
 
-    private fun commandForPageSpecialistsButton(page: Int, alias: String) =
-        "$OPEN_SPECIALISTS_PAGE_COMMAND:$page:$alias"
+    private fun commandForPageSpecialistsButton(page: Int) =
+        "$OPEN_SPECIALISTS_PAGE_COMMAND:$page"
 
     private fun commandForGetSpecialistsContacts(specialistId: Long) =
         "$GET_SPECIALISTS_CONTACTS_COMMAND:$specialistId"

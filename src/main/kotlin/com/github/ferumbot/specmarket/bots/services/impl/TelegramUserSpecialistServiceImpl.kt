@@ -6,12 +6,11 @@ import com.github.ferumbot.specmarket.bots.repositories.TelegramUserRepository
 import com.github.ferumbot.specmarket.bots.services.TelegramUserSpecialistService
 import com.github.ferumbot.specmarket.exceptions.NicheNotExists
 import com.github.ferumbot.specmarket.exceptions.ProfessionNotExists
+import com.github.ferumbot.specmarket.exceptions.UndefinedProfileStatus
 import com.github.ferumbot.specmarket.models.entities.specifications.KeySkills
 import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
-import com.github.ferumbot.specmarket.repositories.KeySkillsRepository
-import com.github.ferumbot.specmarket.repositories.NicheRepository
-import com.github.ferumbot.specmarket.repositories.ProfessionRepository
-import com.github.ferumbot.specmarket.repositories.SpecialistRepository
+import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses
+import com.github.ferumbot.specmarket.repositories.*
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -23,6 +22,7 @@ class TelegramUserSpecialistServiceImpl(
     private val specialistRepository: SpecialistRepository,
     private val keySkillsRepository: KeySkillsRepository,
     private val nicheRepository: NicheRepository,
+    private val statusRepository: SpecialistStatusRepository,
 ): TelegramUserSpecialistService {
 
     override fun updateFullName(info: BaseUpdateInfo, newFullName: String): SpecialistProfile {
@@ -199,6 +199,19 @@ class TelegramUserSpecialistServiceImpl(
 
         prepareUserSpecialist(user)
         user.specialist?.isVisible = visibility
+
+        userRepository.saveAndFlush(user)
+        return user.specialist!!
+    }
+
+    override fun updateStatus(info: BaseUpdateInfo, status: ProfileStatuses): SpecialistProfile {
+        val user = userRepository.findByTelegramUserId(info.userId)
+            ?: registerNewUser(info)
+
+        prepareUserSpecialist(user)
+        val statusEntity = statusRepository.findByAlias(status)
+            ?: throw UndefinedProfileStatus("Status with alias: $status not exists")
+        user.specialist?.status = statusEntity
 
         userRepository.saveAndFlush(user)
         return user.specialist!!

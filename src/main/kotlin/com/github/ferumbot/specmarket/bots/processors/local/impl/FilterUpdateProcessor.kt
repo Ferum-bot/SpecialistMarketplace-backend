@@ -42,10 +42,12 @@ class FilterUpdateProcessor(
         return when(event) {
             is OpenProfessionFilterScreenEvent ->
                 processOpenProfessionFilterEvent(info)
-            is OpenNicheFilterScreenEvent ->
-                processOpenNicheFilterEvent(info as BaseDataInfo)
+            is ApplyProfessionFilterEvent ->
+                processApplyProfessionFilterEvent(info as BaseDataInfo)
+            is ApplyNicheFilterEvent ->
+                processApplyNicheFilterEvent(info as BaseDataInfo)
             is OpenCurrentSpecialistsScreenEvent ->
-                processOpenCurrentSpecialistsEvent(info as BaseDataInfo)
+                processOpenCurrentSpecialistsEvent(info)
             is OpenAnotherSpecialistsPageScreenEvent ->
                 processOpenAnotherSpecialistsPageEvent(info as OpenAnotherPageInfo)
             is GetSpecialistsContactsEvent ->
@@ -64,7 +66,7 @@ class FilterUpdateProcessor(
         return MessageUpdateResultBunch(newState, newInfo)
     }
 
-    private fun processOpenNicheFilterEvent(info: BaseDataInfo): MessageUpdateResultBunch<*> {
+    private fun processApplyProfessionFilterEvent(info: BaseDataInfo): MessageUpdateResultBunch<*> {
         val professionAlias = info.simpleInput
             .removeFirstCharIf { it.first() == '/' }
         userService.setProfessionToUserFilter(professionAlias, info)
@@ -78,19 +80,19 @@ class FilterUpdateProcessor(
         return MessageUpdateResultBunch(newState, newInfo)
     }
 
-    private fun processOpenCurrentSpecialistsEvent(info: BaseDataInfo): MessageUpdateResultBunch<*> {
+    private fun processApplyNicheFilterEvent(info: BaseDataInfo): MessageUpdateResultBunch<*> {
+        val nicheAlias = info.simpleInput
+            .removeFirstCharIf { it.first() == '/' }
+        userService.setNicheToUserFilter(nicheAlias, info)
+
+        return processOpenCurrentSpecialistsEvent(info)
+    }
+
+    private fun processOpenCurrentSpecialistsEvent(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
         val firstPage = 1
-        val nicheAlias = if (info.simpleInput.isBlank()) {
-            null
-        } else {
-            info.simpleInput.removeFirstCharIf { it.first() == '/' }
-        }
-        nicheAlias?.let { userService.setNicheToUserFilter(it, info) }
+        val (professionAlias, nicheAlias) = getProfessionAndNicheFromUserFilter(info)
 
-        val professionAlias = userService.getProfessionFromUserFilter(info)
-            ?.alias
-
-        val (specialists, specialistsCount) = getSpecialistsAndCountWith(
+        val (specialists, specialistsCount) = getApprovedSpecialistsAndCountWith(
             professionAlias, nicheAlias, firstPage
         )
 
@@ -105,12 +107,9 @@ class FilterUpdateProcessor(
 
     private fun processOpenAnotherSpecialistsPageEvent(info: OpenAnotherPageInfo): MessageUpdateResultBunch<*> {
         val newPage = info.pageNumber
-        val professionAlias = userService.getProfessionFromUserFilter(info)
-            ?.alias
-        val nicheAlias = userService.getNicheFromUserFilter(info)
-            ?.alias
+        val (professionAlias, nicheAlias) = getProfessionAndNicheFromUserFilter(info)
 
-        val (specialists, specialistsCount) = getSpecialistsAndCountWith(
+        val (specialists, specialistsCount) = getApprovedSpecialistsAndCountWith(
             professionAlias, nicheAlias, newPage
         )
 
@@ -134,7 +133,7 @@ class FilterUpdateProcessor(
         return MessageUpdateResultBunch(state, newInfo)
     }
 
-    private fun getSpecialistsAndCountWith(
+    private fun getApprovedSpecialistsAndCountWith(
         professionAlias: String?, nicheAlias: String?, page: Int
     ): Pair<Collection<SpecialistDto>, Int> {
         var specialists: Collection<SpecialistDto> = emptyList()
@@ -161,4 +160,13 @@ class FilterUpdateProcessor(
         return specialists to specialistsCount
     }
 
+    private fun getProfessionAndNicheFromUserFilter(
+        info: BaseUpdateInfo
+    ): Pair<String?, String?> {
+        val profession = userService.getProfessionFromUserFilter(info)
+            ?.alias
+        val niche = userService.getNicheFromUserFilter(info)
+            ?.alias
+        return profession to niche
+    }
 }

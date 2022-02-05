@@ -11,6 +11,17 @@ object OpenProfessionFilterScreenEvent: FilterEvent {
     override val friendlyName: String = "Открыть фильтр"
 }
 
+object ApplyProfessionFilterEvent: FilterEvent {
+
+    override val eventName: String = "Apply profession filter event"
+
+    override val commandAlias: String = "/prof"
+
+    override val friendlyName: String = ""
+
+    const val separator = "_"
+}
+
 object OpenNicheFilterScreenEvent: FilterEvent {
 
     override val eventName: String = "Open niche filter screen event"
@@ -20,13 +31,24 @@ object OpenNicheFilterScreenEvent: FilterEvent {
     override val friendlyName: String = "Выбрать нишу"
 }
 
+object ApplyNicheFilterEvent: FilterEvent {
+
+    override val eventName: String = "Apply niche filter event"
+
+    override val commandAlias: String = "/nich"
+
+    override val friendlyName: String = ""
+
+    const val separator = "_"
+}
+
 object OpenCurrentSpecialistsScreenEvent: FilterEvent {
 
     override val eventName: String = "Open current specialist screen event"
 
-    override val commandAlias: String = "/filterBy"
+    override val commandAlias: String = "/open_filtered_specialists"
 
-    override val friendlyName: String = "Найденные специалисты"
+    override val friendlyName: String = "Найти специалисты"
 }
 
 object OpenAnotherSpecialistsPageScreenEvent: FilterEvent {

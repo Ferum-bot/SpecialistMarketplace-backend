@@ -12,6 +12,9 @@ import com.github.ferumbot.specmarket.core.extensions.removeFirstCharIf
 import com.github.ferumbot.specmarket.models.dto.NicheDto
 import com.github.ferumbot.specmarket.models.dto.ProfessionDto
 import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
+import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses
+import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses.AWAITING_CONFIRMATION
+import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses.NOT_FILLED
 import com.github.ferumbot.specmarket.services.NicheService
 import com.github.ferumbot.specmarket.services.ProfessionService
 
@@ -84,6 +87,7 @@ class CreatingProfileUpdateProcessor(
         val chosenProfession = info.userInput.firstOrNull().orEmpty()
             .removeFirstCharIf { it.first() == '/' }
 
+        specialistService.clearProfessions(info)
         val specialist = specialistService.addProfession(info, chosenProfession)
         userService.setNewUserState(state, info)
 
@@ -114,6 +118,7 @@ class CreatingProfileUpdateProcessor(
         val chosenNiche = info.userInput.firstOrNull().orEmpty()
             .removeFirstCharIf { it.first() == '/' }
 
+        specialistService.clearNiches(info)
         val specialist = specialistService.addNiche(info, chosenNiche)
         userService.setNewUserState(state, info)
 
@@ -205,6 +210,7 @@ class CreatingProfileUpdateProcessor(
     private fun processFinishRegistrationFlow(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
         val state = YouAreAuthorizedScreenState
         userService.setNewUserState(state, info)
+        specialistService.updateStatus(info, AWAITING_CONFIRMATION)
 
         val specialist = userService.getUserSpecialist(info)
         val resultInfo = UserSpecialistInfo.getFrom(info, specialist!!)
@@ -215,6 +221,7 @@ class CreatingProfileUpdateProcessor(
     private fun processRestartRegistrationFlow(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
         val state = UserInputFullNameScreenState
         userService.setNewUserState(state, info)
+        specialistService.updateStatus(info, NOT_FILLED)
 
         return MessageUpdateResultBunch(state, info)
     }

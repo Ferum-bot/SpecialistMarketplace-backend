@@ -7,10 +7,7 @@ import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseDataInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.GetSpecialistContactsInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.OpenAnotherPageInfo
-import com.github.ferumbot.specmarket.bots.state_machine.event.GetSpecialistsContactsEvent
-import com.github.ferumbot.specmarket.bots.state_machine.event.OpenAnotherSpecialistsPageScreenEvent
-import com.github.ferumbot.specmarket.bots.state_machine.event.OpenCurrentSpecialistsScreenEvent
-import com.github.ferumbot.specmarket.bots.state_machine.event.OpenProfessionFilterScreenEvent
+import com.github.ferumbot.specmarket.bots.state_machine.event.*
 import com.github.ferumbot.specmarket.core.extensions.second
 import org.telegram.telegrambots.meta.api.objects.Update
 
@@ -20,6 +17,9 @@ class FilterEventAdapter: LocalUpdateAdapter {
 
         private val OPEN_ANOTHER_SPECIALIST_PAGE = OpenAnotherSpecialistsPageScreenEvent.commandAlias
         private val OPEN_CURRENT_SPECIALIST_PAGE = OpenCurrentSpecialistsScreenEvent.commandAlias
+
+        private val APPLY_PROFESSION_FILTER = ApplyProfessionFilterEvent.commandAlias
+        private val APPLY_NICHE_FILTER = ApplyNicheFilterEvent.commandAlias
 
         private val OPEN_FILTER_COMMAND = OpenProfessionFilterScreenEvent.commandAlias
         private val OPEN_FILTER_NAME = OpenProfessionFilterScreenEvent.friendlyName
@@ -35,6 +35,12 @@ class FilterEventAdapter: LocalUpdateAdapter {
     override fun isFor(update: Update): Boolean {
         val alias = update.getCommandAlias()
 
+        if (alias.isApplyProfessionFilterCommand()) {
+            return true
+        }
+        if (alias.isApplyNicheFilterCommand()) {
+            return true
+        }
         if (alias.isOpenAnotherSpecialistsPageCommand()) {
             return true
         }
@@ -51,6 +57,12 @@ class FilterEventAdapter: LocalUpdateAdapter {
     override fun adapt(update: Update): MessageUpdateBunch<*> {
         val alias = update.getCommandAlias()
 
+        if (alias.isApplyProfessionFilterCommand()) {
+            return getApplyProfessionFilter(update)
+        }
+        if (alias.isApplyNicheFilterCommand()) {
+            return getApplyNicheFilter(update)
+        }
         if (alias.isOpenAnotherSpecialistsPageCommand()) {
             return getOpenAnotherSpecialistsPage(update)
         }
@@ -81,12 +93,8 @@ class FilterEventAdapter: LocalUpdateAdapter {
     }
 
     private fun getOpenCurrentSpecialists(update: Update): MessageUpdateBunch<*> {
-        val separator = "_"
-        val input = update.getCommandAlias()
-        val professionAlias = input.split(separator)
-            .toMutableList().apply { removeFirst() }.joinToString(separator)
         val event = OpenCurrentSpecialistsScreenEvent
-        val info = BaseDataInfo.from(update, professionAlias)
+        val info = BaseUpdateInfo.from(update)
 
         return MessageUpdateBunch(event, info)
     }
@@ -107,6 +115,26 @@ class FilterEventAdapter: LocalUpdateAdapter {
         return MessageUpdateBunch(event, info)
     }
 
+    private fun getApplyProfessionFilter(update: Update): MessageUpdateBunch<*> {
+        val separator = ApplyProfessionFilterEvent.separator
+        val input = update.getCommandAlias()
+        val professionAlias = input.getFilterAlias(separator)
+        val event = ApplyProfessionFilterEvent
+        val info = BaseDataInfo.from(update, professionAlias)
+
+        return MessageUpdateBunch(event, info)
+    }
+
+    private fun getApplyNicheFilter(update: Update): MessageUpdateBunch<*> {
+        val separator = ApplyNicheFilterEvent.separator
+        val input = update.getCommandAlias()
+        val nicheAlias = input.getFilterAlias(separator)
+        val event = ApplyNicheFilterEvent
+        val info = BaseDataInfo.from(update, nicheAlias)
+
+        return MessageUpdateBunch(event, info)
+    }
+
     private fun String.isOpenAnotherSpecialistsPageCommand(): Boolean {
         return startsWith(OPEN_ANOTHER_SPECIALIST_PAGE, ignoreCase = true)
     }
@@ -119,5 +147,18 @@ class FilterEventAdapter: LocalUpdateAdapter {
         return startsWith(GET_SPECIALISTS_CONTACTS_COMMAND, ignoreCase = true)
     }
 
+    private fun String.isApplyProfessionFilterCommand(): Boolean {
+        return startsWith(APPLY_PROFESSION_FILTER, ignoreCase = true)
+    }
 
+    private fun String.isApplyNicheFilterCommand(): Boolean {
+        return startsWith(APPLY_NICHE_FILTER, ignoreCase = true)
+    }
+
+    private fun String.getFilterAlias(separator: String): String {
+        return split(separator)
+            .toMutableList()
+            .apply { removeFirst() }
+            .joinToString(separator)
+    }
 }

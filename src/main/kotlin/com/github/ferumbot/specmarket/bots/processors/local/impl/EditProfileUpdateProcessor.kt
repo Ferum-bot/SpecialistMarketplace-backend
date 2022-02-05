@@ -12,6 +12,8 @@ import com.github.ferumbot.specmarket.core.extensions.removeFirstCharIf
 import com.github.ferumbot.specmarket.models.dto.NicheDto
 import com.github.ferumbot.specmarket.models.dto.ProfessionDto
 import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
+import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses
+import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses.AWAITING_CONFIRMATION
 import com.github.ferumbot.specmarket.services.NicheService
 import com.github.ferumbot.specmarket.services.ProfessionService
 
@@ -147,6 +149,9 @@ class EditProfileUpdateProcessor(
         val newState = UserChangeProfessionScreenState
         val newInfo = ProfessionsInfo.from(info, availableProfessions, false)
 
+        userService.setNewUserState(newState, info)
+        setAwaitingConfirmationProfileState(info)
+
         return MessageUpdateResultBunch(newState, newInfo)
     }
 
@@ -167,6 +172,9 @@ class EditProfileUpdateProcessor(
 
         val newState = UserChangeNicheScreenState
         val newInfo = NichesInfo.from(info, availableNiches, false)
+
+        userService.setNewUserState(newState, info)
+        setAwaitingConfirmationProfileState(info)
 
         return MessageUpdateResultBunch(newState, newInfo)
     }
@@ -227,8 +235,13 @@ class EditProfileUpdateProcessor(
     private fun setEditStateAndReturn(info: BaseUpdateInfo, specialist: SpecialistProfile): MessageUpdateResultBunch<UserSpecialistInfo> {
         val newState = EditProfileScreenState
         userService.setNewUserState(newState, info)
+        setAwaitingConfirmationProfileState(info)
 
         val newInfo = UserSpecialistInfo.getFrom(info, specialist)
         return MessageUpdateResultBunch(newState, newInfo)
+    }
+
+    private fun setAwaitingConfirmationProfileState(info: BaseUpdateInfo) {
+        specialistService.updateStatus(info, AWAITING_CONFIRMATION)
     }
 }

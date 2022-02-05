@@ -2,6 +2,7 @@ package com.github.ferumbot.specmarket.bots.services
 
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseUpdateInfo
 import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
+import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses
 
 interface TelegramUserSpecialistService {
 
@@ -34,4 +35,6 @@ interface TelegramUserSpecialistService {
     fun updateContactLinks(info: BaseUpdateInfo, newContactLinks: String): SpecialistProfile
 
     fun updateVisibility(info: BaseUpdateInfo, visibility: Boolean): SpecialistProfile
+
+    fun updateStatus(info: BaseUpdateInfo, status: ProfileStatuses): SpecialistProfile
 }

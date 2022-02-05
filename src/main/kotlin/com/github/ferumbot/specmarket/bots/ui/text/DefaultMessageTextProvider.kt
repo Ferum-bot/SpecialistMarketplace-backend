@@ -1,6 +1,8 @@
 package com.github.ferumbot.specmarket.bots.ui.text
 
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.UserSpecialistInfo
+import com.github.ferumbot.specmarket.bots.state_machine.event.ApplyNicheFilterEvent
+import com.github.ferumbot.specmarket.bots.state_machine.event.ApplyProfessionFilterEvent
 import com.github.ferumbot.specmarket.bots.state_machine.event.OpenCurrentSpecialistsScreenEvent
 import com.github.ferumbot.specmarket.core.wrappers.EmojiWrapper
 import com.github.ferumbot.specmarket.models.dto.NicheDto
@@ -164,10 +166,11 @@ class DefaultMessageTextProvider: MessageTextProvider {
     }
 
     override fun provideProfessionFilterScreenInfoMessage(professions: Collection<ProfessionDto>): String {
-        val command = OpenCurrentSpecialistsScreenEvent.commandAlias
+        val command = ApplyProfessionFilterEvent.commandAlias
+        val separator = ApplyProfessionFilterEvent.separator
         val professionsToFilter = professions.fold(StringBuilder()) { builder, profession ->
             builder.append(profession.friendlyName)
-            builder.append(" - Отфильтровать ${command}_${profession.alias}\n")
+            builder.append(" - Отфильтровать ${command}$separator${profession.alias}\n")
         }
 
         return StringBuilder()
@@ -179,10 +182,11 @@ class DefaultMessageTextProvider: MessageTextProvider {
     }
 
     override fun provideNicheFilterScreenInfoMessage(niches: Collection<NicheDto>): String {
-        val command = ""
+        val command = ApplyNicheFilterEvent.commandAlias
+        val separator = ApplyNicheFilterEvent.separator
         val nichesToFilter = niches.fold(StringBuilder()) { builder, niche ->
             builder.append(niche.friendlyName)
-            builder.append(" - Отфильтровать ${command}_${niche.alias}\n")
+            builder.append(" - Отфильтровать ${command}$separator${niche.alias}\n")
         }
 
         return StringBuilder()
@@ -492,13 +496,13 @@ class DefaultMessageTextProvider: MessageTextProvider {
             APPROVED -> StringBuilder()
                 .append("Мы проверели ваш профиль и теперь вы можете изменить видимость вашего профиля на бирже.\n")
                 .append("На данный момент ваш профиль ")
-                .append {
-                    return@append if (isVisible) {
+                .append(
+                    if (isVisible) {
                         "виден на площадке.\n"
                     } else {
                         "не виден на площадке.\n"
                     }
-                }
+                )
                 .append("Если вы отредактируете какое-то поле, то ваш профиль будет снова ожидать подтверждения от наших специалистов.\n")
         }
     }

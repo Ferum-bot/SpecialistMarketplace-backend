@@ -3,12 +3,10 @@ package com.github.ferumbot.specmarket.bots.adapters.result.local.impl
 import com.github.ferumbot.specmarket.bots.adapters.result.local.LocalUpdateResultAdapter
 import com.github.ferumbot.specmarket.bots.models.dto.bunch.MessageUpdateResultBunch
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.BaseDataInfo
+import com.github.ferumbot.specmarket.bots.models.dto.update_info.NichesInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.ProfessionsInfo
 import com.github.ferumbot.specmarket.bots.models.dto.update_info.SpecialistsPageInfo
-import com.github.ferumbot.specmarket.bots.state_machine.state.CurrentSpecialistsContactsScreenState
-import com.github.ferumbot.specmarket.bots.state_machine.state.CurrentSpecialistsScreenState
-import com.github.ferumbot.specmarket.bots.state_machine.state.ProfessionFilterScreenState
-import com.github.ferumbot.specmarket.bots.state_machine.state.FilterState
+import com.github.ferumbot.specmarket.bots.state_machine.state.*
 import com.github.ferumbot.specmarket.bots.ui.inline_buttons.InlineMessageButtonsProvider
 import com.github.ferumbot.specmarket.bots.ui.text.MessageTextProvider
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod
@@ -28,19 +26,34 @@ class FilterStateAdapter(
         val info = bunch.resultData
 
         return when(state) {
-            is ProfessionFilterScreenState -> getFilterScreen(info as ProfessionsInfo)
+            is ProfessionFilterScreenState -> getProfessionFilterScreen(info as ProfessionsInfo)
+            is NicheFilterScreenState -> getNicheFilterScreen(info as NichesInfo)
             is CurrentSpecialistsScreenState -> getCurrentSpecialistsScreen(info as SpecialistsPageInfo)
             is CurrentSpecialistsContactsScreenState -> getCurrentSpecialistContactsScreen(info as BaseDataInfo)
             else -> LocalUpdateResultAdapter.unSupportedState(info)
         }
     }
 
-    private fun getFilterScreen(info: ProfessionsInfo): BotApiMethod<*> {
+    private fun getProfessionFilterScreen(info: ProfessionsInfo): BotApiMethod<*> {
         val professions = info.professions
         val text = textProvider.provideProfessionFilterScreenInfoMessage(professions)
+        val buttons = inlineButtonsProvider.provideFilterButtons()
         val chatId = info.chatId.toString()
 
-        return SendMessage(chatId, text)
+        return SendMessage(chatId, text).apply {
+            replyMarkup = buttons
+        }
+    }
+
+    private fun getNicheFilterScreen(info: NichesInfo): BotApiMethod<*> {
+        val niches = info.niches
+        val text = textProvider.provideNicheFilterScreenInfoMessage(niches)
+        val buttons = inlineButtonsProvider.provideFilterButtons()
+        val chatId = info.chatId.toString()
+
+        return SendMessage(chatId, text).apply {
+            replyMarkup = buttons
+        }
     }
 
     private fun getCurrentSpecialistsScreen(info: SpecialistsPageInfo): BotApiMethod<*> {
@@ -52,12 +65,11 @@ class FilterStateAdapter(
         }
 
         val specialistId = specialists.first().id!!
-        val professionAlias = info.additionalData!!
         val currentPage = info.currentPageNumber
         val pageCount = info.totalPageCount
         val text = textProvider.provideCurrentSpecialistsInfoMessage(specialists)
         val buttons = inlineButtonsProvider.provideCurrentSpecialistsButton(
-            currentPage, pageCount, professionAlias, specialistId
+            currentPage, pageCount, specialistId
         )
         val sendMessage = SendMessage(chatId, text).apply {
             replyMarkup = buttons

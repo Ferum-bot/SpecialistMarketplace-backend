@@ -38,15 +38,14 @@ class SwaggerConfig {
     fun configureApi(): OpenAPI {
         return OpenAPI()
             .info(Info().apply {
-                title = "Swagger for SMM marketplace API"
-                description = "Allows to manage, create or delete entities from SMM marketplace application"
+                title = "Swagger для SMM Маркетплейс API"
+                description = "Позволяет управлять профилями, профессиями, нишами и телеграмм ботом"
                 contact = Contact().apply {
-                    name = "Matvey Popov"
+                    name = "Матвей Попов"
                     url = "https://t.me/ma_popovv"
                     email = "ma.popovv@gmail.com"
                 }
-                version = "1.0.0"
-
+                version = "1.1.0"
             })
     }
 }
