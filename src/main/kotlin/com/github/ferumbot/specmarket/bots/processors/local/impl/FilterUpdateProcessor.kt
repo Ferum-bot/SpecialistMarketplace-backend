@@ -155,6 +155,22 @@ class FilterUpdateProcessor(
                     professionAlias = profession, nicheAlias = nicheAlias, status = APPROVED
                 )
             }
+        } ?: run {
+            if (nicheAlias == null) {
+                specialists = specialistService.getSpecialistsWithStatus(
+                    status = APPROVED, pageNumber = page, SPECIALIST_PER_PAGE
+                )
+                specialistsCount = specialistService.countSpecialistsWithStatus(
+                    status = APPROVED
+                )
+            } else {
+                specialists = specialistService.getSpecialistsByNicheWithStatus(
+                    alias = nicheAlias, status = APPROVED, pageNumber = page, SPECIALIST_PER_PAGE
+                )
+                specialistsCount = specialistService.countSpecialistsByNicheWithStatus(
+                    status = APPROVED, nicheAlias = nicheAlias,
+                )
+            }
         }
 
         return specialists to specialistsCount

@@ -55,6 +55,8 @@ interface SpecialistService {
         professionAlias: String, nicheAlias: String, status: ProfileStatuses, pageNumber: Int, pageSize: Int
     ): Collection<SpecialistDto>
 
+    fun countSpecialistsWithStatus(status: ProfileStatuses): Int
+
     fun countAllSpecialistsByProfession(professionId: Long): Int
 
     fun countAllSpecialistsByProfession(alias: String): Int

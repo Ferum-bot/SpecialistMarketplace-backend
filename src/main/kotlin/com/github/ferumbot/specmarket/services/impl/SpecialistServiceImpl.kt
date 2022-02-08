@@ -169,6 +169,11 @@ class SpecialistServiceImpl @Autowired constructor(
     }
 
     @Transactional(readOnly = true)
+    override fun countSpecialistsWithStatus(status: ProfileStatuses): Int {
+        TODO("Not yet implemented")
+    }
+
+    @Transactional(readOnly = true)
     override fun countAllSpecialistsByProfession(professionId: Long): Int {
         return specialistRepository.countAllByProfession(professionId)
     }
@@ -274,6 +279,9 @@ class SpecialistServiceImpl @Autowired constructor(
             val keySkill = KeySkills(value = value)
             keySkillsRepository.save(keySkill)
         }
+        val status = statusRepository.findByAlias(ProfileStatuses.NOT_FILLED)
+            ?: throw UndefinedProfileStatus("Undefined status: ${ProfileStatuses.NOT_FILLED.alias}")
+
         val entity = SpecialistProfile(
             fullName = specialist.fullName,
             professions = professions.toMutableList(),
@@ -285,6 +293,7 @@ class SpecialistServiceImpl @Autowired constructor(
             educationGrade = specialist.educationGrade,
             contactLinks = specialist.contactLinks,
             isVisible = specialist.isVisible,
+            status = status,
         )
 
         return specialistRepository.saveAndFlush(entity).transform {

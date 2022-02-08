@@ -36,24 +36,28 @@ class StartUpdateProcessor(
     private fun processAllSpecialistsScreen(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
         val newState = AllSpecialistInfoScreenState
         userService.setNewUserState(newState, info)
+        clearUserFilter(info)
         return MessageUpdateResultBunch(newState, info)
     }
 
     private fun processOpenContactWithUsScreen(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
         val newState = ContactWithUsScreenState
         userService.setNewUserState(newState, info)
+        clearUserFilter(info)
         return MessageUpdateResultBunch(newState, info)
     }
 
     private fun processOpenIAmCustomerScreen(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
         val newState = IAmCustomerInfoScreenState
         userService.setNewUserState(newState, info)
+        clearUserFilter(info)
         return MessageUpdateResultBunch(newState, info)
     }
 
     private fun processOpenIAmSpecialistScreen(info: BaseUpdateInfo): MessageUpdateResultBunch<*> {
         val newState = IAmSpecialistInfoScreenState
         userService.setNewUserState(newState, info)
+        clearUserFilter(info)
         return MessageUpdateResultBunch(newState, info)
     }
 
@@ -61,6 +65,7 @@ class StartUpdateProcessor(
         val currentUserStatus = userService.getUserSpecialistStatus(info)
         val notAuthorizedState = YouAreNotAuthorizedScreenState
 
+        clearUserFilter(info)
         return when(currentUserStatus) {
             NOT_AUTHORIZED -> {
                 userService.setNewUserState(notAuthorizedState, info)
@@ -92,5 +97,9 @@ class StartUpdateProcessor(
 
             MessageUpdateResultBunch(goodState, newInfo)
         } ?: MessageUpdateResultBunch(notAuthorizedState, info)
+    }
+
+    private fun clearUserFilter(info: BaseUpdateInfo) {
+        userService.clearUserFilter(info)
     }
 }

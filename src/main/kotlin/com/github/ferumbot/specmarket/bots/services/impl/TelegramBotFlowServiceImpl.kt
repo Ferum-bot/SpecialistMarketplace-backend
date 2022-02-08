@@ -164,6 +164,15 @@ class TelegramBotFlowServiceImpl @Autowired constructor(
             ?.transform { NicheDto.from(it) }
     }
 
+
+    override fun clearUserFilter(info: BaseUpdateInfo): TelegramUser {
+        val user = getUser(info)
+        user.currentBotState.currentNicheFilter = null
+        user.currentBotState.currentProfessionFilter = null
+
+        return userRepository.saveAndFlush(user)
+    }
+
     @Transactional(readOnly = true)
     override fun countUserSpecialistRequests(info: BaseUpdateInfo): Int {
         return userRepository.countUserSpecialistRequests(info.userId)

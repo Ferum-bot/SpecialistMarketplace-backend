@@ -44,6 +44,8 @@ interface TelegramBotFlowService {
 
     fun getNicheFromUserFilter(info: BaseUpdateInfo): NicheDto?
 
+    fun clearUserFilter(info: BaseUpdateInfo): TelegramUser
+
     fun countUserSpecialistRequests(info: BaseUpdateInfo): Int
 
     fun addSpecialistToUserRequests(info: BaseUpdateInfo, specialistId: Long): TelegramUser

@@ -95,7 +95,7 @@ class SpecialistController {
         return ApiResponse.success(specialists)
     }
 
-    @PatchMapping("/status/change")
+    @PutMapping("/status/change")
     @Operation(summary = "Изменить статус специалиста")
     fun changeSpecialistStatus(
         @RequestParam(value = "id", required = true)
@@ -108,7 +108,7 @@ class SpecialistController {
         return ApiResponse.success(result)
     }
 
-    @PutMapping("/create")
+    @PatchMapping("/create")
     @Operation(summary = "Создать нового специалиста")
     fun createSpecialist(
         @RequestBody
