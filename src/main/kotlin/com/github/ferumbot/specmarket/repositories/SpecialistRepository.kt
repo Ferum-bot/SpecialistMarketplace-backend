@@ -2,6 +2,7 @@ package com.github.ferumbot.specmarket.repositories
 
 import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfile
 import com.github.ferumbot.specmarket.models.entities.specialist.SpecialistProfileStatus
+import com.github.ferumbot.specmarket.models.entities.specialist.enum.ProfileStatuses
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -233,6 +234,16 @@ interface SpecialistRepository: JpaRepository<SpecialistProfile, Long> {
 
         page: Pageable
     ): Page<SpecialistProfile>
+
+
+    @Query(
+        value = "SELECT COUNT(*) FROM specialist_profile WHERE specialist_profile.status_id = :status_id ",
+        nativeQuery = true
+    )
+    fun countAllByStatus(
+        @Param(value = "status_id")
+        statusId: Long,
+    ): Int
 
 
     @Query(

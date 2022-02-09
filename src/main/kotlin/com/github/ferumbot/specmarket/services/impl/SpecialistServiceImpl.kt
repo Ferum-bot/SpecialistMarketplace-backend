@@ -170,7 +170,9 @@ class SpecialistServiceImpl @Autowired constructor(
 
     @Transactional(readOnly = true)
     override fun countSpecialistsWithStatus(status: ProfileStatuses): Int {
-        TODO("Not yet implemented")
+        val statusId = statusRepository.findByAlias(status)?.id
+            ?: throw UndefinedProfileStatus()
+        return specialistRepository.countAllByStatus(statusId)
     }
 
     @Transactional(readOnly = true)
